@@ -1,0 +1,6 @@
+@Mystefy_HostAddress = http://localhost:5167
+
+GET {{Mystefy_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

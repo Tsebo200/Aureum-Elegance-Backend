@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "jRv3r+1V5d4=",
+  "success": true,
+  "projectFilePath": "/Users/tebstest/Documents/GitHub/Mystefy/Mystefy/Mystefy.csproj",
+  "expectedPackageFiles": [
+    "/Users/tebstest/.nuget/packages/microsoft.aspnetcore.openapi/9.0.1/microsoft.aspnetcore.openapi.9.0.1.nupkg.sha512",
+    "/Users/tebstest/.nuget/packages/microsoft.openapi/1.6.17/microsoft.openapi.1.6.17.nupkg.sha512"
+  ],
+  "logs": []
+}
