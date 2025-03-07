@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Mystefy")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3e9b1c90f2418429b753ee36afdeea010c53f0d6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d43a2588eb22145d52abaf0e4986c2b5a1c9c8de")]
 [assembly: System.Reflection.AssemblyProductAttribute("Mystefy")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Mystefy")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
