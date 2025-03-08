@@ -47,7 +47,7 @@ namespace Mystefy.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutPackaging(int id, Packaging packaging)
         {
-            if (id != packaging.PackagingId)
+            if (id != packaging.Id)
             {
                 return BadRequest();
             }
@@ -81,7 +81,7 @@ namespace Mystefy.Controllers
             _context.Packaging.Add(packaging);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetPackaging", new { id = packaging.PackagingId }, packaging);
+            return CreatedAtAction("GetPackaging", new { id = packaging.Id }, packaging);
         }
 
         // DELETE: api/Mystefy/5
@@ -102,7 +102,7 @@ namespace Mystefy.Controllers
 
         private bool PackagingExists(int id)
         {
-            return _context.Packaging.Any(e => e.PackagingId == id);
+            return _context.Packaging.Any(e => e.Id == id);
         }
     }
 }
