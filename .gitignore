@@ -44,3 +44,5 @@ msbuild.err
 msbuild.wrn
 /Mystefy/appsettings.json
 Mystefy/appsettings.json
+Mystefy/appsettings.Development.json
+/Mystefy/appsettings.Development.json
