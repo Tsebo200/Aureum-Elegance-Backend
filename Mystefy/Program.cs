@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using Mystefy.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -8,6 +11,9 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 builder.Services.AddEndpointsApiExplorer();
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<MystefyDbContext>(options => options.UseNpgsql(connectionString));
 
 var app = builder.Build();
 
