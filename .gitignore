@@ -49,3 +49,5 @@ Mystefy/appsettings.Development.json
 
 Mystefy/.env
 /Mystefy/.env
+.env
+/.env
