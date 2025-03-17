@@ -11,7 +11,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 builder.Services.AddEndpointsApiExplorer();
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = builder.Configuration.GetConnectionString("LiveAivenConnection");
 builder.Services.AddDbContext<MystefyDbContext>(options => options.UseNpgsql(connectionString));
 
 var app = builder.Build();

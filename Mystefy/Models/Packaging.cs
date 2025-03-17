@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Mystefy.Models;
-
+    // public enum Type{ Glass_Bottles, Spray_Nozzles, Silk_Wraps }
 public class Packaging
 {
     [Key] 
@@ -12,7 +12,6 @@ public class Packaging
     [Required]
     [StringLength(100)]
     public required string Name{ get; set; }
-    // public enum Type{ Glass_Bottles, Spray_Nozzles, Silk_Wraps }
     public string? Type{ get; set; }
     public int Stock{ get; set; }
 }
