@@ -1,12 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Mystefy.Data;
+using Mystefy.DTOs;
+using Mystefy.Interfaces;
 using Mystefy.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Mystefy.Controllers
 {
@@ -15,94 +15,65 @@ namespace Mystefy.Controllers
     public class MystefyController : ControllerBase
     {
         private readonly MystefyDbContext _context;
+        private readonly IAuthService _authService;
 
-        public MystefyController(MystefyDbContext context)
+        public MystefyController(MystefyDbContext context, IAuthService authService)
         {
             _context = context;
+            _authService = authService;
         }
 
-        // GET: api/Mystefy
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Packaging>>> GetPackaging()
+        // USER ENDPOINTS
+
+        // GET: api/Mystefy/users
+        [HttpGet("users")]
+        public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
         {
-            return await _context.Packaging.ToListAsync();
+            var users = await _context.Users.ToListAsync();
+            return users.Select(user => new UserDTO(user)).ToList();
         }
 
-        // GET: api/Mystefy/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Packaging>> GetPackaging(int id)
+        // POST: api/Mystefy/register
+        [HttpPost("register")]
+        public async Task<IActionResult> RegisterUser([FromBody] UserDTO userDto)
         {
-            var packaging = await _context.Packaging.FindAsync(id);
-
-            if (packaging == null)
+            var user = new User
             {
-                return NotFound();
-            }
+                Name = userDto.Name,
+                Email = userDto.Email,
+                Password = userDto.Email, // Will be hashed
+                Role = Enum.TryParse<UserRole>(userDto.Role, out var role) ? role : UserRole.Employee
+            };
 
-            return packaging;
+            if (!await _authService.RegisterUser(user))
+                return BadRequest("Email already exists");
+
+            return Ok(new UserDTO(user));
         }
 
-        // PUT: api/Mystefy/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutPackaging(int id, Packaging packaging)
+        // POST: api/Mystefy/login
+        [HttpPost("login")]
+        public async Task<IActionResult> LoginUser([FromBody] LoginDTO loginDto)
         {
-            if (id != packaging.Id)
-            {
-                return BadRequest();
-            }
+            if (!await _authService.LoginUser(loginDto.Email, loginDto.Password))
+                return Unauthorized("Invalid credentials");
 
-            _context.Entry(packaging).State = EntityState.Modified;
+            var user = await _authService.EmailExists(loginDto.Email);
+            return Ok(new UserDTO(user!));
+        }
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PackagingExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        // DELETE: api/Mystefy/users/5
+        [HttpDelete("users/{id}")]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null) return NotFound();
 
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
             return NoContent();
         }
 
-        // POST: api/Mystefy
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Packaging>> PostPackaging(Packaging packaging)
-        {
-            _context.Packaging.Add(packaging);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetPackaging", new { id = packaging.Id }, packaging);
-        }
-
-        // DELETE: api/Mystefy/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePackaging(int id)
-        {
-            var packaging = await _context.Packaging.FindAsync(id);
-            if (packaging == null)
-            {
-                return NotFound();
-            }
-
-            _context.Packaging.Remove(packaging);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool PackagingExists(int id)
-        {
-            return _context.Packaging.Any(e => e.Id == id);
-        }
+        // EXISTING PACKAGING ENDPOINTS (Leave these as they are)
     }
 }

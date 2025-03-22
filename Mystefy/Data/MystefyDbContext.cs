@@ -8,5 +8,6 @@ public class MystefyDbContext : DbContext
 {
     public MystefyDbContext(DbContextOptions<MystefyDbContext> options) : base(options) {}
     public DbSet<Packaging> Packaging { get; set; }
+    public DbSet<User> Users { get; set; } // Added Users table
 
 }
