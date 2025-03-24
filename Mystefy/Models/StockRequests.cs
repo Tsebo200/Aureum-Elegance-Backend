@@ -7,16 +7,16 @@ namespace Mystefy.Models;
 public class StockRequest
 
 {
-    public enum StockStatus{ InStock, OutOfStock ,LimitedStock}
+    // public enum StockStatus{ InStock, OutOfStock ,LimitedStock}
 
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int RequestId{ get; set; }
+    public int Id{ get; set; }
 
     [Required]
     public int AmountRequested{ get; set; }
     [Required]
-    public StockStatus Status{ get; set; }
+    public string? Status{ get; set; }
     // public string? Status{ get; set; }
     public DateTime RequestDate { get; set; } = DateTime.UtcNow;
 
