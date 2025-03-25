@@ -1,6 +1,5 @@
 using System;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Mystefy.Models;
 
 namespace Mystefy.Data
@@ -9,12 +8,13 @@ namespace Mystefy.Data
     {
         public MystefyDbContext(DbContextOptions<MystefyDbContext> options) : base(options) {}
 
-        public DbSet<Packaging> Packaging { get; set; }
-        public DbSet<User> Users { get; set; } // Added Users table
-        public DbSet<Fragrance> Fragrances { get; set; } // Added Fragrance 
-        public DbSet<FinishedProduct> FinishedProduct { get; set; } // Added Finished Product
-        public DbSet<StockRequest> StockRequest { get; set; }
-        public DbSet<Ingredients> Ingredients { get; set; }
+        public DbSet<Packaging> Packagings { get; set; }
+        public DbSet<Warehouse> Warehouses { get; set; }
+        public DbSet<Fragrance> Fragrances { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<FinishedProduct> FinishedProducts { get; set; }
+        public DbSet<StockRequest> StockRequests { get; set; }
+        public DbSet<Ingredient> Ingredients { get; set; } 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -22,18 +22,18 @@ namespace Mystefy.Data
 
             modelBuilder.Entity<FinishedProduct>()
                 .HasOne(fp => fp.Fragrance)
-                .WithMany()
+                .WithMany(f => f.FinishedProducts)
                 .HasForeignKey(fp => fp.FragranceID);
 
             modelBuilder.Entity<FinishedProduct>()
                 .HasOne(fp => fp.Packaging)
-                .WithMany()
+                .WithMany(p => p.FinishedProducts)
                 .HasForeignKey(fp => fp.PackagingID);
 
-            modelBuilder.Entity<Ingredients>()
+            modelBuilder.Entity<Ingredient>()
                 .HasMany(i => i.StockRequests)
-                .WithOne(s => s.Ingredients)
-                .HasForeignKey(s => s.IngredientsId);
+                .WithOne(s => s.Ingredient)
+                .HasForeignKey(s => s.IngredientId);
 
             modelBuilder.Entity<User>()
                 .HasMany(u => u.StockRequests)
