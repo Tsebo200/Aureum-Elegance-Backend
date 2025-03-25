@@ -1,9 +1,8 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Mystefy.Data;
 using Mystefy.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Mystefy.Controllers
 {
@@ -26,10 +25,10 @@ namespace Mystefy.Controllers
         }
 
         // GET: api/Fragrance/{id}
-        [HttpGet("{FragranceID}")]
-        public async Task<ActionResult<Fragrance>> GetFragrance(int FragranceID)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Fragrance>> GetFragrance(int id)
         {
-            var fragrance = await _context.Fragrances.FindAsync(FragranceID);
+            var fragrance = await _context.Fragrances.FindAsync(id);
 
             if (fragrance == null)
             {
@@ -43,17 +42,20 @@ namespace Mystefy.Controllers
         [HttpPost]
         public async Task<ActionResult<Fragrance>> PostFragrance(Fragrance fragrance)
         {
-            _context.Fragrances.Add(fragrance);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetFragrance), new { id = fragrance.FragranceID }, fragrance);
+            if (fragrance == null)
+            {
+        return BadRequest("Fragrance data is invalid.");
+        }
+        _context.Fragrances.Add(fragrance);
+        await _context.SaveChangesAsync();
+        return CreatedAtAction("GetFragrance", new { id = fragrance.Id }, fragrance);
         }
 
         // PUT: api/Fragrance/{id}
-        [HttpPut("{FragranceID}")]
-        public async Task<IActionResult> PutFragrance(int FragranceID, Fragrance fragrance)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutFragrance(int id, Fragrance fragrance)
         {
-            if (FragranceID != fragrance.FragranceID)
+            if (id != fragrance.Id)
             {
                 return BadRequest();
             }
@@ -66,7 +68,7 @@ namespace Mystefy.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!FragranceExists(FragranceID))
+                if (!FragranceExists(id))
                 {
                     return NotFound();
                 }
@@ -80,10 +82,10 @@ namespace Mystefy.Controllers
         }
 
         // DELETE: api/Fragrance/{id}
-        [HttpDelete("{FragranceID}")]
-        public async Task<IActionResult> DeleteFragrance(int FragranceID)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteFragrance(int id)
         {
-            var fragrance = await _context.Fragrances.FindAsync(FragranceID);
+            var fragrance = await _context.Fragrances.FindAsync(id);
             if (fragrance == null)
             {
                 return NotFound();
@@ -95,10 +97,9 @@ namespace Mystefy.Controllers
             return NoContent();
         }
 
-        private bool FragranceExists(int FragranceID)
+        private bool FragranceExists(int id)
         {
-            return _context.Fragrances.Any(e => e.FragranceID == FragranceID);
+            return _context.Fragrances.Any(e => e.Id == id);
         }
     }
 }
-

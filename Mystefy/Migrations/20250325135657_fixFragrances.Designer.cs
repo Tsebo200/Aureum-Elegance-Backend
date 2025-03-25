@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Mystefy.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Mystefy.Migrations
 {
     [DbContext(typeof(MystefyDbContext))]
-    partial class MystefyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250325135657_fixFragrances")]
+    partial class fixFragrances
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,11 +27,11 @@ namespace Mystefy.Migrations
 
             modelBuilder.Entity("Mystefy.Models.Fragrance", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("FragranceID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("FragranceID"));
 
                     b.Property<decimal>("Cost")
                         .HasColumnType("numeric");
@@ -47,9 +50,28 @@ namespace Mystefy.Migrations
                     b.Property<decimal>("Volume")
                         .HasColumnType("numeric");
 
-                    b.HasKey("Id");
+                    b.HasKey("FragranceID");
 
                     b.ToTable("Fragrances");
+                });
+
+            modelBuilder.Entity("Mystefy.Models.FragranceIngredient", b =>
+                {
+                    b.Property<int>("FragranceID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("FragranceID"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("IngredientID")
+                        .HasColumnType("integer");
+
+                    b.HasKey("FragranceID");
+
+                    b.ToTable("FragranceIngredients");
                 });
 
             modelBuilder.Entity("Mystefy.Models.Packaging", b =>
@@ -95,6 +117,22 @@ namespace Mystefy.Migrations
                     b.HasKey("WarehouseID");
 
                     b.ToTable("Warehouses");
+                });
+
+            modelBuilder.Entity("Mystefy.Models.WarehouseStock", b =>
+                {
+                    b.Property<int>("StockID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("StockID"));
+
+                    b.Property<decimal>("Stock")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("StockID");
+
+                    b.ToTable("WarehouseStocksarehouseStocks");
                 });
 #pragma warning restore 612, 618
         }
