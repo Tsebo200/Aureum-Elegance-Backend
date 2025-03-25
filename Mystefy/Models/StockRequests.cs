@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Mystefy.Models;
 
@@ -23,14 +24,18 @@ public class StockRequest
 
 
     // Foreign Keys 
-    [Required]
+    // FK Constraint formed with Ingredients Table
+    [AllowNull]
     [ForeignKey("Ingredients")]
     public int IngredientsId { get; set; }
-
-    //Navigation Property
+    //Navigation Property of Ingredients
     public Ingredients Ingredients{ get; set; } = null!;
 
+    [AllowNull]
+    [ForeignKey("User")]
+    // FK Constraint formed with User Table
+    public int? UserId{ get; set; }
+    //Navigation Property of Ingredients
+    public User User{ get; set; } = null!;
 
-    //     [Required]
-    // public string? ApprovedBy{ get; set; }
 }
