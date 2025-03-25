@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Mystefy.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Mystefy.Migrations
 {
     [DbContext(typeof(MystefyDbContext))]
-    partial class MystefyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250325164815_StockRequestRelationshipWithIngredients")]
+    partial class StockRequestRelationshipWithIngredients
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -106,13 +109,13 @@ namespace Mystefy.Migrations
 
             modelBuilder.Entity("Mystefy.Models.StockRequest", b =>
                 {
-                    b.HasOne("Mystefy.Models.Ingredients", "Ingredients")
+                    b.HasOne("Mystefy.Models.Ingredients", "ingredients")
                         .WithMany("StockRequests")
                         .HasForeignKey("IngredientsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Ingredients");
+                    b.Navigation("ingredients");
                 });
 
             modelBuilder.Entity("Mystefy.Models.Ingredients", b =>

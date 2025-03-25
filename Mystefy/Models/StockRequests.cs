@@ -20,8 +20,16 @@ public class StockRequest
     // public string? Status{ get; set; }
     public DateTime RequestDate { get; set; } = DateTime.UtcNow;
 
+
+
     // Foreign Keys 
-    // public int IngredientId{ get; set; }
+    [Required]
+    [ForeignKey("Ingredients")]
+    public int IngredientsId { get; set; }
+
+    //Navigation Property
+    public Ingredients Ingredients{ get; set; } = null!;
+
 
     //     [Required]
     // public string? ApprovedBy{ get; set; }
