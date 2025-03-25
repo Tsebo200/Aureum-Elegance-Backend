@@ -14,7 +14,7 @@ namespace Mystefy.Data
         public DbSet<User> Users { get; set; }
         public DbSet<FinishedProduct> FinishedProducts { get; set; }
         public DbSet<StockRequest> StockRequests { get; set; }
-        public DbSet<Ingredient> Ingredients { get; set; } 
+        public DbSet<Ingredients> Ingredients { get; set; } 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -30,15 +30,20 @@ namespace Mystefy.Data
                 .WithMany(p => p.FinishedProducts)
                 .HasForeignKey(fp => fp.PackagingID);
 
-            modelBuilder.Entity<Ingredient>()
+            modelBuilder.Entity<Ingredients>()
                 .HasMany(i => i.StockRequests)
-                .WithOne(s => s.Ingredient)
-                .HasForeignKey(s => s.IngredientId);
+                .WithOne(s => s.Ingredients)
+                .HasForeignKey(s => s.IngredientsId);
 
             modelBuilder.Entity<User>()
                 .HasMany(u => u.StockRequests)
                 .WithOne(s => s.User)
                 .HasForeignKey(s => s.UserId);
+
+            modelBuilder.Entity<Warehouse>()
+                .HasMany(w => w.StockRequests)
+                .WithOne(s => s.Warehouse)
+                .HasForeignKey(s => s.WarehouseId);
         }
     }
 }
