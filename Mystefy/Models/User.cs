@@ -25,10 +25,8 @@ namespace Mystefy.Models
 
         [Required]
         public UserRole Role { get; set; }
-        
-    //Navigation Property
+      
+       //Navigation Property
     public List<StockRequest>StockRequests {get; set;} = [];
     }
-
-    
 }
