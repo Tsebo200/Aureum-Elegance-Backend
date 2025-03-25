@@ -40,16 +40,21 @@ namespace Mystefy.Controllers
 
         // POST: api/Fragrance
         [HttpPost]
-        public async Task<ActionResult<Fragrance>> PostFragrance(Fragrance fragrance)
-        {
-            if (fragrance == null)
-            {
-        return BadRequest("Fragrance data is invalid.");
-        }
+       // POST: api/Fragrance
+    [HttpPost]
+    public async Task<ActionResult<Fragrance>> PostFragrance(Fragrance fragrance)
+    {
+        // Ensure ExpiryDate is in UTC
+        fragrance.ExpiryDate = DateTime.SpecifyKind(fragrance.ExpiryDate, DateTimeKind.Utc);
+
+        // Add fragrance to the context
         _context.Fragrances.Add(fragrance);
         await _context.SaveChangesAsync();
+
+        // Return the newly created fragrance with the status code 201 (Created)
         return CreatedAtAction("GetFragrance", new { id = fragrance.Id }, fragrance);
-        }
+    }
+
 
         // PUT: api/Fragrance/{id}
         [HttpPut("{id}")]
