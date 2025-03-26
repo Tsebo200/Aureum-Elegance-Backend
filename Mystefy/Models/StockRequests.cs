@@ -38,4 +38,11 @@ public class StockRequest
     //Navigation Property of Ingredients
     public User User{ get; set; } = null!;
 
+    // FK Constraint formed with Warehouse Table
+    [AllowNull]
+    [ForeignKey("Warehouse")]
+    public int WarehouseId { get; set; }
+    //Navigation Property of Ingredients
+    public Warehouse Warehouse{ get; set; } = null!;
+
 }
