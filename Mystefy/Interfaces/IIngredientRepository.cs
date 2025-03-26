@@ -6,16 +6,16 @@ namespace Mystefy.Interfaces
     public interface IIngredientRepository
     {
         Task<Ingredients> CreateIngredientAsync(Ingredients ingredient);
-        Task<Ingredients?> GetIngredientWithDetailsAsync(int ingredientId);
-        Task<Ingredients?> GetIngredientWithRecipesAsync(int ingredientId);
-        Task AddIngredientToRecipeAsync(int ingredientId, int recipeId);
-        Task<Ingredients?> GetIngredientByNameAsync(string ingredientName);
-        Task<Ingredients?> GetIngredientByTypeAsync(string ingredientType);
-        Task<Ingredients?> GetIngredientByCostAsync(string ingredientCost);
-        Task<Ingredients?> GetIngredientByIsExpiredAsync(bool isExpired);
-        Task<Ingredients?> UpdateIngredientAsync(Ingredients ingredient);
-        Task<Ingredients?> DeleteIngredientAsync(int ingredientId);
-        Task RemoveIngredientFromRecipeAsync(int ingredientId, int recipeId);
+        Task<Ingredients?> GetIngredientWithDetails(int ingredientId);
+        Task<Ingredients?> GetIngredientWithRecipes(int ingredientId);
+        Task AddIngredientToRecipe(int ingredientId, int recipeId);
+        Task<Ingredients?> GetIngredientByName(string ingredientName);
+        Task<Ingredients?> GetIngredientByType(string ingredientType);
+        Task<Ingredients?> GetIngredientByCost(string ingredientCost);
+        Task<Ingredients?> GetIngredientByIsExpired(bool isExpired);
+        Task<Ingredients?> UpdateIngredient(Ingredients ingredient);
+        Task<Ingredients?> DeleteIngredient(int ingredientId);
+        Task RemoveIngredientFromRecipe(int ingredientId, int recipeId);
     }
 }
 

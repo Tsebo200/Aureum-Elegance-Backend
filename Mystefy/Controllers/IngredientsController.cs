@@ -26,7 +26,7 @@ namespace Mystefy.Controllers
         [HttpGet("{ingredientId}")]
         public async Task<ActionResult<Ingredients>> GetIngredientWithRecipes(int ingredientId)
         {
-            Ingredients? ingredient = await _service.GetIngredientWithRecipesAsync(ingredientId);
+            Ingredients? ingredient = await _service.GetIngredientWithRecipes(ingredientId);
             if (ingredient == null)
             {
                 return NotFound("Ingredient not found");
@@ -37,14 +37,14 @@ namespace Mystefy.Controllers
         [HttpPost("addtorecipe")]
         public async Task<ActionResult> AddIngredientToRecipe([FromQuery] int ingredientId, [FromQuery] int recipeId)
         {
-            await _service.AddIngredientToRecipeAsync(ingredientId, recipeId);
+            await _service.AddIngredientToRecipe(ingredientId, recipeId);
             return Ok("Ingredient added to recipe");
         }
 
         [HttpPost("removefromrecipe")]
         public async Task<ActionResult> RemoveIngredientFromRecipe([FromQuery] int ingredientId, [FromQuery] int recipeId)
         {
-            await _service.RemoveIngredientFromRecipeAsync(ingredientId, recipeId);
+            await _service.RemoveIngredientFromRecipe(ingredientId, recipeId);
             return Ok("Ingredient removed from recipe");
         }
     }

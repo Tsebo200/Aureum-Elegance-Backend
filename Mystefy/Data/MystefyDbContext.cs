@@ -6,7 +6,7 @@ namespace Mystefy.Data;
 
 public class MystefyDbContext : DbContext
 {
-    public MystefyDbContext(DbContextOptions<MystefyDbContext> options) : base(options) {}
+    public MystefyDbContext(DbContextOptions<MystefyDbContext> options) : base(options) { }
     public DbSet<Packaging> Packaging { get; set; }
-
+    public DbSet<Ingredients> Ingredients { get; internal set; }
 }
