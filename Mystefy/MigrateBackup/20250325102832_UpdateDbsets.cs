@@ -26,22 +26,7 @@ namespace Mystefy.Migrations
                     table.PrimaryKey("PK_FragranceIngredients", x => x.FragranceID);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Fragrances",
-                columns: table => new
-                {
-                    FragranceID = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false),
-                    Cost = table.Column<decimal>(type: "numeric", nullable: false),
-                    ExpiryDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Volume = table.Column<decimal>(type: "numeric", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Fragrances", x => x.FragranceID);
-                });
+            
 
             migrationBuilder.CreateTable(
                 name: "WarehouseStocksarehouseStocks",

@@ -19,5 +19,6 @@ public class Ingredients
 
     //Navigation Property
     public List<StockRequest>StockRequests {get; set;} = [];
+    
 }
 

@@ -15,4 +15,6 @@ public class Packaging
     public string? Type{ get; set; }
     public int Stock{ get; set; }
 
+    public List<FinishedProduct>FinishedProduct {get; set;} = [];
+
 }
