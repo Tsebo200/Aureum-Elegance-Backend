@@ -2,7 +2,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Mystefy.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -12,11 +11,9 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Mystefy.Migrations
 {
     [DbContext(typeof(MystefyDbContext))]
-    [Migration("20250326154435_fixdatabaseControllers")]
-    partial class fixdatabaseControllers
+    partial class MystefyDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -122,7 +119,6 @@ namespace Mystefy.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .ValueGeneratedOnAdd()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
