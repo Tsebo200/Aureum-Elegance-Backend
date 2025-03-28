@@ -10,20 +10,14 @@ namespace Mystefy.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "FragranceID",
-                table: "Fragrances",
-                newName: "Id");
+            
             
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "Id",
-                table: "Fragrances",
-                newName: "FragranceID");
+           
         }
     }
 }

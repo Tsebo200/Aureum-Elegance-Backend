@@ -15,7 +15,7 @@ namespace Mystefy.Models
         [Required] // Influences how the table will behave
         [StringLength(100)]
         public string Name { get; set; } = string.Empty;
-        
+
         public string Type { get; set; } = string.Empty;
         public string Cost { get; set; } = string.Empty;
         public bool IsExpired { get; set; }
