@@ -78,6 +78,37 @@ namespace Mystefy.Controllers
         [HttpPost]
         public async Task<ActionResult<StockRequest>> PostStockRequest(StockRequest stockRequest)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Verify that the referenced entities exist
+            var ingredientExists = await _context.Ingredients.AnyAsync(i => i.Id == stockRequest.IngredientsId);
+            var warehouseExists = await _context.Warehouses.AnyAsync(w => w.WarehouseID == stockRequest.WarehouseId);
+            
+            if (!ingredientExists)
+            {
+                ModelState.AddModelError("IngredientsId", "The specified Ingredient does not exist.");
+                return BadRequest(ModelState);
+            }
+
+            if (!warehouseExists)
+            {
+                ModelState.AddModelError("WarehouseId", "The specified Warehouse does not exist.");
+                return BadRequest(ModelState);
+            }
+
+            if (stockRequest.UserId.HasValue)
+            {
+                var userExists = await _context.Users.AnyAsync(u => u.UserId == stockRequest.UserId);
+                if (!userExists)
+                {
+                    ModelState.AddModelError("UserId", "The specified User does not exist.");
+                    return BadRequest(ModelState);
+                }
+            }
+
             _context.StockRequests.Add(stockRequest);
             await _context.SaveChangesAsync();
 
