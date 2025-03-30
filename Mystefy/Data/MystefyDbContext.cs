@@ -8,26 +8,27 @@ namespace Mystefy.Data
     {
         public MystefyDbContext(DbContextOptions<MystefyDbContext> options) : base(options) {}
 
-        public DbSet<Packaging> Packagings { get; set; }
+        public DbSet<Packaging> Packaging { get; set; }
         public DbSet<Warehouse> Warehouses { get; set; }
         public DbSet<Fragrance> Fragrances { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<FinishedProduct> FinishedProducts { get; set; }
+        public DbSet<FinishedProduct> FinishedProduct { get; set; }
         public DbSet<StockRequest> StockRequests { get; set; }
         public DbSet<Ingredients> Ingredients { get; set; } 
 
+        public DbSet<Batch> Batches { get; set; } 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<FinishedProduct>()
                 .HasOne(fp => fp.Fragrance)
-                .WithMany(f => f.FinishedProducts)
+                .WithMany(f => f.FinishedProduct)
                 .HasForeignKey(fp => fp.FragranceID);
 
             modelBuilder.Entity<FinishedProduct>()
                 .HasOne(fp => fp.Packaging)
-                .WithMany(p => p.FinishedProducts)
+                .WithMany(p => p.FinishedProduct)
                 .HasForeignKey(fp => fp.PackagingID);
 
             modelBuilder.Entity<Ingredients>()
@@ -45,5 +46,6 @@ namespace Mystefy.Data
                 .WithOne(s => s.Warehouse)
                 .HasForeignKey(s => s.WarehouseId);
         }
+       
     }
 }

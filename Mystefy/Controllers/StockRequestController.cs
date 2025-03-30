@@ -25,14 +25,14 @@ namespace Mystefy.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<StockRequest>>> GetStockRequest()
         {
-            return await _context.StockRequest.ToListAsync();
+            return await _context.StockRequests.ToListAsync();
         }
 
         // GET: api/StockRequest/5
         [HttpGet("{id}")]
         public async Task<ActionResult<StockRequest>> GetStockRequest(int id)
         {
-            var stockRequest = await _context.StockRequest.FindAsync(id);
+            var stockRequest = await _context.StockRequests.FindAsync(id);
 
             if (stockRequest == null)
             {
@@ -78,7 +78,38 @@ namespace Mystefy.Controllers
         [HttpPost]
         public async Task<ActionResult<StockRequest>> PostStockRequest(StockRequest stockRequest)
         {
-            _context.StockRequest.Add(stockRequest);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Verify that the referenced entities exist
+            var ingredientExists = await _context.Ingredients.AnyAsync(i => i.Id == stockRequest.IngredientsId);
+            var warehouseExists = await _context.Warehouses.AnyAsync(w => w.WarehouseID == stockRequest.WarehouseId);
+            
+            if (!ingredientExists)
+            {
+                ModelState.AddModelError("IngredientsId", "The specified Ingredient does not exist.");
+                return BadRequest(ModelState);
+            }
+
+            if (!warehouseExists)
+            {
+                ModelState.AddModelError("WarehouseId", "The specified Warehouse does not exist.");
+                return BadRequest(ModelState);
+            }
+
+            if (stockRequest.UserId.HasValue)
+            {
+                var userExists = await _context.Users.AnyAsync(u => u.UserId == stockRequest.UserId);
+                if (!userExists)
+                {
+                    ModelState.AddModelError("UserId", "The specified User does not exist.");
+                    return BadRequest(ModelState);
+                }
+            }
+
+            _context.StockRequests.Add(stockRequest);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetStockRequest", new { id = stockRequest.Id }, stockRequest);
@@ -88,13 +119,13 @@ namespace Mystefy.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStockRequest(int id)
         {
-            var stockRequest = await _context.StockRequest.FindAsync(id);
+            var stockRequest = await _context.StockRequests.FindAsync(id);
             if (stockRequest == null)
             {
                 return NotFound();
             }
 
-            _context.StockRequest.Remove(stockRequest);
+            _context.StockRequests.Remove(stockRequest);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -102,7 +133,7 @@ namespace Mystefy.Controllers
 
         private bool StockRequestExists(int id)
         {
-            return _context.StockRequest.Any(e => e.Id == id);
+            return _context.StockRequests.Any(e => e.Id == id);
         }
     }
 }

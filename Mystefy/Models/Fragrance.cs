@@ -14,4 +14,6 @@ public class Fragrance
     public decimal Cost { get; set; }
     public DateTime ExpiryDate { get; set; }
     public decimal Volume { get; set; }
+
+    public List<FinishedProduct>FinishedProduct {get; set;} = [];
 }
