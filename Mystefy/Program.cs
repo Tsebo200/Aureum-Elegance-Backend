@@ -17,6 +17,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<IIngredientRepository, IngredientRepository>();
 builder.Services.AddScoped<IWarehouseIngredients, WarehouseIngredientsRepo>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 Env.Load();
 

@@ -16,4 +16,6 @@ public class Packaging
     public int Stock { get; set; }
     public List<FinishedProduct> FinishedProduct { get; set; } = new List<FinishedProduct>();
 
+    public List<FinishedProduct>FinishedProduct {get; set;} = [];
+
 }
