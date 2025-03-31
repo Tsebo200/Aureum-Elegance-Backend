@@ -16,4 +16,6 @@ public class Fragrance
     public decimal Volume { get; set; }
 
     public List<FinishedProduct>FinishedProduct {get; set;} = [];
+
+    public List<WarehouseStock>WarehouseStocks {get; set;} = [];
 }
