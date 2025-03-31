@@ -6,22 +6,22 @@ using System.Diagnostics.CodeAnalysis;
 namespace Mystefy.Models;
 
 public class StockRequest
-
 {
-    // public enum StockStatus{ InStock, OutOfStock ,LimitedStock}
+    // Move enum outside the class to make it more accessible
 
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id{ get; set; }
+    public int Id { get; set; }
 
     [Required]
-    public int AmountRequested{ get; set; }
+    public int AmountRequested { get; set; }
+
     [Required]
-    public string Status { get; set; } = string.Empty;
-    // public string? Status{ get; set; }
+    // Change this to store as string in database
+    [Column(TypeName = "text")]
+    public string Status { get; set; } = "Pending";  // Changed from enum to string
+
     public DateTime RequestDate { get; set; } = DateTime.UtcNow;
-
-
 
     // Foreign Keys 
     // FK Constraint formed with Ingredients Table
@@ -44,5 +44,4 @@ public class StockRequest
     public int WarehouseId { get; set; }
     //Navigation Property of Ingredients
     public virtual Warehouse? Warehouse { get; set; }
-
 }
