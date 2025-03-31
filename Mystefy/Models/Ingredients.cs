@@ -15,9 +15,10 @@ namespace Mystefy.Models
         [Required] // Influences how the table will behave
         [StringLength(100)]
         public string Name { get; set; } = string.Empty;
-        
+
         public string Type { get; set; } = string.Empty;
-        public string Cost { get; set; } = string.Empty;
+        public string Cost { get; set; } = string.Empty; //add anothe column for expiry date
+        public DateTime ExpiryDate { get; set; } //add anothe column for expiry date
         public bool IsExpired { get; set; }
 
         // Navigation Property

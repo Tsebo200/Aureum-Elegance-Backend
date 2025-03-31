@@ -25,14 +25,14 @@ namespace Mystefy.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<StockRequest>>> GetStockRequest()
         {
-            return await _context.StockRequest.ToListAsync();
+            return await _context.StockRequests.ToListAsync();
         }
 
         // GET: api/StockRequest/5
         [HttpGet("{id}")]
         public async Task<ActionResult<StockRequest>> GetStockRequest(int id)
         {
-            var stockRequest = await _context.StockRequest.FindAsync(id);
+            var stockRequest = await _context.StockRequests.FindAsync(id);
 
             if (stockRequest == null)
             {
@@ -78,7 +78,7 @@ namespace Mystefy.Controllers
         [HttpPost]
         public async Task<ActionResult<StockRequest>> PostStockRequest(StockRequest stockRequest)
         {
-            _context.StockRequest.Add(stockRequest);
+            _context.StockRequests.Add(stockRequest);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetStockRequest", new { id = stockRequest.Id }, stockRequest);
@@ -88,13 +88,13 @@ namespace Mystefy.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStockRequest(int id)
         {
-            var stockRequest = await _context.StockRequest.FindAsync(id);
+            var stockRequest = await _context.StockRequests.FindAsync(id);
             if (stockRequest == null)
             {
                 return NotFound();
             }
 
-            _context.StockRequest.Remove(stockRequest);
+            _context.StockRequests.Remove(stockRequest);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -102,7 +102,7 @@ namespace Mystefy.Controllers
 
         private bool StockRequestExists(int id)
         {
-            return _context.StockRequest.Any(e => e.Id == id);
+            return _context.StockRequests.Any(e => e.Id == id);
         }
     }
 }
