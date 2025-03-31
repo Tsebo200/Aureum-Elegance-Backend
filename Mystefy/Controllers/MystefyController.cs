@@ -26,14 +26,14 @@ namespace Mystefy.Controllers
         // EXISTING PACKAGING ENDPOINTS
 
         // GET: api/Mystefy
-        [HttpGet]
+        [HttpGet("Packaging")]
         public async Task<ActionResult<IEnumerable<Packaging>>> GetPackaging()
         {
             return await _context.Packaging.ToListAsync();
         }
 
         // GET: api/Mystefy/5
-        [HttpGet("{id}")]
+        [HttpGet("Packaging/{id}")]
         public async Task<ActionResult<Packaging>> GetPackaging(int id)
         {
             var packaging = await _context.Packaging.FindAsync(id);
@@ -47,7 +47,7 @@ namespace Mystefy.Controllers
         }
 
         // PUT: api/Mystefy/5
-        [HttpPut("{id}")]
+        [HttpPut("Packaging/{id}")]
         public async Task<IActionResult> PutPackaging(int id, Packaging packaging)
         {
             if (id != packaging.Id)
@@ -87,7 +87,7 @@ namespace Mystefy.Controllers
         }
 
         // DELETE: api/Mystefy/5
-        [HttpDelete("{id}")]
+        [HttpDelete("Packaging/{id}")]
         public async Task<IActionResult> DeletePackaging(int id)
         {
             var packaging = await _context.Packaging.FindAsync(id);
