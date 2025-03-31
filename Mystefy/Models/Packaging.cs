@@ -14,8 +14,7 @@ public class Packaging
     public required string Name { get; set; }
     public string? Type { get; set; }
     public int Stock { get; set; }
-    public List<FinishedProduct> FinishedProduct { get; set; } = new List<FinishedProduct>();
 
-    public List<FinishedProduct>FinishedProduct {get; set;} = [];
+    public List<FinishedProduct> FinishedProduct { get; set; } = [];
 
 }
