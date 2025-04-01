@@ -25,14 +25,22 @@ namespace Mystefy.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<StockRequest>>> GetStockRequest()
         {
-            return await _context.StockRequests.ToListAsync();
+            return await _context.StockRequests
+                .Include(s => s.Ingredients)
+                .Include(s => s.User)
+                .Include(s => s.Warehouse)
+                .ToListAsync();
         }
 
         // GET: api/StockRequest/5
         [HttpGet("{id}")]
         public async Task<ActionResult<StockRequest>> GetStockRequest(int id)
         {
-            var stockRequest = await _context.StockRequests.FindAsync(id);
+            var stockRequest = await _context.StockRequests
+                .Include(s => s.Ingredients)
+                .Include(s => s.User)
+                .Include(s => s.Warehouse)
+                .FirstOrDefaultAsync(s => s.Id == id);
 
             if (stockRequest == null)
             {
@@ -83,34 +91,19 @@ namespace Mystefy.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Verify that the referenced entities exist
-            var ingredientExists = await _context.Ingredients.AnyAsync(i => i.Id == stockRequest.IngredientsId);
-            var warehouseExists = await _context.Warehouses.AnyAsync(w => w.WarehouseID == stockRequest.WarehouseId);
-            
-            if (!ingredientExists)
-            {
-                ModelState.AddModelError("IngredientsId", "The specified Ingredient does not exist.");
-                return BadRequest(ModelState);
-            }
-
-            if (!warehouseExists)
-            {
-                ModelState.AddModelError("WarehouseId", "The specified Warehouse does not exist.");
-                return BadRequest(ModelState);
-            }
-
-            if (stockRequest.UserId.HasValue)
-            {
-                var userExists = await _context.Users.AnyAsync(u => u.UserId == stockRequest.UserId);
-                if (!userExists)
-                {
-                    ModelState.AddModelError("UserId", "The specified User does not exist.");
-                    return BadRequest(ModelState);
-                }
-            }
-
             _context.StockRequests.Add(stockRequest);
             await _context.SaveChangesAsync();
+
+            // Load the related entities after saving
+            await _context.Entry(stockRequest)
+                .Reference(s => s.Ingredients)
+                .LoadAsync();
+            await _context.Entry(stockRequest)
+                .Reference(s => s.User)
+                .LoadAsync();
+            await _context.Entry(stockRequest)
+                .Reference(s => s.Warehouse)
+                .LoadAsync();
 
             return CreatedAtAction("GetStockRequest", new { id = stockRequest.Id }, stockRequest);
         }
