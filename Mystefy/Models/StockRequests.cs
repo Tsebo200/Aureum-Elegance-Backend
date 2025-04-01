@@ -8,8 +8,8 @@ namespace Mystefy.Models;
 public class StockRequest
 
 {
-    // public enum StockStatus{ InStock, OutOfStock ,LimitedStock}
-
+        // public enum StockStatus{ Pending, Approved , Rejected }
+ 
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id{ get; set; }

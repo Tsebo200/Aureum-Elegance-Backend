@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Mystefy.Data;
+using Mystefy.DTOs;
 using Mystefy.Models;
 
 namespace Mystefy.Controllers
