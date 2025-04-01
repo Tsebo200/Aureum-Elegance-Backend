@@ -16,5 +16,7 @@ public class Warehouse
 
        //Navigation Property
     public List<StockRequest>StockRequests {get; set;} = [];
+
+    public List<WarehouseStock> WarehouseStocks {get; set;} = [];
     
 }

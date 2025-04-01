@@ -6,7 +6,7 @@ namespace Mystefy.Data
 {
     public class MystefyDbContext : DbContext
     {
-        public MystefyDbContext(DbContextOptions<MystefyDbContext> options) : base(options) {}
+        public MystefyDbContext(DbContextOptions<MystefyDbContext> options) : base(options) { }
 
         public DbSet<Packaging> Packaging { get; set; }
         public DbSet<Warehouse> Warehouses { get; set; }
@@ -14,9 +14,11 @@ namespace Mystefy.Data
         public DbSet<User> Users { get; set; }
         public DbSet<FinishedProduct> FinishedProduct { get; set; }
         public DbSet<StockRequest> StockRequests { get; set; }
-        public DbSet<Ingredients> Ingredients { get; set; } 
+        public DbSet<Ingredients> Ingredients { get; set; }
+        public DbSet<WarehouseStock> WarehouseStocks { get; set; }
+        public DbSet<WarehouseIngredients> WarehouseIngredients { get; set; }
 
-        public DbSet<Batch> Batches { get; set; } 
+        public DbSet<Batch> Batches { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -45,7 +47,16 @@ namespace Mystefy.Data
                 .HasMany(w => w.StockRequests)
                 .WithOne(s => s.Warehouse)
                 .HasForeignKey(s => s.WarehouseId);
+            modelBuilder.Entity<WarehouseStock>()
+                .HasOne(ws => ws.Warehouse)
+                .WithMany(w => w.WarehouseStocks)
+                .HasForeignKey(ws => ws.WarehouseID);
+            modelBuilder.Entity<WarehouseStock>()
+                .HasOne(ws => ws.Fragrance)
+                .WithMany(f => f.WarehouseStocks)
+                .HasForeignKey(ws => ws.FragranceID);
         }
-       
+
+
     }
 }
