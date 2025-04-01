@@ -36,12 +36,18 @@ public class WarehouseService : IWarehouse
 
     public async Task<IEnumerable<Warehouse>> GetAllWarehouses()
     {
-        return await _context.Warehouses.ToListAsync();
+        return await _context.Warehouses
+        .Include(w => w.StockRequests)
+        .Include(w => w.WarehouseStocks)
+        .ToListAsync();
     }
 
     public async Task<Warehouse?> GetWarehouseById(int warehouseId)
     {
-        return await _context.Warehouses.FindAsync(warehouseId);
+        return await _context.Warehouses
+        .Include(w => w.StockRequests)
+        .Include(w => w.WarehouseStocks)
+        .FirstOrDefaultAsync(w => w.WarehouseID == warehouseId);
     }
 
     public async Task<bool> UpdateWarehouse(int warehouseId, Warehouse warehouse)
