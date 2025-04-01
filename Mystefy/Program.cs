@@ -14,7 +14,8 @@ var builder = WebApplication.CreateBuilder(args);
 //make sure that we avoid any object loops 
 builder.Services.AddControllers()
 .AddJsonOptions(options => {
-    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+    options.JsonSerializerOptions.WriteIndented = true;
 });
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
