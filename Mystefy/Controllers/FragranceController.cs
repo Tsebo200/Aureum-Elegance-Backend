@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Mystefy.Data;
-using Mystefy.Interfaces;
 using Mystefy.Models;
 
 namespace Mystefy.Controllers
@@ -11,35 +10,49 @@ namespace Mystefy.Controllers
     [ApiController]
     public class FragranceController : ControllerBase
     {
-        private readonly IFragranceService _fragranceService;
+        private readonly MystefyDbContext _context;
 
-        public FragranceController(IFragranceService fragranceService)
+        public FragranceController(MystefyDbContext context)
         {
-            _fragranceService = fragranceService;
+            _context = context;
         }
+
         // GET: api/Fragrance
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Fragrance>>> GetFragrances()
         {
-            return Ok(await _fragranceService.GetAllFragrances());
+            return await _context.Fragrances.ToListAsync();
         }
 
         // GET: api/Fragrance/{id}
         [HttpGet("{id}")]
         public async Task<ActionResult<Fragrance>> GetFragrance(int id)
         {
-           var fragrance = await _fragranceService.GetFragranceById(id);
-           return fragrance == null? NotFound() : Ok(fragrance);
+            var fragrance = await _context.Fragrances.FindAsync(id);
+
+            if (fragrance == null)
+            {
+                return NotFound();
+            }
+
+            return fragrance;
         }
 
+        // POST: api/Fragrance
+        [HttpPost]
        // POST: api/Fragrance
     [HttpPost]
     public async Task<ActionResult<Fragrance>> PostFragrance(Fragrance fragrance)
     {
         // Ensure ExpiryDate is in UTC
-        var newFragrance = await _fragranceService.AddFragrance(fragrance);
+        fragrance.ExpiryDate = DateTime.SpecifyKind(fragrance.ExpiryDate, DateTimeKind.Utc);
+
+        // Add fragrance to the context
+        _context.Fragrances.Add(fragrance);
+        await _context.SaveChangesAsync();
+
         // Return the newly created fragrance with the status code 201 (Created)
-        return CreatedAtAction("GetFragrance", new { id = newFragrance.Id }, newFragrance);
+        return CreatedAtAction("GetFragrance", new { id = fragrance.Id }, fragrance);
     }
 
 
@@ -47,12 +60,29 @@ namespace Mystefy.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutFragrance(int id, Fragrance fragrance)
         {
-              var updated = await _fragranceService.UpdateFragrance(id, fragrance);
-            
-            if(!updated){
-                return NotFound();
+            if (id != fragrance.Id)
+            {
+                return BadRequest();
+            }
 
-            };
+            _context.Entry(fragrance).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!FragranceExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
             return NoContent();
         }
 
@@ -60,15 +90,21 @@ namespace Mystefy.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFragrance(int id)
         {
-             var deleted = await _fragranceService.DeleteFragrance(id);
-            if(!deleted) 
+            var fragrance = await _context.Fragrances.FindAsync(id);
+            if (fragrance == null)
             {
                 return NotFound();
-            };
+            }
+
+            _context.Fragrances.Remove(fragrance);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        
+        private bool FragranceExists(int id)
+        {
+            return _context.Fragrances.Any(e => e.Id == id);
+        }
     }
 }
