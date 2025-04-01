@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Mystefy.Data;
+using Mystefy.Interfaces;
 using Mystefy.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -11,25 +12,26 @@ namespace Mystefy.Controllers
     [ApiController]
     public class WarehouseController : ControllerBase
     {
-        private readonly MystefyDbContext _context;
+        private readonly IWarehouse _warehouseService;
 
-        public WarehouseController(MystefyDbContext context)
+        public WarehouseController(IWarehouse warehouseService)
         {
-            _context = context;
+            _warehouseService = warehouseService;
         }
+        
 
         // GET: api/Warehouse
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Warehouse>>> GetWarehouses()
         {
-            return await _context.Warehouses.ToListAsync();
+            return Ok(await _warehouseService.GetAllWarehouses());
         }
 
         // GET: api/Warehouse/{id}
         [HttpGet("{WarehouseID}")]
         public async Task<ActionResult<Warehouse>> GetWarehouse(int WarehouseID)
         {
-            var warehouse = await _context.Warehouses.FindAsync(WarehouseID);
+             var warehouse = await _warehouseService.GetWarehouseById(WarehouseID);
 
             if (warehouse == null)
             {
@@ -43,37 +45,21 @@ namespace Mystefy.Controllers
         [HttpPost]
         public async Task<ActionResult<Warehouse>> PostWarehouse(Warehouse warehouse)
         {
-            _context.Warehouses.Add(warehouse);
-            await _context.SaveChangesAsync();
+            var createdWarehouse = await _warehouseService.MakeWarehouse(warehouse);
+            return CreatedAtAction(nameof(GetWarehouse), new { WarehouseID = createdWarehouse.WarehouseID }, createdWarehouse);
 
-            return CreatedAtAction(nameof(GetWarehouse), new { Warehouse= warehouse.WarehouseID }, warehouse);
+            
         }
 
         // PUT: api/Warehouse/{id}
         [HttpPut("{id}")]
         public async Task<IActionResult> PutWarehouse(int id, Warehouse warehouse)
         {
-            if (id != warehouse.WarehouseID)
-            {
-                return BadRequest();
-            }
+            var updated = await _warehouseService.UpdateWarehouse(id, warehouse);
 
-            _context.Entry(warehouse).State = EntityState.Modified;
-
-            try
+            if (!updated)
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!WarehouseExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound();
             }
 
             return NoContent();
@@ -83,21 +69,16 @@ namespace Mystefy.Controllers
         [HttpDelete("{WarehouseID}")]
         public async Task<IActionResult> DeleteWarehouse(int WarehouseID)
         {
-            var warehouse = await _context.Warehouses.FindAsync(WarehouseID);
-            if (warehouse == null)
+             var deleted = await _warehouseService.DeleteWarehouse(WarehouseID);
+
+            if (!deleted)
             {
                 return NotFound();
             }
 
-            _context.Warehouses.Remove(warehouse);
-            await _context.SaveChangesAsync();
-
             return NoContent();
         }
 
-        private bool WarehouseExists(int WarehouseID)
-        {
-            return _context.Warehouses.Any(e => e.WarehouseID == WarehouseID);
-        }
+        
     }
 }
