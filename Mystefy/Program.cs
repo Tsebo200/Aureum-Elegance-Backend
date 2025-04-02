@@ -11,11 +11,22 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddControllers();
+//make sure that we avoid any object loops 
+builder.Services.AddControllers()
+.AddJsonOptions(options => {
+options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+    options.JsonSerializerOptions.WriteIndented = true;
+});
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<IIngredientRepository, IngredientRepository>();
+builder.Services.AddScoped<IWarehouseIngredients, WarehouseIngredientsRepo>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IFinishedProductService, FinishedProductService>();
+builder.Services.AddScoped<IWarehouse, WarehouseService>();
+builder.Services.AddScoped<IFragranceService, FragranceService>();
+builder.Services.AddScoped<IWarehouseStockService, WarehouseStockService>();
 
 Env.Load();
 

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Mystefy.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Mystefy.Migrations
 {
     [DbContext(typeof(MystefyDbContext))]
-    partial class MystefyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250331140459_AddWarehouseStocks")]
+    partial class AddWarehouseStocks
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -250,20 +253,10 @@ namespace Mystefy.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("StockID"));
 
-                    b.Property<int>("FragranceID")
-                        .HasColumnType("integer");
-
                     b.Property<decimal>("Stock")
                         .HasColumnType("numeric");
 
-                    b.Property<int>("WarehouseID")
-                        .HasColumnType("integer");
-
                     b.HasKey("StockID");
-
-                    b.HasIndex("FragranceID");
-
-                    b.HasIndex("WarehouseID");
 
                     b.ToTable("WarehouseStocks");
                 });
@@ -316,25 +309,6 @@ namespace Mystefy.Migrations
                     b.Navigation("Warehouse");
                 });
 
-            modelBuilder.Entity("Mystefy.Models.WarehouseStock", b =>
-                {
-                    b.HasOne("Mystefy.Models.Fragrance", "Fragrance")
-                        .WithMany("WarehouseStocks")
-                        .HasForeignKey("FragranceID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Mystefy.Models.Warehouse", "Warehouse")
-                        .WithMany("WarehouseStocks")
-                        .HasForeignKey("WarehouseID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Fragrance");
-
-                    b.Navigation("Warehouse");
-                });
-
             modelBuilder.Entity("Mystefy.Models.Batch", b =>
                 {
                     b.Navigation("FinishedProducts");
@@ -343,8 +317,6 @@ namespace Mystefy.Migrations
             modelBuilder.Entity("Mystefy.Models.Fragrance", b =>
                 {
                     b.Navigation("FinishedProduct");
-
-                    b.Navigation("WarehouseStocks");
                 });
 
             modelBuilder.Entity("Mystefy.Models.Ingredients", b =>
@@ -365,8 +337,6 @@ namespace Mystefy.Migrations
             modelBuilder.Entity("Mystefy.Models.Warehouse", b =>
                 {
                     b.Navigation("StockRequests");
-
-                    b.Navigation("WarehouseStocks");
                 });
 #pragma warning restore 612, 618
         }
