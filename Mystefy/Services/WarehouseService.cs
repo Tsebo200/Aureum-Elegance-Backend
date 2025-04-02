@@ -37,8 +37,19 @@ public class WarehouseService : IWarehouse
     public async Task<IEnumerable<Warehouse>> GetAllWarehouses()
     {
         return await _context.Warehouses
+        .ToListAsync();
+    }
+    public async Task<IEnumerable<Warehouse>> GetAllWarehousesAndStockRequests()
+    {
+        return await _context.Warehouses
         .Include(w => w.StockRequests)
+        .ToListAsync();
+    }
+    public async Task<IEnumerable<Warehouse>> GetAllWarehousesAndWarehouseStock()
+    {
+        return await _context.Warehouses
         .Include(w => w.WarehouseStocks)
+         .ThenInclude(ws => ws.Fragrance)
         .ToListAsync();
     }
 

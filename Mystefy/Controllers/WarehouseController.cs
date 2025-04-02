@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Mystefy.Data;
+using Mystefy.DTOs;
 using Mystefy.Interfaces;
 using Mystefy.Models;
 using System.Collections.Generic;
@@ -22,10 +23,68 @@ namespace Mystefy.Controllers
 
         // GET: api/Warehouse
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Warehouse>>> GetWarehouses()
+        public async Task<ActionResult<IEnumerable<WarehouseDTO>>> GetWarehouses()
         {
-            return Ok(await _warehouseService.GetAllWarehouses());
+            var warehouses = await _warehouseService.GetAllWarehouses();
+
+            var warehouseDtos = warehouses.Select(w => new WarehouseDTO{
+                Name = w.Name,
+                location = w.Location
+            }).ToList();
+
+            return Ok(warehouseDtos);
         }
+        [HttpGet("WithStockRequests")]
+        public async Task<ActionResult<IEnumerable<WarehouseStockRequestDTO>>> GetAllWarehousesAndStockRequests()
+        {
+            var warehouses = await _warehouseService.GetAllWarehousesAndStockRequests();
+            var warehouseDtos = warehouses.Select(w => new WarehouseStockRequestDTO
+            {
+                Name = w.Name,
+                location = w.Location,
+                StockRequests = w.StockRequests != null ? new WStockRequestsDTO
+                {
+                    Id = w.StockRequests.First().Id,
+                    AmountRequested = w.StockRequests.First().AmountRequested,
+                    Status = w.StockRequests.First().Status,
+                    RequestDate = w.StockRequests.First().RequestDate
+                }
+                : null
+            }).ToList();
+
+            return Ok(warehouseDtos);
+        }
+
+        [HttpGet("WithWarehouseStock")]
+        public async Task<ActionResult<IEnumerable<Warehouse>>> GetAllWarehousesAndWarehouseStock()
+        {
+            var warehouses = await _warehouseService.GetAllWarehousesAndWarehouseStock();
+            var warehouseDtos = warehouses.Select( w => new WarehouseShowStock
+                {
+                    Name = w.Name,
+                location = w.Location,
+                WarehouseStocks = w.WarehouseStocks.Any() ? w.WarehouseStocks.Select(ws => new wWarehouseStockDTO
+                {
+                    StockID = ws.StockID,
+                    Stock = ws.Stock,
+                    WarehouseID = ws.WarehouseID,
+                    FragranceID = ws.FragranceID,
+                    Fragrances = ws.Fragrance != null ? new WarehouseStockAddFragranceDTO
+                    {
+                        Id = ws.Fragrance.Id,
+                        Name = ws.Fragrance.Name,
+                        Description = ws.Fragrance.Description,
+                        Cost = ws.Fragrance.Cost,
+                        ExpiryDate = ws.Fragrance.ExpiryDate,
+                        Volume = ws.Fragrance.Volume
+                        } : null
+                        }).FirstOrDefault() : null
+                }).ToList();
+
+                return Ok(warehouseDtos);
+        }
+
+
 
         // GET: api/Warehouse/{id}
         [HttpGet("{WarehouseID}")]
