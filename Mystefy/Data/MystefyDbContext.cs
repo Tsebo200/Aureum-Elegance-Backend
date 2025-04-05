@@ -17,7 +17,7 @@ namespace Mystefy.Data
         public DbSet<Ingredients> Ingredients { get; set; }
         public DbSet<WarehouseStock> WarehouseStocks { get; set; }
         public DbSet<WarehouseIngredients> WarehouseIngredients { get; set; }
-
+        public DbSet<BatchFinishedProduct> BatchFinishedProducts { get; set; }
         public DbSet<Batch> Batches { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
