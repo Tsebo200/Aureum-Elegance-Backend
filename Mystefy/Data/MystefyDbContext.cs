@@ -55,6 +55,10 @@ namespace Mystefy.Data
                 .HasOne(ws => ws.Fragrance)
                 .WithMany(f => f.WarehouseStocks)
                 .HasForeignKey(ws => ws.FragranceID);
+
+            modelBuilder.Entity<BatchFinishedProduct>()
+               .HasKey(bfp => new { bfp.BatchID, bfp.ProductID });
+
         }
 
 
