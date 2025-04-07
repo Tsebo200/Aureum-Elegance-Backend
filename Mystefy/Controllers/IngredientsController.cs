@@ -31,9 +31,9 @@ namespace Mystefy.Controllers
 
         // GET: api/Ingredients/{ingredientId}
         [HttpGet("{ingredientId}")]
-        public async Task<ActionResult<IngredientsDTO>> GetIngredientWithRecipes(int ingredientId)
+        public async Task<ActionResult<IngredientsDTO>> GetIngredientWithBatch(int ingredientId)
         {
-            Ingredients? ingredient = await _service.GetIngredientWithRecipesAsync(ingredientId);
+            Ingredients? ingredient = await _service.GetIngredientWithBatchAsync(ingredientId);
             if (ingredient == null)
             {
                 return NotFound("Ingredient not found");
@@ -41,20 +41,20 @@ namespace Mystefy.Controllers
             return Ok(MapToDTO(ingredient));
         }
 
-        // POST: api/Ingredients/addtorecipe?ingredientId=1&recipeId=5
-        [HttpPost("addtorecipe")]
-        public async Task<ActionResult> AddIngredientToRecipe([FromQuery] int ingredientId, [FromQuery] int recipeId)
+        // POST: api/Ingredients/addtobatch?ingredientId=1&batchId=5
+        [HttpPost("addtobatch")]
+        public async Task<ActionResult> AddIngredientToBatch([FromQuery] int ingredientId, [FromQuery] int batchId)
         {
-            await _service.AddIngredientToRecipeAsync(ingredientId, recipeId);
-            return Ok("Ingredient added to recipe");
+            await _service.AddIngredientToBatchAsync(ingredientId, batchId);
+            return Ok("Ingredient added to batch");
         }
 
-        // POST: api/Ingredients/removefromrecipe?ingredientId=1&recipeId=5
-        [HttpPost("removefromrecipe")]
-        public async Task<ActionResult> RemoveIngredientFromRecipe([FromQuery] int ingredientId, [FromQuery] int recipeId)
+        // POST: api/Ingredients/removefrombatch?ingredientId=1&batchId=5
+        [HttpPost("removefrombatch")]
+        public async Task<ActionResult> RemoveIngredientFromBatch([FromQuery] int ingredientId, [FromQuery] int batchId)
         {
-            await _service.RemoveIngredientFromRecipeAsync(ingredientId, recipeId);
-            return Ok("Ingredient removed from recipe");
+            await _service.RemoveIngredientFromBatchAsync(ingredientId, batchId);
+            return Ok("Ingredient removed from batch");
         }
 
         // Helper method to map the Ingredients model to the IngredientsDTO.
@@ -72,3 +72,9 @@ namespace Mystefy.Controllers
         }
     }
 }
+
+//Exposes HTTP endpoints (using GET, POST) to create, retrieve, and update ingredient data.
+//Uses dependency injection to call methods from an IIngredientRepository service 
+// (which handles the actual data operations).
+//Maps the Ingredients model to an IngredientsDTO before sending data back to the client. 
+// This abstraction helps control which data is exposed.
