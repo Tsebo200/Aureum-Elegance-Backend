@@ -7,14 +7,15 @@ namespace Mystefy.Models;
 
 public class FragranceIngredient
 {
-     [Key] 
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    
-    public decimal Amount { get; set; }
+      [Key, Column(Order = 0)]
+        public int FragranceID { get; set; }
 
-   
-    // public int FragranceId { get; set; }
-    // public Fragrance? Fragrance {get; set;}
-    // public int IngredientsId {get; set;}
-    // public Ingredients? Ingredients {get; set;}
+        [Key, Column(Order = 1)]
+        public int IngredientsID { get; set; }
+
+        public decimal Amount { get; set; }
+
+        // Navigation Properties
+        public Fragrance? Fragrance { get; set; }
+        public Ingredients? Ingredients { get; set; }
 }

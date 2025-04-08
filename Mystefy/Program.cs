@@ -3,9 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Mystefy.Data;
 using Mystefy.Interfaces;
 using Mystefy.Services;
-
-
-
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -28,6 +25,7 @@ builder.Services.AddScoped<IBatchFinishedProductService, BatchFinishedProductSer
 builder.Services.AddScoped<IWarehouse, WarehouseService>();
 builder.Services.AddScoped<IFragranceService, FragranceService>();
 builder.Services.AddScoped<IWarehouseStockService, WarehouseStockService>();
+builder.Services.AddScoped<IPackagingRepository, PackagingRepositoryService>();
 
 Env.Load();
 
