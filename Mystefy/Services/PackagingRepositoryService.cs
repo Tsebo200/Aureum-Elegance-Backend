@@ -8,11 +8,11 @@ using Mystefy.Models;
 
 namespace Mystefy.Services
 {
-    public class PackagingService : IPackagingRepository
+    public class PackagingRepositoryService : IPackagingRepository
     {
         private readonly MystefyDbContext _context;
 
-        public PackagingService(MystefyDbContext context)
+        public PackagingRepositoryService(MystefyDbContext context)
         {
             _context = context;
         }
