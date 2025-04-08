@@ -19,6 +19,7 @@ namespace Mystefy.Data
         public DbSet<WarehouseIngredients> WarehouseIngredients { get; set; }
         public DbSet<BatchFinishedProduct> BatchFinishedProducts { get; set; }
         public DbSet<Batch> Batches { get; set; }
+        public DbSet<FragranceIngredient> FragranceIngredients { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -58,6 +59,19 @@ namespace Mystefy.Data
 
             modelBuilder.Entity<BatchFinishedProduct>()
                .HasKey(bfp => new { bfp.BatchID, bfp.ProductID });
+
+            modelBuilder.Entity<FragranceIngredient>()
+            .HasKey(fi => new { fi.FragranceID, fi.IngredientsID });
+
+        modelBuilder.Entity<FragranceIngredient>()
+            .HasOne(fi => fi.Fragrance)
+            .WithMany(f => f.FragranceIngredients)
+            .HasForeignKey(fi => fi.FragranceID);
+
+        modelBuilder.Entity<FragranceIngredient>()
+            .HasOne(fi => fi.Ingredients)
+            .WithMany(i => i.FragranceIngredients)
+            .HasForeignKey(fi => fi.IngredientsID);
 
         }
 
