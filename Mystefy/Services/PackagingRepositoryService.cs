@@ -22,12 +22,18 @@ namespace Mystefy.Services
             _context.Packaging.Add(packaging);
             await _context.SaveChangesAsync();
 
-            // Load related FinishedProduct entities if needed
             await _context.Entry(packaging)
                 .Collection(p => p.FinishedProduct)
                 .LoadAsync();
 
             return packaging;
+        }
+
+        public async Task<List<Packaging>> GetAllPackagingAsync()
+        {
+            return await _context.Packaging
+                .Include(p => p.FinishedProduct)
+                .ToListAsync();
         }
 
         public async Task<Packaging?> GetPackagingWithDetailsAsync(int packagingId)
@@ -59,7 +65,6 @@ namespace Mystefy.Services
             {
                 await _context.SaveChangesAsync();
 
-                // Refresh the related FinishedProduct entities
                 await _context.Entry(packaging)
                     .Collection(p => p.FinishedProduct)
                     .LoadAsync();
@@ -93,11 +98,8 @@ namespace Mystefy.Services
             return packaging;
         }
 
-        // Manage the relationship with FinishedProduct
-
         public async Task AddFinishedProductToPackagingAsync(int packagingId, int finishedProductId)
         {
-            // Retrieve Packaging with its FinishedProduct collection
             var packaging = await _context.Packaging
                 .Include(p => p.FinishedProduct)
                 .FirstOrDefaultAsync(p => p.Id == packagingId);
@@ -105,12 +107,10 @@ namespace Mystefy.Services
             if (packaging == null)
                 throw new KeyNotFoundException("Packaging not found");
 
-            // Retrieve the FinishedProduct from the database
             var finishedProduct = await _context.FinishedProduct.FindAsync(finishedProductId);
             if (finishedProduct == null)
                 throw new KeyNotFoundException("Finished product not found");
 
-            // Associate the finished product with the packaging
             finishedProduct.PackagingID = packagingId;
             packaging.FinishedProduct.Add(finishedProduct);
 
@@ -135,7 +135,7 @@ namespace Mystefy.Services
         }
 
         // Private helper method to check existence of packaging
-        private async Task<bool> PackagingExists(int id)
+         private async Task<bool> PackagingExists(int id)
         {
             return await _context.Packaging.AnyAsync(e => e.Id == id);
         }
