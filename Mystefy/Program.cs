@@ -28,7 +28,8 @@ builder.Services.AddScoped<IBatchFinishedProductService, BatchFinishedProductSer
 builder.Services.AddScoped<IWarehouse, WarehouseService>();
 builder.Services.AddScoped<IFragranceService, FragranceService>();
 builder.Services.AddScoped<IWarehouseStockService, WarehouseStockService>();
-
+builder.Services.AddScoped<IFragranceIngredientService, FragranceIngredientService>();
+builder.Services.AddScoped<IBatchService, BatchService>();
 Env.Load();
 
 var connectionString = Env.GetString("DB_CONNECTION");
