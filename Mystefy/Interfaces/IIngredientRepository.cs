@@ -10,11 +10,9 @@ namespace Mystefy.Interfaces
         // Creates a new ingredient asynchronously.
         Task<Ingredients> CreateIngredientAsync(Ingredients ingredient);
 
-        // Retrieves an ingredient along with its associated batch asynchronously.
-        Task<Ingredients?> GetIngredientWithBatchAsync(int ingredientId);
-
-        // Adds an ingredient to a specified batch asynchronously.
-        Task AddIngredientToBatchAsync(int ingredientId, int batchId);
+        // Retrieves an ingredient along with all its related details (Delivery, Fragrance, 
+        // StockRequests, WasteLossRecords and WarehouseIngredients) asynchronously.
+        Task<Ingredients?> GetIngredientWithDetailsAsync(int ingredientId);
 
         // Retrieves an ingredient by its name asynchronously.
         Task<Ingredients?> GetIngredientByNameAsync(string ingredientName);
@@ -34,7 +32,8 @@ namespace Mystefy.Interfaces
         // Deletes an ingredient by its ID asynchronously.
         Task<Ingredients?> DeleteIngredientAsync(int ingredientId);
 
-        // Removes an ingredient from a specified batch asynchronously.
-        Task RemoveIngredientFromBatchAsync(int ingredientId, int batchId);
+        // Retrieves all ingredients asynchronously.
+        Task<IEnumerable<Ingredients>> GetAllIngredientsAsync();
     }
 }
+

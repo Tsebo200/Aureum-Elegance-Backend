@@ -1,6 +1,7 @@
 //The controller uses route attributes to map HTTP requests to appropriate actions.
 //The constructor injects the IIngredientRepository service, which handles the actual logic for ingredients.
 //Each method is an endpoint in the API that interacts with the ingredient data, either creating, retrieving, or modifying it based on the HTTP request type. 
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Mystefy.Models;
@@ -29,32 +30,79 @@ namespace Mystefy.Controllers
             return Ok(MapToDTO(newIngredient));
         }
 
-        // GET: api/Ingredients/{ingredientId}
-        [HttpGet("{ingredientId}")]
-        public async Task<ActionResult<IngredientsDTO>> GetIngredientWithBatch(int ingredientId)
+        // GET: api/Ingredients/name/{ingredientName}
+        [HttpGet("name/{ingredientName}")]
+        public async Task<ActionResult<IngredientsDTO>> GetIngredientByName(string ingredientName)
         {
-            Ingredients? ingredient = await _service.GetIngredientWithBatchAsync(ingredientId);
+            Ingredients? ingredient = await _service.GetIngredientByNameAsync(ingredientName);
             if (ingredient == null)
-            {
                 return NotFound("Ingredient not found");
-            }
+
             return Ok(MapToDTO(ingredient));
         }
 
-        // POST: api/Ingredients/addtobatch?ingredientId=1&batchId=5
-        [HttpPost("addtobatch")]
-        public async Task<ActionResult> AddIngredientToBatch([FromQuery] int ingredientId, [FromQuery] int batchId)
+        // GET: api/Ingredients/type/{ingredientType}
+        [HttpGet("type/{ingredientType}")]
+        public async Task<ActionResult<IngredientsDTO>> GetIngredientByType(string ingredientType)
         {
-            await _service.AddIngredientToBatchAsync(ingredientId, batchId);
-            return Ok("Ingredient added to batch");
+            Ingredients? ingredient = await _service.GetIngredientByTypeAsync(ingredientType);
+            if (ingredient == null)
+                return NotFound("Ingredient not found");
+
+            return Ok(MapToDTO(ingredient));
         }
 
-        // POST: api/Ingredients/removefrombatch?ingredientId=1&batchId=5
-        [HttpPost("removefrombatch")]
-        public async Task<ActionResult> RemoveIngredientFromBatch([FromQuery] int ingredientId, [FromQuery] int batchId)
+        // GET: api/Ingredients/cost/{ingredientCost}
+        [HttpGet("cost/{ingredientCost}")]
+        public async Task<ActionResult<IngredientsDTO>> GetIngredientByCost(string ingredientCost)
         {
-            await _service.RemoveIngredientFromBatchAsync(ingredientId, batchId);
-            return Ok("Ingredient removed from batch");
+            Ingredients? ingredient = await _service.GetIngredientByCostAsync(ingredientCost);
+            if (ingredient == null)
+                return NotFound("Ingredient not found");
+
+            return Ok(MapToDTO(ingredient));
+        }
+
+        // GET: api/Ingredients/expired/{isExpired}
+        [HttpGet("expired/{isExpired}")]
+        public async Task<ActionResult<IngredientsDTO>> GetIngredientByIsExpired(bool isExpired)
+        {
+            Ingredients? ingredient = await _service.GetIngredientByIsExpiredAsync(isExpired);
+            if (ingredient == null)
+                return NotFound("No matching ingredient found");
+
+            return Ok(MapToDTO(ingredient));
+        }
+
+        // PUT: api/Ingredients/update
+        [HttpPut("update")]
+        public async Task<ActionResult<IngredientsDTO>> UpdateIngredient([FromBody] Ingredients ingredient)
+        {
+            Ingredients? updated = await _service.UpdateIngredientAsync(ingredient);
+            if (updated == null)
+                return NotFound("Ingredient not found to update");
+
+            return Ok(MapToDTO(updated));
+        }
+
+        // DELETE: api/Ingredients/delete/{ingredientId}
+        [HttpDelete("delete/{ingredientId}")]
+        public async Task<ActionResult<IngredientsDTO>> DeleteIngredient(int ingredientId)
+        {
+            Ingredients? deleted = await _service.DeleteIngredientAsync(ingredientId);
+            if (deleted == null)
+                return NotFound("Ingredient not found to delete");
+
+            return Ok(MapToDTO(deleted));
+        }
+
+        // GET: api/Ingredients/all
+        [HttpGet("all")]
+        public async Task<ActionResult<List<IngredientsDTO>>> GetAllIngredients()
+        {
+            // Convert the IEnumerable to List explicitly.
+            var ingredients = (await _service.GetAllIngredientsAsync()).ToList();
+            return Ok(ingredients.Select(MapToDTO).ToList());
         }
 
         // Helper method to map the Ingredients model to the IngredientsDTO.
@@ -72,6 +120,8 @@ namespace Mystefy.Controllers
         }
     }
 }
+
+
 
 //Exposes HTTP endpoints (using GET, POST) to create, retrieve, and update ingredient data.
 //Uses dependency injection to call methods from an IIngredientRepository service 
