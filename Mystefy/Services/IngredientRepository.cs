@@ -1,111 +1,90 @@
 using System;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Mystefy.Data;
 using Mystefy.Interfaces;
 using Mystefy.Models;
 
-namespace Mystefy.Services;
-
-public class IngredientRepository : IIngredientRepository
+namespace Mystefy.Services
 {
-    private readonly MystefyDbContext _context;
-    public IngredientRepository(MystefyDbContext context)
+    public class IngredientRepository : IIngredientRepository
     {
-        _context = context;
-    }
-    public async Task<Ingredients> CreateIngredientAsync(Ingredients ingredient)
-    {
-        var newIngredient = _context.Add(ingredient);
-        await _context.SaveChangesAsync();
-        return newIngredient.Entity;
-    }
-    public Ingredients? GetIngredientWithDetails(int ingredientId)
-    {
-        throw new NotImplementedException();
-    }
-    public Ingredients? GetIngredientWithRecipes(int ingredientId)
-    {
-        throw new NotImplementedException();
-    }
-    public void AddIngredientToRecipe(int ingredientId, int recipeId)
-    {
-        throw new NotImplementedException();
-    }
-    public Ingredients? GetIngredientByName(string ingredientName)
-    {
-        throw new NotImplementedException();
-    }
-    public Ingredients? GetIngredientByType(string ingredientType)
-    {
-        throw new NotImplementedException();
-    }
-    public Ingredients? GetIngredientByCost(string ingredientCost)
-    {
-        throw new NotImplementedException();
-    }
-    public Ingredients? GetIngredientByIsExpired(bool isExpired)
-    {
-        throw new NotImplementedException();
-    }
-    public Ingredients? UpdateIngredient(Ingredients ingredient)
-    {
-        throw new NotImplementedException();
-    }
-    public Ingredients? DeleteIngredient(int ingredientId)
-    {
-        throw new NotImplementedException();
-    }
-    public void RemoveIngredientFromRecipe(int ingredientId, int recipeId)
-    {
-        throw new NotImplementedException();
-    }
+        private readonly MystefyDbContext _context;
 
-    Task<Ingredients?> IIngredientRepository.GetIngredientWithDetails(int ingredientId)
-    {
-        throw new NotImplementedException();
-    }
+        public IngredientRepository(MystefyDbContext context)
+        {
+            _context = context;
+        }
 
-    Task<Ingredients?> IIngredientRepository.GetIngredientWithRecipes(int ingredientId)
-    {
-        throw new NotImplementedException();
-    }
+        public async Task<Ingredients> CreateIngredientAsync(Ingredients ingredient)
+        {
+            var newIngredient = await _context.AddAsync(ingredient);
+            await _context.SaveChangesAsync();
+            return newIngredient.Entity;
+        }
 
-    Task IIngredientRepository.AddIngredientToRecipe(int ingredientId, int recipeId)
-    {
-        throw new NotImplementedException();
-    }
+        // Renamed to reflect Batch instead of Recipes.
+        public async Task<Ingredients?> GetIngredientWithBatchAsync(int ingredientId)
+        {
+            // Adjust the Include below based on your data model.
+            return await _context.Ingredients
+                .Include(i => i.StockRequests) // Update or replace with your Batch relationship if available.
+                .FirstOrDefaultAsync(i => i.Id == ingredientId);
+        }
 
-    Task<Ingredients?> IIngredientRepository.GetIngredientByName(string ingredientName)
-    {
-        throw new NotImplementedException();
-    }
+        // Renamed to reflect Batch instead of Recipe.
+        public async Task AddIngredientToBatchAsync(int ingredientId, int batchId)
+        {
+            // Implementation depends on how Batch and Ingredients are related.
+            await Task.CompletedTask; // Ensures at least one await exists.
+            throw new NotImplementedException("AddIngredientToBatchAsync is not implemented yet.");
+        }
 
-    Task<Ingredients?> IIngredientRepository.GetIngredientByType(string ingredientType)
-    {
-        throw new NotImplementedException();
-    }
+        public async Task<Ingredients?> GetIngredientByNameAsync(string ingredientName)
+        {
+            return await _context.Ingredients.FirstOrDefaultAsync(i => i.Name == ingredientName);
+        }
 
-    Task<Ingredients?> IIngredientRepository.GetIngredientByCost(string ingredientCost)
-    {
-        throw new NotImplementedException();
-    }
+        public async Task<Ingredients?> GetIngredientByTypeAsync(string ingredientType)
+        {
+            return await _context.Ingredients.FirstOrDefaultAsync(i => i.Type == ingredientType);
+        }
 
-    Task<Ingredients?> IIngredientRepository.GetIngredientByIsExpired(bool isExpired)
-    {
-        throw new NotImplementedException();
-    }
+        public async Task<Ingredients?> GetIngredientByCostAsync(string ingredientCost)
+        {
+            return await _context.Ingredients.FirstOrDefaultAsync(i => i.Cost == ingredientCost);
+        }
 
-    Task<Ingredients?> IIngredientRepository.UpdateIngredient(Ingredients ingredient)
-    {
-        throw new NotImplementedException();
-    }
+        public async Task<Ingredients?> GetIngredientByIsExpiredAsync(bool isExpired)
+        {
+            return await _context.Ingredients.FirstOrDefaultAsync(i => i.IsExpired == isExpired);
+        }
 
-    Task<Ingredients?> IIngredientRepository.DeleteIngredient(int ingredientId)
-    {
-        throw new NotImplementedException();
-    }
+        public async Task<Ingredients?> UpdateIngredientAsync(Ingredients ingredient)
+        {
+            _context.Ingredients.Update(ingredient);
+            await _context.SaveChangesAsync();
+            return ingredient;
+        }
 
-    Task IIngredientRepository.RemoveIngredientFromRecipe(int ingredientId, int recipeId)
-    {
-        throw new NotImplementedException();
+        public async Task<Ingredients?> DeleteIngredientAsync(int ingredientId)
+        {
+            var ingredient = await _context.Ingredients.FindAsync(ingredientId);
+            if (ingredient != null)
+            {
+                _context.Ingredients.Remove(ingredient);
+                await _context.SaveChangesAsync();
+            }
+            return ingredient;
+        }
+
+        // Renamed to reflect Batch instead of Recipe.
+        public async Task RemoveIngredientFromBatchAsync(int ingredientId, int batchId)
+        {
+            // Implementation depends on your data model.
+            await Task.CompletedTask; // Ensures at least one await exists.
+            throw new NotImplementedException("RemoveIngredientFromBatchAsync is not implemented yet.");
+        }
     }
 }
+
