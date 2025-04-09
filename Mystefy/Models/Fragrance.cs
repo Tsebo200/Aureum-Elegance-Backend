@@ -18,4 +18,6 @@ public class Fragrance
     public List<FinishedProduct>FinishedProduct {get; set;} = [];
 
     public List<WarehouseStock>WarehouseStocks {get; set;} = [];
+
+    public List<FragranceIngredient>FragranceIngredients {get; set;} = [];
 }

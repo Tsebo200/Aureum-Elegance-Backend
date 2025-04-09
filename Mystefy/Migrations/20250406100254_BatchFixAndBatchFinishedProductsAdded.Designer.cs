@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Mystefy.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Mystefy.Migrations
 {
     [DbContext(typeof(MystefyDbContext))]
-    partial class MystefyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250406100254_BatchFixAndBatchFinishedProductsAdded")]
+    partial class BatchFixAndBatchFinishedProductsAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -128,26 +131,6 @@ namespace Mystefy.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Fragrances");
-                });
-
-            modelBuilder.Entity("Mystefy.Models.FragranceIngredient", b =>
-                {
-                    b.Property<int>("FragranceID")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(0);
-
-                    b.Property<int>("IngredientsID")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(1);
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("numeric");
-
-                    b.HasKey("FragranceID", "IngredientsID");
-
-                    b.HasIndex("IngredientsID");
-
-                    b.ToTable("FragranceIngredients");
                 });
 
             modelBuilder.Entity("Mystefy.Models.Ingredients", b =>
@@ -382,25 +365,6 @@ namespace Mystefy.Migrations
                     b.Navigation("Packaging");
                 });
 
-            modelBuilder.Entity("Mystefy.Models.FragranceIngredient", b =>
-                {
-                    b.HasOne("Mystefy.Models.Fragrance", "Fragrance")
-                        .WithMany("FragranceIngredients")
-                        .HasForeignKey("FragranceID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Mystefy.Models.Ingredients", "Ingredients")
-                        .WithMany("FragranceIngredients")
-                        .HasForeignKey("IngredientsID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Fragrance");
-
-                    b.Navigation("Ingredients");
-                });
-
             modelBuilder.Entity("Mystefy.Models.StockRequest", b =>
                 {
                     b.HasOne("Mystefy.Models.Ingredients", "Ingredients")
@@ -456,15 +420,11 @@ namespace Mystefy.Migrations
                 {
                     b.Navigation("FinishedProduct");
 
-                    b.Navigation("FragranceIngredients");
-
                     b.Navigation("WarehouseStocks");
                 });
 
             modelBuilder.Entity("Mystefy.Models.Ingredients", b =>
                 {
-                    b.Navigation("FragranceIngredients");
-
                     b.Navigation("StockRequests");
                 });
 
