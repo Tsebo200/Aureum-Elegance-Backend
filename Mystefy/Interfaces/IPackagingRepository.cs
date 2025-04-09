@@ -5,6 +5,7 @@ namespace Mystefy.Interfaces
 {
     public interface IPackagingRepository
     {
+        Task<List<Packaging>> GetAllPackagingAsync();
         Task<Packaging> CreatePackagingAsync(Packaging packaging);
         Task<Packaging?> GetPackagingWithDetailsAsync(int packagingId);
         Task<Packaging?> GetPackagingByNameAsync(string packagingName);

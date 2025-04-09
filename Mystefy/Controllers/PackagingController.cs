@@ -1,13 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Mystefy.Data;
 using Mystefy.DTOs;
 using Mystefy.Models;
+using Mystefy.Interfaces;
 
 namespace Mystefy.Controllers
 {
@@ -15,58 +12,55 @@ namespace Mystefy.Controllers
     [ApiController]
     public class PackagingController : ControllerBase
     {
-        private readonly MystefyDbContext _context;
+        private readonly IPackagingRepository _packagingRepo;
 
-        public PackagingController(MystefyDbContext context)
+        public PackagingController(IPackagingRepository packagingRepo)
         {
-            _context = context;
+            _packagingRepo = packagingRepo;
         }
 
         // GET: api/Packaging
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PackagingDTO>>> GetPackaging()
         {
-            var packagingList = await _context.Packaging
-                .Include(p => p.FinishedProduct)
-                .Select(p => new PackagingDTO
-                {
-                    Id = p.Id,
-                    Name = p.Name,
-                    Type = p.Type,
-                    Stock = p.Stock,
-                    FinishedProduct = p.FinishedProduct.Select(fp => new PackagingFinishedProductDTO
-                    {
-                        ProductID = fp.ProductID,
-                        FragranceID = fp.FragranceID,
-                        PackagingID = fp.PackagingID,
-                        Quantity = fp.Quantity
-                    }).FirstOrDefault()
-                })
-                .ToListAsync();
+            // You can expand this with a new method in the repo later if needed - A
+            var packagingList = await _packagingRepo.GetAllPackagingAsync();
 
-            return Ok(packagingList);
+            var dtoList = packagingList.Select(p => new PackagingDTO
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Type = p.Type,
+                Stock = p.Stock,
+                FinishedProduct = p.FinishedProduct?.Select(fp => new PackagingFinishedProductDTO
+                {
+                    ProductID = fp.ProductID,
+                    FragranceID = fp.FragranceID,
+                    PackagingID = fp.PackagingID,
+                    Quantity = fp.Quantity
+                }).FirstOrDefault()
+            });
+
+            return Ok(dtoList);
         }
 
         // GET: api/Packaging/5
         [HttpGet("{id}")]
         public async Task<ActionResult<PackagingDTO>> GetPackaging(int id)
         {
-            var packaging = await _context.Packaging
-                .Include(p => p.FinishedProduct)
-                .FirstOrDefaultAsync(p => p.Id == id);
-
+            var packaging = await _packagingRepo.GetPackagingWithDetailsAsync(id);
             if (packaging == null)
             {
                 return NotFound();
             }
 
-            var packagingDTO = new PackagingDTO
+            var dto = new PackagingDTO
             {
                 Id = packaging.Id,
                 Name = packaging.Name,
                 Type = packaging.Type,
                 Stock = packaging.Stock,
-                FinishedProduct = packaging.FinishedProduct.Select(fp => new PackagingFinishedProductDTO
+                FinishedProduct = packaging.FinishedProduct?.Select(fp => new PackagingFinishedProductDTO
                 {
                     ProductID = fp.ProductID,
                     FragranceID = fp.FragranceID,
@@ -75,7 +69,7 @@ namespace Mystefy.Controllers
                 }).FirstOrDefault()
             };
 
-            return Ok(packagingDTO);
+            return Ok(dto);
         }
 
         // POST: api/Packaging
@@ -83,26 +77,17 @@ namespace Mystefy.Controllers
         public async Task<ActionResult<PackagingDTO>> PostPackaging(Packaging packaging)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
 
-            _context.Packaging.Add(packaging);
-            await _context.SaveChangesAsync();
+            var created = await _packagingRepo.CreatePackagingAsync(packaging);
 
-            // Load related entities
-            await _context.Entry(packaging)
-                .Collection(p => p.FinishedProduct)
-                .LoadAsync();
-
-            // Convert to DTO
-            var packagingDTO = new PackagingDTO
+            var dto = new PackagingDTO
             {
-                Id = packaging.Id,
-                Name = packaging.Name,
-                Type = packaging.Type,
-                Stock = packaging.Stock,
-                FinishedProduct = packaging.FinishedProduct.Select(fp => new PackagingFinishedProductDTO
+                Id = created.Id,
+                Name = created.Name,
+                Type = created.Type,
+                Stock = created.Stock,
+                FinishedProduct = created.FinishedProduct?.Select(fp => new PackagingFinishedProductDTO
                 {
                     ProductID = fp.ProductID,
                     FragranceID = fp.FragranceID,
@@ -111,7 +96,7 @@ namespace Mystefy.Controllers
                 }).FirstOrDefault()
             };
 
-            return CreatedAtAction(nameof(GetPackaging), new { id = packaging.Id }, packagingDTO);
+            return CreatedAtAction(nameof(GetPackaging), new { id = created.Id }, dto);
         }
 
         // PUT: api/Packaging/5
@@ -119,72 +104,41 @@ namespace Mystefy.Controllers
         public async Task<IActionResult> PutPackaging(int id, Packaging packaging)
         {
             if (id != packaging.Id)
-            {
                 return BadRequest();
-            }
 
-            _context.Entry(packaging).State = EntityState.Modified;
+            var updated = await _packagingRepo.UpdatePackagingAsync(packaging);
 
-            try
+            if (updated == null)
+                return NotFound();
+
+            var dto = new PackagingDTO
             {
-                await _context.SaveChangesAsync();
-
-                // Load related entities after update
-                await _context.Entry(packaging)
-                    .Collection(p => p.FinishedProduct)
-                    .LoadAsync();
-
-                var packagingDTO = new PackagingDTO
+                Id = updated.Id,
+                Name = updated.Name,
+                Type = updated.Type,
+                Stock = updated.Stock,
+                FinishedProduct = updated.FinishedProduct?.Select(fp => new PackagingFinishedProductDTO
                 {
-                    Id = packaging.Id,
-                    Name = packaging.Name,
-                    Type = packaging.Type,
-                    Stock = packaging.Stock,
-                    FinishedProduct = packaging.FinishedProduct.Select(fp => new PackagingFinishedProductDTO
-                    {
-                        ProductID = fp.ProductID,
-                        FragranceID = fp.FragranceID,
-                        PackagingID = fp.PackagingID,
-                        Quantity = fp.Quantity
-                    }).FirstOrDefault()
-                };
+                    ProductID = fp.ProductID,
+                    FragranceID = fp.FragranceID,
+                    PackagingID = fp.PackagingID,
+                    Quantity = fp.Quantity
+                }).FirstOrDefault()
+            };
 
-                return Ok(packagingDTO);
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PackagingExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            return Ok(dto);
         }
 
         // DELETE: api/Packaging/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePackaging(int id)
         {
-            var packaging = await _context.Packaging.FindAsync(id);
-            if (packaging == null)
-            {
-                return NotFound();
-            }
+            var deleted = await _packagingRepo.DeletePackagingAsync(id);
 
-            _context.Packaging.Remove(packaging);
-            await _context.SaveChangesAsync();
+            if (deleted == null)
+                return NotFound();
 
             return NoContent();
         }
-
-        private bool PackagingExists(int id)
-        {
-            return _context.Packaging.Any(e => e.Id == id);
-        }
     }
 }
-
-

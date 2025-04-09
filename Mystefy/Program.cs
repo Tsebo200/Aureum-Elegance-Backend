@@ -3,9 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Mystefy.Data;
 using Mystefy.Interfaces;
 using Mystefy.Services;
-
-
-
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -30,6 +27,8 @@ builder.Services.AddScoped<IFragranceService, FragranceService>();
 builder.Services.AddScoped<IWarehouseStockService, WarehouseStockService>();
 builder.Services.AddScoped<IFragranceIngredientService, FragranceIngredientService>();
 builder.Services.AddScoped<IBatchService, BatchService>();
+builder.Services.AddScoped<IPackagingRepository, PackagingRepositoryService>();
+
 Env.Load();
 
 var connectionString = Env.GetString("DB_CONNECTION");
