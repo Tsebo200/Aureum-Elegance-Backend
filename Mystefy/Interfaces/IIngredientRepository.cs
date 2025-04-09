@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿//The IBatchIngredientsRepository interface specifies all CRUD operations for BatchIngredients.
+using System.Threading.Tasks;
 using Mystefy.Models;
 
 namespace Mystefy.Interfaces

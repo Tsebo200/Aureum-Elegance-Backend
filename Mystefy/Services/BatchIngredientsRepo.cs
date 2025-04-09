@@ -1,3 +1,5 @@
+//The BatchIngredientsRepo service implements these methods using EF Core to interact with the database. 
+// It is injected into the controller using dependency injection.
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;

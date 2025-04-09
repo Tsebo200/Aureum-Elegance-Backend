@@ -1,3 +1,4 @@
+//The IBatchIngredientsRepository interface specifies all CRUD operations for BatchIngredients.
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Mystefy.Models;

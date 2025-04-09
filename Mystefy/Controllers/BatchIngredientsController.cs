@@ -1,3 +1,6 @@
+//The BatchIngredientsController exposes HTTP endpoints for clients 
+// (e.g., web or mobile apps) to create, retrieve, update, and delete BatchIngredients.
+//It maps incoming DTOs to the model and converts models back to DTOs before returning them in API responses.
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Mystefy.DTOs;

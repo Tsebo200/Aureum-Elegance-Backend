@@ -1,3 +1,5 @@
+//The BatchIngredients model represents the table structure in the database and defines relationships 
+// (via foreign keys) with the Batch and Ingredients entities.
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
