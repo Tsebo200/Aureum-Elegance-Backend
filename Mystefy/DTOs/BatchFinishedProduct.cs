@@ -10,5 +10,17 @@ namespace Mystefy.DTOs
         public string Unit { get; set; } = string.Empty;
         public string Status { get; set; } = string.Empty;
         public int WarehouseID { get; set; }
+
+        public BatchFinishedProductDTO() {}
+
+    public BatchFinishedProductDTO(Models.BatchFinishedProduct model)
+    {
+        BatchID = model.BatchID;
+        ProductID = model.ProductID;
+        Quantity = model.Quantity;
+        Unit = model.Unit;
+        Status = model.Status;
+        WarehouseID = model.WarehouseID;
+    }
     }
 }
