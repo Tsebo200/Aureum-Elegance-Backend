@@ -15,6 +15,7 @@ public class Packaging
     public string? Type { get; set; }
     public int Stock { get; set; }
 
-    public List<FinishedProduct> FinishedProduct { get; set; } = [];
+    // Navigation property
+    public virtual ICollection<FinishedProduct> FinishedProduct { get; set; } = new List<FinishedProduct>();
 
 }

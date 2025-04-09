@@ -31,5 +31,7 @@ namespace Mystefy.Models
 
         // Navigation property: one ingredient can have multiple StockRequest records.
         public List<StockRequest> StockRequests { get; set; } = new List<StockRequest>();
+
+        public List<FragranceIngredient>FragranceIngredients {get; set;} = [];
     }
 }

@@ -12,10 +12,16 @@ public class Batch
 
         public DateTime ProductionDate { get; set; }
 
-        public DateTime ExpiryDate { get; set; }
+        public int BatchSize {get; set;}
 
-        // Navigation Properties
-        public List<FinishedProduct> FinishedProducts { get; set; } = [];
-    
+        public enum Status
+        {
+                Processing,
+                Completed,
+                Failed,
+                Cancelled
+        }
+        
+        public List<BatchFinishedProduct> BatchFinishedProducts {get; set;} = [];
 
 }
