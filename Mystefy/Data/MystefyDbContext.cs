@@ -22,7 +22,7 @@ namespace Mystefy.Data
         public DbSet<Batch> Batches { get; set; }
         public DbSet<FragranceIngredient> FragranceIngredients { get; set; }
         public DbSet<StockRequestIngredients> StockRequestIngredients { get; set; }
-        public DbSet<StockRequestPackagings> StockRequestPackagings { get;}
+        public DbSet<StockRequestPackagings> StockRequestPackagings { get; set;}
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
