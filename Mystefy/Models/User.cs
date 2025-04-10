@@ -28,5 +28,7 @@ namespace Mystefy.Models
       
        //Navigation Property
     public List<StockRequest>StockRequests {get; set;} = [];
+
+    public List<StockRequestIngredients> StockRequestIngredients { get; set; } = [];
     }
 }
