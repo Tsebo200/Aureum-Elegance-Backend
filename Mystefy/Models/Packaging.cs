@@ -16,6 +16,6 @@ public class Packaging
     public int Stock{ get; set; }
 
     // Navigation property
-    public virtual ICollection<FinishedProduct> FinishedProduct { get; set; } = new List<FinishedProduct>();
+    public ICollection<FinishedProduct> FinishedProduct { get; set; } = new List<FinishedProduct>();
 
 }

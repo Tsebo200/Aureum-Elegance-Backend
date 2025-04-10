@@ -29,20 +29,20 @@ public class StockRequest
     [ForeignKey("Ingredients")]
     public int IngredientsId { get; set; }
     //Navigation Property of Ingredients
-    public virtual Ingredients? Ingredients { get; set; }
+    public Ingredients? Ingredients { get; set; }
 
     [Required]
     [ForeignKey("User")]
     // FK Constraint formed with User Table
     public int? UserId { get; set; }
     //Navigation Property of Ingredients
-    public virtual User? User { get; set; }
+    public User? User { get; set; }
 
     // FK Constraint formed with Warehouse Table
     [Required]
     [ForeignKey("Warehouse")]
     public int WarehouseId { get; set; }
     //Navigation Property of Ingredients
-    public virtual Warehouse? Warehouse { get; set; }
+    public Warehouse? Warehouse { get; set; }
 
 }

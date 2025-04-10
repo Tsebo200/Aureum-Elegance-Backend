@@ -34,6 +34,7 @@ namespace Mystefy.Controllers
                 Stock = p.Stock,
                 FinishedProduct = p.FinishedProduct?.Select(fp => new PackagingFinishedProductDTO
                 {
+                    // 
                     ProductID = fp.ProductID,
                     FragranceID = fp.FragranceID,
                     PackagingID = fp.PackagingID,
