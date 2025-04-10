@@ -1,10 +1,9 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Mystefy.Data;
 using Mystefy.Interfaces;
 using Mystefy.Models;
+
+///Use Summaries
 
 namespace Mystefy.Services
 {
