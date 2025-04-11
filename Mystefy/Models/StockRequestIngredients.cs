@@ -6,7 +6,7 @@ namespace Mystefy.Models;
 
 public class StockRequestIngredients
 {
-    public enum StockStatus{ Pending, Approved , Rejected }
+    
     
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

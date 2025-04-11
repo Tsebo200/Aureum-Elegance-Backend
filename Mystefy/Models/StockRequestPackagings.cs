@@ -3,10 +3,11 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Mystefy.Models;
-
+public enum StockStatus{ Pending, Approved , Rejected }
+    
 public class StockRequestPackagings
 {
-      public enum StockStatus{ Pending, Approved , Rejected }
+      
     
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
