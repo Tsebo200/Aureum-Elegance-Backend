@@ -6,7 +6,7 @@ namespace Mystefy.Models;
 
 public class StockRequestPackagings
 {
-      public enum StockStatus{ Pending, Approved , Rejected }
+      public enum StockPackagingStatus{ Pending, Approved , Rejected }
     
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -15,7 +15,7 @@ public class StockRequestPackagings
     public int AmountRequested{ get; set; }
     [Required]
     // public string Status { get; set; } = string.Empty;
-    public StockStatus Status{ get; set; }
+    public StockPackagingStatus Status{ get; set; }
     public DateTime RequestDate { get; set; } = DateTime.UtcNow;
 
 
