@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Mystefy.Data;
+using Mystefy.DTOs;
+using Mystefy.Interfaces;
 using Mystefy.Models;
 
 namespace Mystefy.Controllers
@@ -14,95 +14,155 @@ namespace Mystefy.Controllers
     [ApiController]
     public class StockRequestIngredientsController : ControllerBase
     {
-        private readonly MystefyDbContext _context;
+        private readonly IStockRequestIngredientsRepository _repository;
 
-        public StockRequestIngredientsController(MystefyDbContext context)
+        public StockRequestIngredientsController(IStockRequestIngredientsRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         // GET: api/StockRequestIngredients
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<StockRequestIngredients>>> GetStockRequestIngredients()
+        public async Task<ActionResult<IEnumerable<StockRequestIngredientsDTO>>> GetStockRequestIngredients()
         {
-            return await _context.StockRequestIngredients.ToListAsync();
+            var requests = await _repository.GetAllStockRequestIngredientsAsync();
+
+            var requestDTOs = requests.Select(s => new StockRequestIngredientsDTO
+            {
+                Id = s.Id,
+                AmountRequested = s.AmountRequested,
+                Status = s.Status.ToString(),
+                RequestDate = s.RequestDate,
+                User = s.User != null ? new StockRequestIngredientsUserDTO
+                {
+                    UserId = s.User.UserId,
+                    Name = s.User.Name,
+                    Role = s.User.Role.ToString()
+                } : null,
+                Ingredients = s.Ingredients != null ? new StockRequestIngredientsIngredientDTO
+                {
+                    Id = s.Ingredients.Id,
+                    Name = s.Ingredients.Name,
+                    Type = s.Ingredients.Type,
+                    Cost = s.Ingredients.Cost,
+                    IsExpired = s.Ingredients.IsExpired
+                } : null,
+                Warehouse = s.Warehouse != null ? new StockRequestIngredientsWarehouseDTO
+                {
+                    WarehouseID = s.Warehouse.WarehouseID,
+                    Name = s.Warehouse.Name,
+                    Location = s.Warehouse.Location
+                } : null
+            }).ToList();
+
+            return Ok(requestDTOs);
         }
 
         // GET: api/StockRequestIngredients/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<StockRequestIngredients>> GetStockRequestIngredients(int id)
+        public async Task<ActionResult<StockRequestIngredientsDTO>> GetStockRequestIngredients(int id)
         {
-            var stockRequestIngredients = await _context.StockRequestIngredients.FindAsync(id);
+            var stockRequest = await _repository.GetStockRequestIngredientsByIdAsync(id);
 
-            if (stockRequestIngredients == null)
-            {
+            if (stockRequest == null)
                 return NotFound();
-            }
 
-            return stockRequestIngredients;
-        }
-
-        // PUT: api/StockRequestIngredients/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutStockRequestIngredients(int id, StockRequestIngredients stockRequestIngredients)
-        {
-            if (id != stockRequestIngredients.Id)
+            var dto = new StockRequestIngredientsDTO
             {
-                return BadRequest();
-            }
-
-            _context.Entry(stockRequestIngredients).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!StockRequestIngredientsExists(id))
+                Id = stockRequest.Id,
+                AmountRequested = stockRequest.AmountRequested,
+                Status = stockRequest.Status.ToString(),
+                RequestDate = stockRequest.RequestDate,
+                User = stockRequest.User != null ? new StockRequestIngredientsUserDTO
                 {
-                    return NotFound();
-                }
-                else
+                    UserId = stockRequest.User.UserId,
+                    Name = stockRequest.User.Name,
+                    Role = stockRequest.User.Role.ToString()
+                } : null,
+                Ingredients = stockRequest.Ingredients != null ? new StockRequestIngredientsIngredientDTO
                 {
-                    throw;
-                }
-            }
+                    Id = stockRequest.Ingredients.Id,
+                    Name = stockRequest.Ingredients.Name,
+                    Type = stockRequest.Ingredients.Type,
+                    Cost = stockRequest.Ingredients.Cost,
+                    IsExpired = stockRequest.Ingredients.IsExpired
+                } : null,
+                Warehouse = stockRequest.Warehouse != null ? new StockRequestIngredientsWarehouseDTO
+                {
+                    WarehouseID = stockRequest.Warehouse.WarehouseID,
+                    Name = stockRequest.Warehouse.Name,
+                    Location = stockRequest.Warehouse.Location
+                } : null
+            };
 
-            return NoContent();
+            return Ok(dto);
         }
 
         // POST: api/StockRequestIngredients
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<StockRequestIngredients>> PostStockRequestIngredients(StockRequestIngredients stockRequestIngredients)
+        public async Task<ActionResult<StockRequestIngredientsDTO>> PostStockRequestIngredients(StockRequestIngredients stockRequest)
         {
-            _context.StockRequestIngredients.Add(stockRequestIngredients);
-            await _context.SaveChangesAsync();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            return CreatedAtAction("GetStockRequestIngredients", new { id = stockRequestIngredients.Id }, stockRequestIngredients);
+            var created = await _repository.CreateStockRequestIngredientsAsync(stockRequest);
+
+            // Map to DTO
+            var dto = new StockRequestIngredientsDTO
+            {
+                Id = created.Id,
+                AmountRequested = created.AmountRequested,
+                Status = created.Status.ToString(),
+                RequestDate = created.RequestDate,
+                User = created.User != null ? new StockRequestIngredientsUserDTO
+                {
+                    UserId = created.User.UserId,
+                    Name = created.User.Name,
+                    Role = created.User.Role.ToString()
+                } : null,
+                Ingredients = created.Ingredients != null ? new StockRequestIngredientsIngredientDTO
+                {
+                    Id = created.Ingredients.Id,
+                    Name = created.Ingredients.Name,
+                    Type = created.Ingredients.Type,
+                    Cost = created.Ingredients.Cost,
+                    IsExpired = created.Ingredients.IsExpired
+                } : null,
+                Warehouse = created.Warehouse != null ? new StockRequestIngredientsWarehouseDTO
+                {
+                    WarehouseID = created.Warehouse.WarehouseID,
+                    Name = created.Warehouse.Name,
+                    Location = created.Warehouse.Location
+                } : null
+            };
+
+            return CreatedAtAction(nameof(GetStockRequestIngredients), new { id = created.Id }, dto);
+        }
+
+        // PUT: api/StockRequestIngredients/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutStockRequestIngredients(int id, StockRequestIngredients stockRequest)
+        {
+            if (id != stockRequest.Id)
+                return BadRequest();
+
+            var updated = await _repository.UpdateStockRequestIngredientsAsync(stockRequest);
+
+            if (updated == null)
+                return NotFound();
+
+            return NoContent();
         }
 
         // DELETE: api/StockRequestIngredients/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStockRequestIngredients(int id)
         {
-            var stockRequestIngredients = await _context.StockRequestIngredients.FindAsync(id);
-            if (stockRequestIngredients == null)
-            {
+            var deleted = await _repository.DeleteStockRequestIngredientsAsync(id);
+            if (deleted == null)
                 return NotFound();
-            }
-
-            _context.StockRequestIngredients.Remove(stockRequestIngredients);
-            await _context.SaveChangesAsync();
 
             return NoContent();
-        }
-
-        private bool StockRequestIngredientsExists(int id)
-        {
-            return _context.StockRequestIngredients.Any(e => e.Id == id);
         }
     }
 }

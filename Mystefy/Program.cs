@@ -28,6 +28,8 @@ builder.Services.AddScoped<IWarehouseStockService, WarehouseStockService>();
 builder.Services.AddScoped<IFragranceIngredientService, FragranceIngredientService>();
 builder.Services.AddScoped<IBatchService, BatchService>();
 builder.Services.AddScoped<IPackagingRepository, PackagingRepositoryService>();
+builder.Services.AddScoped<IPackagingRepository, PackagingRepositoryService>();
+builder.Services.AddScoped<IStockRequestIngredientsRepository, StockRequestIngredientsRepositoryService>();
 
 Env.Load();
 
