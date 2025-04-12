@@ -11,16 +11,17 @@ namespace Mystefy.Models
         public int SupplierID { get; set; }
 
         [Required]
-        public string SupplierName { get; set; }
+        public string SupplierName { get; set; } = string.Empty;
 
         [Required]
-        public string ContactPerson { get; set; }
+        public string ContactPerson { get; set; } = string.Empty;
 
         [Required]
-        public string PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; } = string.Empty;
+        // 'string.Empty' is used to initialize the string properties to avoid null reference exceptions.
 
         // Navigation property: One-to-many relationship with Delivery
-        public ICollection<Delivery> Delivery { get; set; }
+        public ICollection<Delivery> Delivery { get; set; } = new List<Delivery>();
     }
 }
 
