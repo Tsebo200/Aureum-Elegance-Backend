@@ -6,7 +6,7 @@ namespace Mystefy.Models;
 
 public class StockRequestIngredients
 {
-    
+    public enum StockStatus{ Pending, Approved , Rejected }
     
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -17,7 +17,6 @@ public class StockRequestIngredients
     // public string Status { get; set; } = string.Empty;
     public StockStatus Status{ get; set; }
     public DateTime RequestDate { get; set; } = DateTime.UtcNow;
-
 
     // Foreign Keys 
     // FK Constraint formed with Ingredients Table
