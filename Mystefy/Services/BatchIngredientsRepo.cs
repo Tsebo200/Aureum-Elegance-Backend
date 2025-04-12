@@ -52,6 +52,19 @@ namespace Mystefy.Services
             await _context.SaveChangesAsync();
             return true;
         }
+        public async Task<List<BatchIngredients>> GetAllBatchIngredientsAsync(int batchID)
+        {
+            return await _context.BatchIngredients
+                .Where(bi => bi.BatchID == batchID)
+                .ToListAsync();
+
+        }
+
+        public Task<BatchIngredients?> GetBatchIngredientsAsync(int batchID, int ingredientsID)
+        {
+            return _context.BatchIngredients
+                .FirstOrDefaultAsync(bi => bi.BatchID == batchID && bi.IngredientsID == ingredientsID);
+        }
     }
 }
 

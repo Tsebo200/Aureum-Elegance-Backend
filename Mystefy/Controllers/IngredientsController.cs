@@ -98,11 +98,14 @@ namespace Mystefy.Controllers
 
         // GET: api/Ingredients/all
         [HttpGet("all")]
-        public async Task<ActionResult<List<IngredientsDTO>>> GetAllIngredients()
+        public async Task<ActionResult<IEnumerable<IngredientsDTO>>> GetAllIngredients()
         {
-            // Convert the IEnumerable to List explicitly.
-            var ingredients = (await _service.GetAllIngredientsAsync()).ToList();
-            return Ok(ingredients.Select(MapToDTO).ToList());
+            IEnumerable<Ingredients> ingredients = await _service.GetAllIngredientsAsync();
+            if (ingredients == null || !ingredients.Any())
+                return NotFound("No ingredients found");
+
+            var ingredientDtos = ingredients.Select(MapToDTO).ToList();
+            return Ok(ingredientDtos);
         }
 
         // Helper method to map the Ingredients model to the IngredientsDTO.

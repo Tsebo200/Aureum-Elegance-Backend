@@ -2,6 +2,8 @@
 // (e.g., web or mobile apps) to create, retrieve, update, and delete BatchIngredients.
 //It maps incoming DTOs to the model and converts models back to DTOs before returning them in API responses.
 using System.Threading.Tasks;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Mystefy.DTOs;
 using Mystefy.Interfaces;
@@ -94,6 +96,26 @@ namespace Mystefy.Controllers
                 IngredientsID = batchIngredient.IngredientsID,
                 Quantity = batchIngredient.Quantity
             };
+        }
+
+        // GET: api/BatchIngredients
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<BatchIngredientsDTO>>> GetAllBatchIngredients(int batchID)
+        {
+            var batchIngredients = await _repository.GetAllBatchIngredientsAsync(batchID);
+            if (batchIngredients == null || !batchIngredients.Any())
+            {
+                return NotFound();
+            }
+
+            var batchIngredientDtos = batchIngredients.Select(bi => new BatchIngredientsDTO
+            {
+                BatchID = bi.BatchID,
+                IngredientsID = bi.IngredientsID,
+                Quantity = bi.Quantity
+            }).ToList();
+
+            return Ok(batchIngredientDtos);
         }
     }
 }

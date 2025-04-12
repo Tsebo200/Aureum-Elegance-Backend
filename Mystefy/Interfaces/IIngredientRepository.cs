@@ -34,6 +34,9 @@ namespace Mystefy.Interfaces
 
         // Retrieves all ingredients asynchronously.
         Task<IEnumerable<Ingredients>> GetAllIngredientsAsync();
+        Task<List<Ingredients>> GetAllIngredientsAsync(int batchID);
+        // Retrieves all ingredients that are not expired asynchronously.   
+
     }
 }
 

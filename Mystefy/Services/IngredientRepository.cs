@@ -11,6 +11,7 @@ namespace Mystefy.Services
     {
         private readonly MystefyDbContext _context;
 
+        //This is known as Dependency Injection. It allows us to inject the DbContext into our repository class.
         public IngredientRepository(MystefyDbContext context)
         {
             _context = context;
@@ -80,14 +81,14 @@ namespace Mystefy.Services
             return ingredient;
         }
 
-        public async Task<List<Ingredients>> GetAllIngredientsAsync()
-        {
-            return await _context.Ingredients.ToListAsync();
-        }
-
         Task<IEnumerable<Ingredients>> IIngredientRepository.GetAllIngredientsAsync()
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<List<Ingredients>> GetAllIngredientsAsync(int batchID)
+        {
+            return await _context.Ingredients.ToListAsync();
         }
     }
 }

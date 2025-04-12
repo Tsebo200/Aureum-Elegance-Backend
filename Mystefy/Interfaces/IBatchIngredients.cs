@@ -7,6 +7,8 @@ namespace Mystefy.Interfaces
 {
     public interface IBatchIngredientsRepository
     {
+        Task<BatchIngredients?> GetBatchIngredientsAsync(int batchID, int ingredientsID);
+        Task<List<BatchIngredients>> GetAllBatchIngredientsAsync(int batchID);
         Task<BatchIngredients> CreateBatchIngredientAsync(BatchIngredients batchIngredient);
         Task<BatchIngredients?> GetBatchIngredientAsync(int batchID, int ingredientsID);
         Task<IEnumerable<BatchIngredients>> GetAllBatchIngredientsAsync();
