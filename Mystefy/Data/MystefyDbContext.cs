@@ -25,6 +25,7 @@ namespace Mystefy.Data
         public DbSet<FragranceIngredient> FragranceIngredients { get; set; }
         public DbSet<StockRequestIngredients> StockRequestIngredients { get; set; }
         public DbSet<StockRequestPackagings> StockRequestPackagings { get; set; }
+        public DbSet<Supplier> Suppliers { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

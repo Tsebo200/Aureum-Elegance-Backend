@@ -6,9 +6,9 @@ namespace Mystefy.Models
 {
     public class DeliveryIngredients
     {
-        // Composite Key: DeliveryIngredientID and IngredientID together form the primary key.
-        // DeliveryIngredientID is a foreign key to Delivery.
-        [ForeignKey(nameof(Delivery))]
+        // The primary key for the DeliveryIngredients entity.
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int DeliveryIngredientID { get; set; }
 
         // IngredientID is a foreign key to the Ingredients entity.
