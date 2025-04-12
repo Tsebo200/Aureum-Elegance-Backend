@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Mystefy.Data;
@@ -11,6 +11,7 @@ namespace Mystefy.Services
     {
         private readonly MystefyDbContext _context;
 
+        //This is known as Dependency Injection. It allows us to inject the DbContext into our repository class.
         public IngredientRepository(MystefyDbContext context)
         {
             _context = context;
@@ -18,53 +19,55 @@ namespace Mystefy.Services
 
         public async Task<Ingredients> CreateIngredientAsync(Ingredients ingredient)
         {
-            var newIngredient = await _context.AddAsync(ingredient);
+            var newIngredient = await _context.Ingredients.AddAsync(ingredient);
             await _context.SaveChangesAsync();
             return newIngredient.Entity;
         }
 
-        // Renamed to reflect Batch instead of Recipes.
-        public async Task<Ingredients?> GetIngredientWithBatchAsync(int ingredientId)
+        public async Task<Ingredients?> GetIngredientWithDetailsAsync(int ingredientId)
         {
-            // Adjust the Include below based on your data model.
             return await _context.Ingredients
-                .Include(i => i.StockRequests) // Update or replace with your Batch relationship if available.
+                .Include(i => i.DeliveryIngredients)
+                .Include(i => i.FragranceIngredients)
+                .Include(i => i.StockRequests)
+                //.Include(i => i.WasteLossRecords)
+                .Include(i => i.WarehouseIngredients)
                 .FirstOrDefaultAsync(i => i.Id == ingredientId);
-        }
-
-        // Renamed to reflect Batch instead of Recipe.
-        public async Task AddIngredientToBatchAsync(int ingredientId, int batchId)
-        {
-            // Implementation depends on how Batch and Ingredients are related.
-            await Task.CompletedTask; // Ensures at least one await exists.
-            throw new NotImplementedException("AddIngredientToBatchAsync is not implemented yet.");
         }
 
         public async Task<Ingredients?> GetIngredientByNameAsync(string ingredientName)
         {
-            return await _context.Ingredients.FirstOrDefaultAsync(i => i.Name == ingredientName);
+            return await _context.Ingredients
+                .FirstOrDefaultAsync(i => i.Name == ingredientName);
         }
 
         public async Task<Ingredients?> GetIngredientByTypeAsync(string ingredientType)
         {
-            return await _context.Ingredients.FirstOrDefaultAsync(i => i.Type == ingredientType);
+            return await _context.Ingredients
+                .FirstOrDefaultAsync(i => i.Type == ingredientType);
         }
 
         public async Task<Ingredients?> GetIngredientByCostAsync(string ingredientCost)
         {
-            return await _context.Ingredients.FirstOrDefaultAsync(i => i.Cost == ingredientCost);
+            return await _context.Ingredients
+                .FirstOrDefaultAsync(i => i.Cost == ingredientCost);
         }
 
         public async Task<Ingredients?> GetIngredientByIsExpiredAsync(bool isExpired)
         {
-            return await _context.Ingredients.FirstOrDefaultAsync(i => i.IsExpired == isExpired);
+            return await _context.Ingredients
+                .FirstOrDefaultAsync(i => i.IsExpired == isExpired);
         }
 
         public async Task<Ingredients?> UpdateIngredientAsync(Ingredients ingredient)
         {
-            _context.Ingredients.Update(ingredient);
+            var existing = await _context.Ingredients.FindAsync(ingredient.Id);
+            if (existing == null)
+                return null;
+
+            _context.Entry(existing).CurrentValues.SetValues(ingredient);
             await _context.SaveChangesAsync();
-            return ingredient;
+            return existing;
         }
 
         public async Task<Ingredients?> DeleteIngredientAsync(int ingredientId)
@@ -78,13 +81,14 @@ namespace Mystefy.Services
             return ingredient;
         }
 
-        // Renamed to reflect Batch instead of Recipe.
-        public async Task RemoveIngredientFromBatchAsync(int ingredientId, int batchId)
+        Task<IEnumerable<Ingredients>> IIngredientRepository.GetAllIngredientsAsync()
         {
-            // Implementation depends on your data model.
-            await Task.CompletedTask; // Ensures at least one await exists.
-            throw new NotImplementedException("RemoveIngredientFromBatchAsync is not implemented yet.");
+            throw new NotImplementedException();
+        }
+
+        public async Task<List<Ingredients>> GetAllIngredientsAsync(int batchID)
+        {
+            return await _context.Ingredients.ToListAsync();
         }
     }
 }
-
