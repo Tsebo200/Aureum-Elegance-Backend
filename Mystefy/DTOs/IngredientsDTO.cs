@@ -19,10 +19,23 @@ namespace Mystefy.DTOs
 
         public bool IsExpired { get; set; }
 
-        // Optional: Include associated BatchIngredients details if needed.
-        public List<BatchIngredientsDTO>? BatchIngredients { get; set; }
+        // Optional: Include related delivery details.
+        public List<DeliveryIngredientsDTO>? DeliveryIngredients { get; set; }
+
+        // Optional: Include related fragrance details.
+        //public List<FragranceIngredientsDTO>? FragranceIngredients { get; set; }
+
+        // Optional: Include related stock request details.
+        public List<StockRequestDTO>? StockRequests { get; set; }
+
+        // Optional: Include related waste/loss records.
+        //public List<WasteLossRecordDTO>? WasteLossRecords { get; set; }
+
+        // Optional: Include related warehouse ingredient details.
+        //public List<WarehouseIngredientsDTO>? WarehouseIngredients { get; set; }
     }
 }
+
 
 
 

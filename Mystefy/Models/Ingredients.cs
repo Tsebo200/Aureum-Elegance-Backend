@@ -20,7 +20,7 @@ namespace Mystefy.Models
         public string Type { get; set; } = string.Empty;
 
         // Represents the cost of the ingredient.
-        // (Consider using a decimal type for numeric accuracy.)
+        // (Consider using a decimal type for numeric accuracy, but here it is left as a string.)
         public string Cost { get; set; } = string.Empty;
 
         // Column to store the expiry date of the ingredient.
@@ -29,12 +29,24 @@ namespace Mystefy.Models
         // Boolean flag to indicate whether the ingredient has expired.
         public bool IsExpired { get; set; }
 
-        // Navigation property: one ingredient can have multiple StockRequest records.
+        // Navigation property: one ingredient can have multiple stock request records.
         public List<StockRequest> StockRequests { get; set; } = new List<StockRequest>();
 
-        public List<FragranceIngredient>FragranceIngredients {get; set;} = [];
-        public List<StockRequestIngredients> StockRequestIngredients { get; set; } = [];
-        public List<StockRequestPackagings> StockRequestPackagings { get; set; } = [];
+        // Navigation property: one ingredient can be part of multiple delivery records.
+        public List<DeliveryIngredients> DeliveryIngredients { get; set; } = new List<DeliveryIngredients>();
 
+        // Navigation property: one ingredient can be linked with multiple fragrance records.
+        public List<FragranceIngredient> FragranceIngredients { get; set; } = new List<FragranceIngredient>();
+
+        // Navigation property: one ingredient can have multiple stock request ingredients.
+        public List<StockRequestIngredients> StockRequestIngredients { get; set; } = new List<StockRequestIngredients>();
+
+        // Navigation property: one ingredient can have multiple stock request packagings.
+        public List<StockRequestPackagings> StockRequestPackagings { get; set; } = new List<StockRequestPackagings>();
+
+        // Navigation property: one ingredient can be associated with multiple warehouse ingredient records.
+        public List<WarehouseIngredients> WarehouseIngredients { get; set; } = new List<WarehouseIngredients>();
     }
 }
+
+
