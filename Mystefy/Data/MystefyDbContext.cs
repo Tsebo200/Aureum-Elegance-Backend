@@ -11,6 +11,8 @@ namespace Mystefy.Data
         public DbSet<Packaging> Packaging { get; set; }
         public DbSet<Warehouse> Warehouses { get; set; }
         public DbSet<Fragrance> Fragrances { get; set; }
+        public DbSet<Delivery> Deliveries { get; set; }
+        public DbSet<DeliveryIngredients> DeliveryIngredients { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<FinishedProduct> FinishedProduct { get; set; }
         public DbSet<StockRequest> StockRequests { get; set; }
@@ -22,7 +24,7 @@ namespace Mystefy.Data
         public DbSet<Batch> Batches { get; set; }
         public DbSet<FragranceIngredient> FragranceIngredients { get; set; }
         public DbSet<StockRequestIngredients> StockRequestIngredients { get; set; }
-        public DbSet<StockRequestPackagings> StockRequestPackagings { get; set;}
+        public DbSet<StockRequestPackagings> StockRequestPackagings { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -100,15 +102,15 @@ namespace Mystefy.Data
             modelBuilder.Entity<FragranceIngredient>()
             .HasKey(fi => new { fi.FragranceID, fi.IngredientsID });
 
-        modelBuilder.Entity<FragranceIngredient>()
-            .HasOne(fi => fi.Fragrance)
-            .WithMany(f => f.FragranceIngredients)
-            .HasForeignKey(fi => fi.FragranceID);
+            modelBuilder.Entity<FragranceIngredient>()
+                .HasOne(fi => fi.Fragrance)
+                .WithMany(f => f.FragranceIngredients)
+                .HasForeignKey(fi => fi.FragranceID);
 
-        modelBuilder.Entity<FragranceIngredient>()
-            .HasOne(fi => fi.Ingredients)
-            .WithMany(i => i.FragranceIngredients)
-            .HasForeignKey(fi => fi.IngredientsID);
+            modelBuilder.Entity<FragranceIngredient>()
+                .HasOne(fi => fi.Ingredients)
+                .WithMany(i => i.FragranceIngredients)
+                .HasForeignKey(fi => fi.IngredientsID);
 
         }
 
