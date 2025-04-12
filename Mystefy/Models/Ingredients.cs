@@ -20,7 +20,7 @@ namespace Mystefy.Models
         public string Type { get; set; } = string.Empty;
 
         // Represents the cost of the ingredient.
-        // (Consider using a decimal type for numeric accuracy, but here is left as a string.)
+        // (Consider using a decimal type for numeric accuracy, but here it is left as a string.)
         public string Cost { get; set; } = string.Empty;
 
         // Column to store the expiry date of the ingredient.
@@ -32,21 +32,21 @@ namespace Mystefy.Models
         // Navigation property: one ingredient can have multiple stock request records.
         public List<StockRequest> StockRequests { get; set; } = new List<StockRequest>();
 
-        public List<Delivery> Delivery { get; set; } = new List<Delivery>();
-
-        // New navigation property: one ingredient can be part of multiple delivery records.
+        // Navigation property: one ingredient can be part of multiple delivery records.
         public List<DeliveryIngredients> DeliveryIngredients { get; set; } = new List<DeliveryIngredients>();
 
-        public List<Fragrance> Fragrance { get; set; } = new List<Fragrance>();
-
-        // New navigation property: one ingredient can be linked with multiple fragrance records.
+        // Navigation property: one ingredient can be linked with multiple fragrance records.
         public List<FragranceIngredient> FragranceIngredients { get; set; } = new List<FragranceIngredient>();
 
-        // New navigation property: one ingredient can have multiple waste/loss records.
-        //public List<WasteLossRecord> WasteLossRecords { get; set; } = new List<WasteLossRecord>();
+        // Navigation property: one ingredient can have multiple stock request ingredients.
+        public List<StockRequestIngredients> StockRequestIngredients { get; set; } = new List<StockRequestIngredients>();
 
-        // New navigation property: one ingredient can be associated with multiple warehouse ingredient records.
+        // Navigation property: one ingredient can have multiple stock request packagings.
+        public List<StockRequestPackagings> StockRequestPackagings { get; set; } = new List<StockRequestPackagings>();
+
+        // Navigation property: one ingredient can be associated with multiple warehouse ingredient records.
         public List<WarehouseIngredients> WarehouseIngredients { get; set; } = new List<WarehouseIngredients>();
     }
 }
+
 

@@ -21,9 +21,41 @@ namespace Mystefy.Data
         public DbSet<BatchIngredients> BatchIngredients { get; set; }
         public DbSet<Batch> Batches { get; set; }
         public DbSet<FragranceIngredient> FragranceIngredients { get; set; }
+        public DbSet<StockRequestIngredients> StockRequestIngredients { get; set; }
+        public DbSet<StockRequestPackagings> StockRequestPackagings { get; set;}
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Ingredients>()
+                .HasMany(i => i.StockRequestPackagings)
+                .WithOne(srp => srp.Ingredients)
+                .HasForeignKey(srp => srp.IngredientsId);
+
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.StockRequestPackagings)
+                .WithOne(srp => srp.User)
+                .HasForeignKey(srp => srp.UserId);
+
+            modelBuilder.Entity<Warehouse>()
+                .HasMany(w => w.StockRequestPackagings)
+                .WithOne(srp => srp.Warehouse)
+                .HasForeignKey(srp => srp.WarehouseId);
+
+            modelBuilder.Entity<Ingredients>()
+                .HasMany(i => i.StockRequestIngredients)
+                .WithOne(sri => sri.Ingredients)
+                .HasForeignKey(sri => sri.IngredientsId);
+
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.StockRequestIngredients)
+                .WithOne(sri => sri.User)
+                .HasForeignKey(sri => sri.UserId);
+
+            modelBuilder.Entity<Warehouse>()
+                .HasMany(w => w.StockRequestIngredients)
+                .WithOne(sri => sri.Warehouse)
+                .HasForeignKey(sri => sri.WarehouseId);
 
             modelBuilder.Entity<FinishedProduct>()
                 .HasOne(fp => fp.Fragrance)

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Mystefy.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Mystefy.Migrations
 {
     [DbContext(typeof(MystefyDbContext))]
-    partial class MystefyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250410093845_CreationStockRequestIngredients")]
+    partial class CreationStockRequestIngredients
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -299,43 +302,6 @@ namespace Mystefy.Migrations
                     b.ToTable("StockRequestIngredients");
                 });
 
-            modelBuilder.Entity("Mystefy.Models.StockRequestPackagings", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AmountRequested")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("IngredientsId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("RequestDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("WarehouseId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IngredientsId");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("WarehouseId");
-
-                    b.ToTable("StockRequestPackagings");
-                });
-
             modelBuilder.Entity("Mystefy.Models.User", b =>
                 {
                     b.Property<int>("UserId")
@@ -569,33 +535,6 @@ namespace Mystefy.Migrations
                     b.Navigation("Warehouse");
                 });
 
-            modelBuilder.Entity("Mystefy.Models.StockRequestPackagings", b =>
-                {
-                    b.HasOne("Mystefy.Models.Ingredients", "Ingredients")
-                        .WithMany("StockRequestPackagings")
-                        .HasForeignKey("IngredientsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Mystefy.Models.User", "User")
-                        .WithMany("StockRequestPackagings")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Mystefy.Models.Warehouse", "Warehouse")
-                        .WithMany("StockRequestPackagings")
-                        .HasForeignKey("WarehouseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Ingredients");
-
-                    b.Navigation("User");
-
-                    b.Navigation("Warehouse");
-                });
-
             modelBuilder.Entity("Mystefy.Models.WarehouseStock", b =>
                 {
                     b.HasOne("Mystefy.Models.Fragrance", "Fragrance")
@@ -635,8 +574,6 @@ namespace Mystefy.Migrations
 
                     b.Navigation("StockRequestIngredients");
 
-                    b.Navigation("StockRequestPackagings");
-
                     b.Navigation("StockRequests");
                 });
 
@@ -649,16 +586,12 @@ namespace Mystefy.Migrations
                 {
                     b.Navigation("StockRequestIngredients");
 
-                    b.Navigation("StockRequestPackagings");
-
                     b.Navigation("StockRequests");
                 });
 
             modelBuilder.Entity("Mystefy.Models.Warehouse", b =>
                 {
                     b.Navigation("StockRequestIngredients");
-
-                    b.Navigation("StockRequestPackagings");
 
                     b.Navigation("StockRequests");
 
