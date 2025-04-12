@@ -29,6 +29,8 @@ builder.Services.AddScoped<IWarehouseStockService, WarehouseStockService>();
 builder.Services.AddScoped<IFragranceIngredientService, FragranceIngredientService>();
 builder.Services.AddScoped<IBatchService, BatchService>();
 builder.Services.AddScoped<IPackagingRepository, PackagingRepositoryService>();
+builder.Services.AddScoped<IStockRequestIngredientsRepository, StockRequestIngredientsRepositoryService>();
+builder.Services.AddScoped<IStockRequestPackagingsRepository, StockRequestPackagingsRepositoryService>();
 builder.Services.AddScoped<IDeliveryRepository, DeliveryRepository>();
 builder.Services.AddScoped<IDeliveryIngredientsRepository, DeliveryIngredientsRepository>();
 
