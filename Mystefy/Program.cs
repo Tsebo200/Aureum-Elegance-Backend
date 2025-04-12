@@ -30,6 +30,7 @@ builder.Services.AddScoped<IBatchService, BatchService>();
 builder.Services.AddScoped<IPackagingRepository, PackagingRepositoryService>();
 builder.Services.AddScoped<IPackagingRepository, PackagingRepositoryService>();
 builder.Services.AddScoped<IStockRequestIngredientsRepository, StockRequestIngredientsRepositoryService>();
+builder.Services.AddScoped<IStockRequestPackagingsRepository, StockRequestPackagingsRepositoryService>();
 
 Env.Load();
 
