@@ -113,6 +113,8 @@ namespace Mystefy.Data
                 .WithMany(i => i.FragranceIngredients)
                 .HasForeignKey(fi => fi.IngredientsID);
 
+            modelBuilder.Entity<Supplier>()
+               .HasKey(s => s.SupplierID);
         }
 
 
