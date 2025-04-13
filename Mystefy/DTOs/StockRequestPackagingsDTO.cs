@@ -12,7 +12,7 @@ public class StockRequestPackagingsDTO
 
     // Foreign key DTO
     public StockRequestPackagingsUserDTO? User { get; set; }
-    public StockRequestPackagingsIngredientDTO? Ingredients { get; set; }
+    public StockRequestPackagingsPackagingDTO? Packaging { get; set; }
     public StockRequestPackagingsWarehouseDTO? Warehouse { get; set; }
 }
 
@@ -23,14 +23,12 @@ public class StockRequestPackagingsUserDTO
     public string Role { get; set; } = string.Empty;
 }
 
-public class StockRequestPackagingsIngredientDTO
-{
-    public int Id { get; set; }
-    public string Name { get; set; } = string.Empty;
-    public string Type { get; set; } = string.Empty;
-    public string Cost { get; set; } = string.Empty;
-    public bool IsExpired { get; set; }
-
+public class StockRequestPackagingsPackagingDTO{
+    public int Id{ get; set; }
+    public required string Name{ get; set; }
+    public string? Type{ get; set; }
+    public int Stock{ get; set; }
+    public PackagingFinishedProductDTO? FinishedProduct { get; set; }
 }
 
 public class StockRequestPackagingsWarehouseDTO

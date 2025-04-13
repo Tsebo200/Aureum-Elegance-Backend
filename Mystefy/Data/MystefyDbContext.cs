@@ -30,10 +30,10 @@ namespace Mystefy.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Ingredients>()
-                .HasMany(i => i.StockRequestPackagings)
-                .WithOne(srp => srp.Ingredients)
-                .HasForeignKey(srp => srp.IngredientsId);
+            modelBuilder.Entity<Packaging>()
+                .HasMany(p => p.StockRequestPackagings)
+                .WithOne(srp => srp.Packaging)
+                .HasForeignKey(srp => srp.PackagingId);
 
             modelBuilder.Entity<User>()
                 .HasMany(u => u.StockRequestPackagings)

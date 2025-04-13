@@ -19,13 +19,11 @@ public class StockRequestPackagings
     public StockPackagingStatus Status{ get; set; }
     public DateTime RequestDate { get; set; } = DateTime.UtcNow;
 
-
-    // Foreign Keys 
     // FK Constraint formed with Ingredients Table
     [Required]
-    [ForeignKey("Ingredients")]
-    public int IngredientsId { get; set; }
-    public Ingredients? Ingredients { get; set; }
+    [ForeignKey("Packaging")]
+    public int PackagingId { get; set; }
+    public Packaging? Packaging { get; set; }
 
 
     [Required]
