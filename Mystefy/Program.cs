@@ -33,6 +33,8 @@ builder.Services.AddScoped<IStockRequestIngredientsRepository, StockRequestIngre
 builder.Services.AddScoped<IStockRequestPackagingsRepository, StockRequestPackagingsRepositoryService>();
 builder.Services.AddScoped<IDeliveryRepository, DeliveryRepository>();
 builder.Services.AddScoped<IDeliveryIngredientsRepository, DeliveryIngredientsRepository>();
+builder.Services.AddScoped<ISupplierService, SupplierService>();
+
 
 Env.Load();
 
