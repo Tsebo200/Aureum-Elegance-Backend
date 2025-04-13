@@ -21,7 +21,7 @@ public class WarehouseShowStock{
     public string? Name {get; set;} = string.Empty;
     public string? location {get; set;} = string.Empty;
 
-    public wWarehouseStockDTO? WarehouseStocks {get; set;}
+    public List<wWarehouseStockDTO>? WarehouseStocks { get; set; }
 }
 
 public class WStockRequestsDTO

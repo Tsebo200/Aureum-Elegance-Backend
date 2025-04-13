@@ -57,19 +57,22 @@ namespace Mystefy.Controllers
 
         [HttpGet("WithWarehouseStock")]
         public async Task<ActionResult<IEnumerable<Warehouse>>> GetAllWarehousesAndWarehouseStock()
-        {
-            var warehouses = await _warehouseService.GetAllWarehousesAndWarehouseStock();
-            var warehouseDtos = warehouses.Select( w => new WarehouseShowStock
-                {
-                    Name = w.Name,
-                location = w.Location,
-                WarehouseStocks = w.WarehouseStocks.Any() ? w.WarehouseStocks.Select(ws => new wWarehouseStockDTO
-                {
-                    StockID = ws.StockID,
-                    Stock = ws.Stock,
-                    WarehouseID = ws.WarehouseID,
-                    FragranceID = ws.FragranceID,
-                    Fragrances = ws.Fragrance != null ? new WarehouseStockAddFragranceDTO
+{
+    var warehouses = await _warehouseService.GetAllWarehousesAndWarehouseStock();
+
+    var warehouseDtos = warehouses.Select(w => new WarehouseShowStock
+    {
+        Name = w.Name,
+        location = w.Location,
+        WarehouseStocks = w.WarehouseStocks.Any() 
+            ? w.WarehouseStocks.Select(ws => new wWarehouseStockDTO
+            {
+                StockID = ws.StockID,
+                Stock = ws.Stock,
+                WarehouseID = ws.WarehouseID,
+                FragranceID = ws.FragranceID,
+                Fragrances = ws.Fragrance != null 
+                    ? new WarehouseStockAddFragranceDTO
                     {
                         Id = ws.Fragrance.Id,
                         Name = ws.Fragrance.Name,
@@ -77,12 +80,14 @@ namespace Mystefy.Controllers
                         Cost = ws.Fragrance.Cost,
                         ExpiryDate = ws.Fragrance.ExpiryDate,
                         Volume = ws.Fragrance.Volume
-                        } : null
-                        }).FirstOrDefault() : null
-                }).ToList();
+                    } 
+                    : null
+            }).ToList() 
+            : null
+    }).ToList();
 
-                return Ok(warehouseDtos);
-        }
+    return Ok(warehouseDtos);
+}
 
 
 
@@ -102,8 +107,12 @@ namespace Mystefy.Controllers
 
         // POST: api/Warehouse
         [HttpPost]
-        public async Task<ActionResult<Warehouse>> PostWarehouse(Warehouse warehouse)
+        public async Task<ActionResult<Warehouse>> PostWarehouse(WarehouseDTO warehouseDto)
         {
+            var warehouse = new Warehouse{
+                Name = warehouseDto.Name,
+                Location = warehouseDto.location
+            };
             var createdWarehouse = await _warehouseService.MakeWarehouse(warehouse);
             return CreatedAtAction(nameof(GetWarehouse), new { WarehouseID = createdWarehouse.WarehouseID }, createdWarehouse);
 

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Mystefy.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Mystefy.Migrations
 {
     [DbContext(typeof(MystefyDbContext))]
-    partial class MystefyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250410093845_CreationStockRequestIngredients")]
+    partial class CreationStockRequestIngredients
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -90,70 +93,6 @@ namespace Mystefy.Migrations
                     b.HasIndex("IngredientsID");
 
                     b.ToTable("BatchIngredients");
-                });
-
-            modelBuilder.Entity("Mystefy.Models.Delivery", b =>
-                {
-                    b.Property<int>("DeliveryID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("DeliveryID"));
-
-                    b.Property<decimal>("DeliveryCost")
-                        .HasColumnType("numeric");
-
-                    b.Property<DateTime>("DeliveryDateArrived")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("DeliveryDateOrdered")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("SupplierID")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("WarehouseID")
-                        .HasColumnType("integer");
-
-                    b.HasKey("DeliveryID");
-
-                    b.HasIndex("SupplierID");
-
-                    b.HasIndex("WarehouseID");
-
-                    b.ToTable("Deliveries");
-                });
-
-            modelBuilder.Entity("Mystefy.Models.DeliveryIngredients", b =>
-                {
-                    b.Property<int>("DeliveryIngredientID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("DeliveryIngredientID"));
-
-                    b.Property<DateTime>("DateOrdered")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("DeliveryID")
-                        .HasColumnType("integer");
-
-                    b.Property<decimal>("DeliveryIngredientCost")
-                        .HasColumnType("numeric");
-
-                    b.Property<int>("IngredientID")
-                        .HasColumnType("integer");
-
-                    b.Property<decimal>("QuantityDelivered")
-                        .HasColumnType("numeric");
-
-                    b.HasKey("DeliveryIngredientID");
-
-                    b.HasIndex("DeliveryID");
-
-                    b.HasIndex("IngredientID");
-
-                    b.ToTable("DeliveryIngredients");
                 });
 
             modelBuilder.Entity("Mystefy.Models.FinishedProduct", b =>
@@ -363,68 +302,6 @@ namespace Mystefy.Migrations
                     b.ToTable("StockRequestIngredients");
                 });
 
-            modelBuilder.Entity("Mystefy.Models.StockRequestPackagings", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AmountRequested")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("IngredientsId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("RequestDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("WarehouseId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IngredientsId");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("WarehouseId");
-
-                    b.ToTable("StockRequestPackagings");
-                });
-
-            modelBuilder.Entity("Mystefy.Models.Supplier", b =>
-                {
-                    b.Property<int>("SupplierID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("SupplierID"));
-
-                    b.Property<string>("ContactPerson")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("SupplierName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("SupplierID");
-
-                    b.ToTable("Suppliers");
-                });
-
             modelBuilder.Entity("Mystefy.Models.User", b =>
                 {
                     b.Property<int>("UserId")
@@ -486,15 +363,10 @@ namespace Mystefy.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("IngredientsId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("Volume")
                         .HasColumnType("integer");
 
                     b.HasKey("IngredientId");
-
-                    b.HasIndex("IngredientsId");
 
                     b.ToTable("WarehouseIngredients");
                 });
@@ -569,44 +441,6 @@ namespace Mystefy.Migrations
                     b.Navigation("Batch");
 
                     b.Navigation("Ingredients");
-                });
-
-            modelBuilder.Entity("Mystefy.Models.Delivery", b =>
-                {
-                    b.HasOne("Mystefy.Models.Supplier", "Supplier")
-                        .WithMany("Delivery")
-                        .HasForeignKey("SupplierID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Mystefy.Models.Warehouse", "Warehouse")
-                        .WithMany()
-                        .HasForeignKey("WarehouseID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Supplier");
-
-                    b.Navigation("Warehouse");
-                });
-
-            modelBuilder.Entity("Mystefy.Models.DeliveryIngredients", b =>
-                {
-                    b.HasOne("Mystefy.Models.Delivery", "Delivery")
-                        .WithMany("DeliveryIngredients")
-                        .HasForeignKey("DeliveryID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Mystefy.Models.Ingredients", "Ingredient")
-                        .WithMany("DeliveryIngredients")
-                        .HasForeignKey("IngredientID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Delivery");
-
-                    b.Navigation("Ingredient");
                 });
 
             modelBuilder.Entity("Mystefy.Models.FinishedProduct", b =>
@@ -701,40 +535,6 @@ namespace Mystefy.Migrations
                     b.Navigation("Warehouse");
                 });
 
-            modelBuilder.Entity("Mystefy.Models.StockRequestPackagings", b =>
-                {
-                    b.HasOne("Mystefy.Models.Ingredients", "Ingredients")
-                        .WithMany("StockRequestPackagings")
-                        .HasForeignKey("IngredientsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Mystefy.Models.User", "User")
-                        .WithMany("StockRequestPackagings")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Mystefy.Models.Warehouse", "Warehouse")
-                        .WithMany("StockRequestPackagings")
-                        .HasForeignKey("WarehouseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Ingredients");
-
-                    b.Navigation("User");
-
-                    b.Navigation("Warehouse");
-                });
-
-            modelBuilder.Entity("Mystefy.Models.WarehouseIngredients", b =>
-                {
-                    b.HasOne("Mystefy.Models.Ingredients", null)
-                        .WithMany("WarehouseIngredients")
-                        .HasForeignKey("IngredientsId");
-                });
-
             modelBuilder.Entity("Mystefy.Models.WarehouseStock", b =>
                 {
                     b.HasOne("Mystefy.Models.Fragrance", "Fragrance")
@@ -759,11 +559,6 @@ namespace Mystefy.Migrations
                     b.Navigation("BatchFinishedProducts");
                 });
 
-            modelBuilder.Entity("Mystefy.Models.Delivery", b =>
-                {
-                    b.Navigation("DeliveryIngredients");
-                });
-
             modelBuilder.Entity("Mystefy.Models.Fragrance", b =>
                 {
                     b.Navigation("FinishedProduct");
@@ -775,17 +570,11 @@ namespace Mystefy.Migrations
 
             modelBuilder.Entity("Mystefy.Models.Ingredients", b =>
                 {
-                    b.Navigation("DeliveryIngredients");
-
                     b.Navigation("FragranceIngredients");
 
                     b.Navigation("StockRequestIngredients");
 
-                    b.Navigation("StockRequestPackagings");
-
                     b.Navigation("StockRequests");
-
-                    b.Navigation("WarehouseIngredients");
                 });
 
             modelBuilder.Entity("Mystefy.Models.Packaging", b =>
@@ -793,16 +582,9 @@ namespace Mystefy.Migrations
                     b.Navigation("FinishedProduct");
                 });
 
-            modelBuilder.Entity("Mystefy.Models.Supplier", b =>
-                {
-                    b.Navigation("Delivery");
-                });
-
             modelBuilder.Entity("Mystefy.Models.User", b =>
                 {
                     b.Navigation("StockRequestIngredients");
-
-                    b.Navigation("StockRequestPackagings");
 
                     b.Navigation("StockRequests");
                 });
@@ -810,8 +592,6 @@ namespace Mystefy.Migrations
             modelBuilder.Entity("Mystefy.Models.Warehouse", b =>
                 {
                     b.Navigation("StockRequestIngredients");
-
-                    b.Navigation("StockRequestPackagings");
 
                     b.Navigation("StockRequests");
 

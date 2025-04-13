@@ -18,5 +18,6 @@ public class Warehouse
     public List<StockRequest>StockRequests {get; set;} = [];
 
     public List<WarehouseStock> WarehouseStocks {get; set;} = [];
-    
+   public List<StockRequestIngredients> StockRequestIngredients { get; set; } = [];
+   public List<StockRequestPackagings> StockRequestPackagings { get; set; } = [];
 }
