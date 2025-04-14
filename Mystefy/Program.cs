@@ -36,6 +36,7 @@ builder.Services.AddScoped<IDeliveryIngredientsRepository, DeliveryIngredientsRe
 builder.Services.AddScoped<ISupplierService, SupplierService>();
 builder.Services.AddScoped<IWasteLossRecordIngredientsRepository, WasteLossRecordIngredientsRepositoryService>();
 builder.Services.AddScoped<IWasteLossRecordPackagingRepository, WasteLossRecordPackagingRepositoryService>();
+builder.Services.AddScoped<IWasteLossRecordFragranceRepository, WasteLossRecordFragranceRepositoryService>();
 
 
 Env.Load();
