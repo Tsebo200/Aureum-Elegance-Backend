@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Mystefy.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Mystefy.Migrations
 {
     [DbContext(typeof(MystefyDbContext))]
-    partial class MystefyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250414073833_AddPackagingIdToStockRequestPackagings")]
+    partial class AddPackagingIdToStockRequestPackagings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,7 +41,7 @@ namespace Mystefy.Migrations
 
                     b.HasKey("BatchID");
 
-                    b.ToTable("Batches", (string)null);
+                    b.ToTable("Batches");
                 });
 
             modelBuilder.Entity("Mystefy.Models.BatchFinishedProduct", b =>
@@ -71,7 +74,7 @@ namespace Mystefy.Migrations
 
                     b.HasIndex("WarehouseID");
 
-                    b.ToTable("BatchFinishedProducts", (string)null);
+                    b.ToTable("BatchFinishedProducts");
                 });
 
             modelBuilder.Entity("Mystefy.Models.BatchIngredients", b =>
@@ -89,7 +92,7 @@ namespace Mystefy.Migrations
 
                     b.HasIndex("IngredientsID");
 
-                    b.ToTable("BatchIngredients", (string)null);
+                    b.ToTable("BatchIngredients");
                 });
 
             modelBuilder.Entity("Mystefy.Models.Delivery", b =>
@@ -121,7 +124,7 @@ namespace Mystefy.Migrations
 
                     b.HasIndex("WarehouseID");
 
-                    b.ToTable("Deliveries", (string)null);
+                    b.ToTable("Deliveries");
                 });
 
             modelBuilder.Entity("Mystefy.Models.DeliveryIngredients", b =>
@@ -153,7 +156,7 @@ namespace Mystefy.Migrations
 
                     b.HasIndex("IngredientID");
 
-                    b.ToTable("DeliveryIngredients", (string)null);
+                    b.ToTable("DeliveryIngredients");
                 });
 
             modelBuilder.Entity("Mystefy.Models.FinishedProduct", b =>
@@ -179,7 +182,7 @@ namespace Mystefy.Migrations
 
                     b.HasIndex("PackagingID");
 
-                    b.ToTable("FinishedProduct", (string)null);
+                    b.ToTable("FinishedProduct");
                 });
 
             modelBuilder.Entity("Mystefy.Models.Fragrance", b =>
@@ -209,7 +212,7 @@ namespace Mystefy.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Fragrances", (string)null);
+                    b.ToTable("Fragrances");
                 });
 
             modelBuilder.Entity("Mystefy.Models.FragranceIngredient", b =>
@@ -229,7 +232,7 @@ namespace Mystefy.Migrations
 
                     b.HasIndex("IngredientsID");
 
-                    b.ToTable("FragranceIngredients", (string)null);
+                    b.ToTable("FragranceIngredients");
                 });
 
             modelBuilder.Entity("Mystefy.Models.Ingredients", b =>
@@ -261,7 +264,7 @@ namespace Mystefy.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Ingredients", (string)null);
+                    b.ToTable("Ingredients");
                 });
 
             modelBuilder.Entity("Mystefy.Models.Packaging", b =>
@@ -285,7 +288,7 @@ namespace Mystefy.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Packaging", (string)null);
+                    b.ToTable("Packaging");
                 });
 
             modelBuilder.Entity("Mystefy.Models.StockRequest", b =>
@@ -323,7 +326,7 @@ namespace Mystefy.Migrations
 
                     b.HasIndex("WarehouseId");
 
-                    b.ToTable("StockRequests", (string)null);
+                    b.ToTable("StockRequests");
                 });
 
             modelBuilder.Entity("Mystefy.Models.StockRequestIngredients", b =>
@@ -360,7 +363,7 @@ namespace Mystefy.Migrations
 
                     b.HasIndex("WarehouseId");
 
-                    b.ToTable("StockRequestIngredients", (string)null);
+                    b.ToTable("StockRequestIngredients");
                 });
 
             modelBuilder.Entity("Mystefy.Models.StockRequestPackagings", b =>
@@ -402,7 +405,7 @@ namespace Mystefy.Migrations
 
                     b.HasIndex("WarehouseId");
 
-                    b.ToTable("StockRequestPackagings", (string)null);
+                    b.ToTable("StockRequestPackagings");
                 });
 
             modelBuilder.Entity("Mystefy.Models.Supplier", b =>
@@ -427,7 +430,7 @@ namespace Mystefy.Migrations
 
                     b.HasKey("SupplierID");
 
-                    b.ToTable("Suppliers", (string)null);
+                    b.ToTable("Suppliers");
                 });
 
             modelBuilder.Entity("Mystefy.Models.User", b =>
@@ -455,7 +458,7 @@ namespace Mystefy.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Mystefy.Models.Warehouse", b =>
@@ -476,7 +479,7 @@ namespace Mystefy.Migrations
 
                     b.HasKey("WarehouseID");
 
-                    b.ToTable("Warehouses", (string)null);
+                    b.ToTable("Warehouses");
                 });
 
             modelBuilder.Entity("Mystefy.Models.WarehouseIngredients", b =>
@@ -501,7 +504,7 @@ namespace Mystefy.Migrations
 
                     b.HasIndex("IngredientsId");
 
-                    b.ToTable("WarehouseIngredients", (string)null);
+                    b.ToTable("WarehouseIngredients");
                 });
 
             modelBuilder.Entity("Mystefy.Models.WarehouseStock", b =>
@@ -527,7 +530,7 @@ namespace Mystefy.Migrations
 
                     b.HasIndex("WarehouseID");
 
-                    b.ToTable("WarehouseStocks", (string)null);
+                    b.ToTable("WarehouseStocks");
                 });
 
             modelBuilder.Entity("Mystefy.Models.BatchFinishedProduct", b =>
