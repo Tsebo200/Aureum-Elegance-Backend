@@ -23,5 +23,6 @@ public class Batch
         }
         
         public List<BatchFinishedProduct> BatchFinishedProducts {get; set;} = [];
+        public List<WasteLossRecordBatchFinishedProducts> WasteLossRecordBatchFinishedProducts {get; set;} = [];
 
 }

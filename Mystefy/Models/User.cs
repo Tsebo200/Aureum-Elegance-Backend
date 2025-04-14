@@ -34,5 +34,6 @@ namespace Mystefy.Models
     public List<WasteLossRecordIngredients> WasteLossRecordIngredients { get; set; } = [];
     public List<WasteLossRecordPackaging> WasteLossRecordPackaging { get; set; } = [];
     public List<WasteLossRecordFragrance> WasteLossRecordFragrance { get; set; } = [];
+    public List<WasteLossRecordBatchFinishedProducts> WasteLossRecordBatchFinishedProducts {get; set;} = [];
     }
 }

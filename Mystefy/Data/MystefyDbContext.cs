@@ -29,10 +29,37 @@ namespace Mystefy.Data
         public DbSet<WasteLossRecordIngredients> WasteLossRecordIngredients { get; set; }
         public DbSet<WasteLossRecordPackaging> WasteLossRecordPackaging { get; set;}
         public DbSet <WasteLossRecordFragrance> WasteLossRecordFragrance { get; set;}
+        public DbSet <WasteLossRecordBatchFinishedProducts> WasteLossRecordBatchFinishedProducts { get; set;}
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+        // WasteLossRecordBatchFinishedProducts
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.WasteLossRecordBatchFinishedProducts)
+                .WithOne(wlrbfp => wlrbfp.User)
+                .HasForeignKey(wlrbfp => wlrbfp.UserId);
 
+            modelBuilder.Entity<FinishedProduct>()
+                .HasMany(fp => fp.WasteLossRecordBatchFinishedProducts)
+                .WithOne(wlrbfp => wlrbfp.FinishedProduct)
+                .HasForeignKey(wlrbfp => wlrbfp.ProductId)
+                // Need to tell EF the name of constraint as EF would surpass the character limit when creating the name for the constraint
+                // This is the problem below...Produc~ is supposed to be ProductId but the character limit would be exceeded 
+                // MIGRATION SNIPPET name: "FK_WasteLossRecordBatchFinishedProducts_FinishedProduct_Produc~"
+                .HasConstraintName("FK_WLRBatchFinishedProducts_FinishedProduct_ProductId");
+
+            modelBuilder.Entity<Batch>()
+                .HasMany(f => f.WasteLossRecordBatchFinishedProducts)
+                .WithOne(wlrbfp => wlrbfp.Batch)
+                .HasForeignKey(wlrbfp => wlrbfp.BatchId);
+
+            modelBuilder.Entity<Warehouse>()
+                .HasMany(w => w.WasteLossRecordBatchFinishedProducts)
+                .WithOne(wlrbfp => wlrbfp.Warehouse)
+                .HasForeignKey(wlrbfp => wlrbfp.WarehouseId);
+
+
+        // WasteLossRecordFragrance
             modelBuilder.Entity<User>()
                 .HasMany(u => u.WasteLossRecordFragrance)
                 .WithOne(wlrf => wlrf.User)
@@ -48,6 +75,7 @@ namespace Mystefy.Data
                 .WithOne(wlrf => wlrf.Warehouse)
                 .HasForeignKey(wlrf => wlrf.WarehouseId);
 
+        // WasteLossRecordPackaging
             modelBuilder.Entity<User>()
                 .HasMany(u => u.WasteLossRecordPackaging)
                 .WithOne(wlrp => wlrp.User)
@@ -63,6 +91,7 @@ namespace Mystefy.Data
                 .WithOne(wlrp => wlrp.Packaging)
                 .HasForeignKey(wlrp => wlrp.PackagingId);
 
+        // WasteLossRecordIngredients
             modelBuilder.Entity<Ingredients>()
                 .HasMany(i => i.WasteLossRecordIngredients)
                 .WithOne(wlri => wlri.Ingredients)

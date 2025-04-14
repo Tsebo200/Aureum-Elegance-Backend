@@ -20,5 +20,9 @@ namespace Mystefy.Models
 
         [Required]
         public int Quantity { get; set; }
+
+        // Navigation Property 
+        public List<WasteLossRecordBatchFinishedProducts> WasteLossRecordBatchFinishedProducts {get; set;} = [];
     }
+  
 }
