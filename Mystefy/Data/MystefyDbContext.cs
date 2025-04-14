@@ -27,9 +27,25 @@ namespace Mystefy.Data
         public DbSet<StockRequestPackagings> StockRequestPackagings { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<WasteLossRecordIngredients> WasteLossRecordIngredients { get; set; }
+        public DbSet<WasteLossRecordPackaging> WasteLossRecordPackaging { get; set;}
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.WasteLossRecordPackaging)
+                .WithOne(wlrp => wlrp.User)
+                .HasForeignKey(wlrp => wlrp.UserId);
+
+            modelBuilder.Entity<Warehouse>()
+                .HasMany(w => w.WasteLossRecordPackaging)
+                .WithOne(wlrp => wlrp.Warehouse)
+                .HasForeignKey(wlrp => wlrp.WarehouseId);
+
+            modelBuilder.Entity<Packaging>()
+                .HasMany(p => p.WasteLossRecordPackaging)
+                .WithOne(wlrp => wlrp.Packaging)
+                .HasForeignKey(wlrp => wlrp.PackagingId);
 
             modelBuilder.Entity<Ingredients>()
                 .HasMany(i => i.WasteLossRecordIngredients)

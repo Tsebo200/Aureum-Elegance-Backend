@@ -32,5 +32,6 @@ namespace Mystefy.Models
     public List<StockRequestIngredients> StockRequestIngredients { get; set; } = [];
     public List<StockRequestPackagings> StockRequestPackagings { get; set; } = [];
     public List<WasteLossRecordIngredients> WasteLossRecordIngredients { get; set; } = [];
+    public List<WasteLossRecordPackaging> WasteLossRecordPackaging { get; set; } = [];
     }
 }
