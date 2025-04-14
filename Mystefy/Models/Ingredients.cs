@@ -46,6 +46,9 @@ namespace Mystefy.Models
 
         // Navigation property: one ingredient can be associated with multiple warehouse ingredient records.
         public List<WarehouseIngredients> WarehouseIngredients { get; set; } = new List<WarehouseIngredients>();
+
+        // Navigation property: one ingredient can be associated with multiple WasteLossRecordIngredients ingredient records.
+        public List<WasteLossRecordIngredients> WasteLossRecordIngredients { get; set; } = new List<WasteLossRecordIngredients>();
     }
 }
 

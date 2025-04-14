@@ -1,27 +1,29 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Mystefy.Models;
 
-public class StockRequest
-
+public class WasteLossRecordIngredients
 {
- 
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id{ get; set; }
-
     [Required]
-    public int AmountRequested{ get; set; }
+    public int QuantityLoss{ get; set; }
     [Required]
-    public string Status { get; set; } = string.Empty;
-    public DateTime RequestDate { get; set; } = DateTime.UtcNow;
-
-
+    public string? Reason{ get; set; }
+    public DateTime DateOfLoss { get; set; } = DateTime.UtcNow;
 
     // Foreign Keys 
+    // FK Constraint formed with User Table
+    [Required]
+    [ForeignKey("User")]
+    public int? UserId { get; set; }
+    //Navigation Property of User
+    public User? User { get; set; }
+
+
     // FK Constraint formed with Ingredients Table
     [Required]
     [ForeignKey("Ingredients")]
@@ -29,12 +31,6 @@ public class StockRequest
     //Navigation Property of Ingredients
     public Ingredients? Ingredients { get; set; }
 
-    [Required]
-    [ForeignKey("User")]
-    // FK Constraint formed with User Table
-    public int? UserId { get; set; }
-    //Navigation Property of User
-    public User? User { get; set; }
 
     // FK Constraint formed with Warehouse Table
     [Required]
@@ -42,5 +38,4 @@ public class StockRequest
     public int WarehouseId { get; set; }
     //Navigation Property of Warehouse
     public Warehouse? Warehouse { get; set; }
-
 }
