@@ -15,9 +15,16 @@ builder.Services.AddControllers()
 options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
     options.JsonSerializerOptions.WriteIndented = true;
 });
+
+builder.Services.AddDbContext<MystefyDbContext>(options =>
+{
+    options.UseInMemoryDatabase("MystefyPerfumes");
+});
+
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 builder.Services.AddEndpointsApiExplorer();
+// Importing the service files and interface
 builder.Services.AddScoped<IIngredientRepository, IngredientRepository>();
 builder.Services.AddScoped<IWarehouseIngredients, WarehouseIngredientsRepo>();
 builder.Services.AddScoped<IAuthService, AuthService>();
