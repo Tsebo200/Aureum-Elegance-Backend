@@ -24,6 +24,11 @@ public class BatchService : IBatchService
     {
         batch.ProductionDate = batch.ProductionDate.ToUniversalTime();
     }
+     // Assign default status if not set (optional safeguard)
+    if (!Enum.IsDefined(typeof(BatchStatus), batch.Status))
+    {
+        batch.Status = BatchStatus.Processing;
+    }
 
         _context.Batches.Add(batch);
             await _context.SaveChangesAsync();
@@ -76,6 +81,7 @@ public class BatchService : IBatchService
 
     existingBatch.ProductionDate = updatedBatch.ProductionDate;
     existingBatch.BatchSize = updatedBatch.BatchSize;
+    existingBatch.Status = updatedBatch.Status;
 
     _context.Batches.Update(existingBatch);
     await _context.SaveChangesAsync();

@@ -4,6 +4,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Mystefy.Models;
 
+public enum BatchStatus
+        {
+                Processing,
+                Completed,
+                Failed,
+                Cancelled
+        }
 public class Batch
 {
         [Key]
@@ -14,13 +21,7 @@ public class Batch
 
         public int BatchSize {get; set;}
 
-        public enum Status
-        {
-                Processing,
-                Completed,
-                Failed,
-                Cancelled
-        }
+        public BatchStatus Status {get; set;}
         
         public List<BatchFinishedProduct> BatchFinishedProducts {get; set;} = [];
         public List<WasteLossRecordBatchFinishedProducts> WasteLossRecordBatchFinishedProducts {get; set;} = [];
