@@ -26,14 +26,92 @@ namespace Mystefy.Data
         public DbSet<StockRequestIngredients> StockRequestIngredients { get; set; }
         public DbSet<StockRequestPackagings> StockRequestPackagings { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<WasteLossRecordIngredients> WasteLossRecordIngredients { get; set; }
+        public DbSet<WasteLossRecordPackaging> WasteLossRecordPackaging { get; set;}
+        public DbSet <WasteLossRecordFragrance> WasteLossRecordFragrance { get; set;}
+        public DbSet <WasteLossRecordBatchFinishedProducts> WasteLossRecordBatchFinishedProducts { get; set;}
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+        // WasteLossRecordBatchFinishedProducts
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.WasteLossRecordBatchFinishedProducts)
+                .WithOne(wlrbfp => wlrbfp.User)
+                .HasForeignKey(wlrbfp => wlrbfp.UserId);
 
+            modelBuilder.Entity<FinishedProduct>()
+                .HasMany(fp => fp.WasteLossRecordBatchFinishedProducts)
+                .WithOne(wlrbfp => wlrbfp.FinishedProduct)
+                .HasForeignKey(wlrbfp => wlrbfp.ProductId)
+                // Need to tell EF the name of constraint as EF would surpass the character limit when creating the name for the constraint
+                // This is the problem below...Produc~ is supposed to be ProductId but the character limit would be exceeded 
+                // MIGRATION SNIPPET name: "FK_WasteLossRecordBatchFinishedProducts_FinishedProduct_Produc~"
+                .HasConstraintName("FK_WLRBatchFinishedProducts_FinishedProduct_ProductId");
+
+            modelBuilder.Entity<Batch>()
+                .HasMany(f => f.WasteLossRecordBatchFinishedProducts)
+                .WithOne(wlrbfp => wlrbfp.Batch)
+                .HasForeignKey(wlrbfp => wlrbfp.BatchId);
+
+            modelBuilder.Entity<Warehouse>()
+                .HasMany(w => w.WasteLossRecordBatchFinishedProducts)
+                .WithOne(wlrbfp => wlrbfp.Warehouse)
+                .HasForeignKey(wlrbfp => wlrbfp.WarehouseId);
+
+
+        // WasteLossRecordFragrance
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.WasteLossRecordFragrance)
+                .WithOne(wlrf => wlrf.User)
+                .HasForeignKey(wlrf => wlrf.UserId);
+
+            modelBuilder.Entity<Fragrance>()
+                .HasMany(f => f.WasteLossRecordFragrance)
+                .WithOne(wlrf => wlrf.Fragrance)
+                .HasForeignKey(wlrf => wlrf.FragranceId);
+
+            modelBuilder.Entity<Warehouse>()
+                .HasMany(w => w.WasteLossRecordFragrance)
+                .WithOne(wlrf => wlrf.Warehouse)
+                .HasForeignKey(wlrf => wlrf.WarehouseId);
+
+        // WasteLossRecordPackaging
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.WasteLossRecordPackaging)
+                .WithOne(wlrp => wlrp.User)
+                .HasForeignKey(wlrp => wlrp.UserId);
+
+            modelBuilder.Entity<Warehouse>()
+                .HasMany(w => w.WasteLossRecordPackaging)
+                .WithOne(wlrp => wlrp.Warehouse)
+                .HasForeignKey(wlrp => wlrp.WarehouseId);
+
+            modelBuilder.Entity<Packaging>()
+                .HasMany(p => p.WasteLossRecordPackaging)
+                .WithOne(wlrp => wlrp.Packaging)
+                .HasForeignKey(wlrp => wlrp.PackagingId);
+
+        // WasteLossRecordIngredients
             modelBuilder.Entity<Ingredients>()
-                .HasMany(i => i.StockRequestPackagings)
-                .WithOne(srp => srp.Ingredients)
-                .HasForeignKey(srp => srp.IngredientsId);
+                .HasMany(i => i.WasteLossRecordIngredients)
+                .WithOne(wlri => wlri.Ingredients)
+                .HasForeignKey(wlri => wlri.IngredientsId);
+
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.WasteLossRecordIngredients)
+                .WithOne(wlri => wlri.User)
+                .HasForeignKey(wlri => wlri.UserId);
+
+            modelBuilder.Entity<Warehouse>()
+                .HasMany(w => w.WasteLossRecordIngredients)
+                .WithOne(wlri => wlri.Warehouse)
+                .HasForeignKey(wlri => wlri.WarehouseId);
+
+
+            modelBuilder.Entity<Packaging>()
+                .HasMany(p => p.StockRequestPackagings)
+                .WithOne(srp => srp.Packaging)
+                .HasForeignKey(srp => srp.PackagingId);
 
             modelBuilder.Entity<User>()
                 .HasMany(u => u.StockRequestPackagings)

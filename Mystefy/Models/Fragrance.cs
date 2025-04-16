@@ -8,7 +8,7 @@ public class Fragrance
 {
      [Key] 
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-     public int Id { get; set; }
+    public int Id { get; set; }
     public required string Name { get; set; }
     public required string Description { get; set; }
     public decimal Cost { get; set; }
@@ -20,4 +20,5 @@ public class Fragrance
     public List<WarehouseStock>WarehouseStocks {get; set;} = [];
 
     public List<FragranceIngredient>FragranceIngredients {get; set;} = [];
+    public List<WasteLossRecordFragrance> WasteLossRecordFragrance { get; set; } = [];
 }

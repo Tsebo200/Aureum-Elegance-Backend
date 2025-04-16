@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
 using Mystefy.Data;
@@ -14,10 +15,18 @@ builder.Services.AddControllers()
 .AddJsonOptions(options => {
 options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
     options.JsonSerializerOptions.WriteIndented = true;
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
+
+builder.Services.AddDbContext<MystefyDbContext>(options =>
+{
+    options.UseInMemoryDatabase("MystefyPerfumes");
+});
+
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 builder.Services.AddEndpointsApiExplorer();
+// Importing the service files and interface
 builder.Services.AddScoped<IIngredientRepository, IngredientRepository>();
 builder.Services.AddScoped<IWarehouseIngredients, WarehouseIngredientsRepo>();
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -29,11 +38,16 @@ builder.Services.AddScoped<IWarehouseStockService, WarehouseStockService>();
 builder.Services.AddScoped<IFragranceIngredientService, FragranceIngredientService>();
 builder.Services.AddScoped<IBatchService, BatchService>();
 builder.Services.AddScoped<IPackagingRepository, PackagingRepositoryService>();
+builder.Services.AddScoped<IStockRequestRepository, StockRequestRepositoryService>();
 builder.Services.AddScoped<IStockRequestIngredientsRepository, StockRequestIngredientsRepositoryService>();
 builder.Services.AddScoped<IStockRequestPackagingsRepository, StockRequestPackagingsRepositoryService>();
 builder.Services.AddScoped<IDeliveryRepository, DeliveryRepository>();
 builder.Services.AddScoped<IDeliveryIngredientsRepository, DeliveryIngredientsRepository>();
 builder.Services.AddScoped<ISupplierService, SupplierService>();
+builder.Services.AddScoped<IWasteLossRecordIngredientsRepository, WasteLossRecordIngredientsRepositoryService>();
+builder.Services.AddScoped<IWasteLossRecordPackagingRepository, WasteLossRecordPackagingRepositoryService>();
+builder.Services.AddScoped<IWasteLossRecordFragranceRepository, WasteLossRecordFragranceRepositoryService>();
+builder.Services.AddScoped<IWasteLossRecordBatchFinishedProductsRepository, WasteLossRecordBatchFinishedProductsRepositoryService>();
 
 
 Env.Load();

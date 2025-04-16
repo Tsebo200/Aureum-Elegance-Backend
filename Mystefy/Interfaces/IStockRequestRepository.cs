@@ -1,16 +1,17 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Mystefy.Models;
 
 namespace Mystefy.Interfaces
 {
     public interface IStockRequestRepository
     {
-        Task<IEnumerable<StockRequest>> GetStockRequestsAsync();
-        Task<StockRequest?> GetStockRequestWithDetailsAsync(int stockRequestId);
-        Task<StockRequest> CreateStockRequestAsync(StockRequest stockRequest);
-        Task<StockRequest> UpdateStockRequestAsync(StockRequest stockRequest);
-        Task<bool> DeleteStockRequestAsync(int stockRequestId);
-        Task<bool> StockRequestExistsAsync(int stockRequestId);
+        Task<List<StockRequest>> GetAllStockRequestsAsync();
+        Task<StockRequest> CreateStockRequestAsync(StockRequest request);
+        Task<StockRequest?> GetStockRequestByIdAsync(int requestId);
+        Task<List<StockRequest>> GetRequestsByUserIdAsync(int userId);
+        Task<List<StockRequest>> GetRequestsByWarehouseIdAsync(int warehouseId);
+        Task<List<StockRequest>> GetRequestsByIngredientIdAsync(int ingredientId);
+        Task<List<StockRequest>> GetRequestsByStatusAsync(string status);
+        Task<StockRequest?> UpdateStockRequestAsync(StockRequest request);
+        Task<StockRequest?> DeleteStockRequestAsync(int requestId);
     }
 }

@@ -12,7 +12,8 @@ namespace Mystefy.Interfaces
 
         Task<List<StockRequestPackagings>> GetRequestsByUserIdAsync(int userId);
         Task<List<StockRequestPackagings>> GetRequestsByWarehouseIdAsync(int warehouseId);
-        Task<List<StockRequestPackagings>> GetRequestsByIngredientIdAsync(int ingredientId);
+        Task<List<StockRequestPackagings>> GetRequestsByPackagingIdAsync(int packagingId);
         Task<List<StockRequestPackagings>> GetRequestsByStatusAsync(StockRequestPackagings.StockPackagingStatus status);
     }
 }
+

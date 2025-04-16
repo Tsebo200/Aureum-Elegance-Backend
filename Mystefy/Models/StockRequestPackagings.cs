@@ -19,20 +19,19 @@ public class StockRequestPackagings
     public StockPackagingStatus Status{ get; set; }
     public DateTime RequestDate { get; set; } = DateTime.UtcNow;
 
-
-    // Foreign Keys 
-    // FK Constraint formed with Ingredients Table
+    // FK Constraint formed with Packaging Table
     [Required]
-    [ForeignKey("Ingredients")]
-    public int IngredientsId { get; set; }
-    public Ingredients? Ingredients { get; set; }
+    [ForeignKey("Packaging")]
+    public int PackagingId { get; set; }
+    //Navigation Property of Packaging
+    public Packaging? Packaging { get; set; }
 
 
     [Required]
     [ForeignKey("User")]
     // FK Constraint formed with User Table
     public int? UserId { get; set; }
-    //Navigation Property of Ingredients
+    //Navigation Property of User
     public User? User { get; set; }
 
 
@@ -40,6 +39,6 @@ public class StockRequestPackagings
     [Required]
     [ForeignKey("Warehouse")]
     public int WarehouseId { get; set; }
-    //Navigation Property of Ingredients
+    //Navigation Property of Warehouse
     public Warehouse? Warehouse { get; set; }
 }
