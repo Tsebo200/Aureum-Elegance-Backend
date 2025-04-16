@@ -30,7 +30,7 @@ namespace Mystefy.Controllers
             return await _context.FinishedProduct.ToListAsync();
         }
 
-        // GET: api/Mystefy/finished-product/5
+        // GET: api/Mystefy/finished-product
         [HttpGet("{id}")]
         public async Task<ActionResult<FinishedProduct>> GetFinishedProduct(int id)
         {

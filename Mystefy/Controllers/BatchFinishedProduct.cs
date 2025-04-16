@@ -18,6 +18,8 @@ namespace Mystefy.Controllers
             _service = service;
         }
 
+
+        // READ - Get all finished batch products
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BatchFinishedProductDTO>>> GetAll()
         {
@@ -25,6 +27,8 @@ namespace Mystefy.Controllers
             return Ok(products);
         }
 
+
+        // READ - Get a specific finished batch product by batchId and productId
         [HttpGet("{batchId:int}/{productId:int}")]
         public async Task<ActionResult<BatchFinishedProductDTO>> Get(int batchId, int productId)
         {
@@ -33,6 +37,7 @@ namespace Mystefy.Controllers
             return Ok(product);
         }
 
+        // CREATE - Add a new finished batch product
         [HttpPost]
         public async Task<ActionResult> Create([FromBody] BatchFinishedProductDTO dto)
         {
@@ -41,6 +46,8 @@ namespace Mystefy.Controllers
             return Ok();
         }
 
+
+        // UPDATE - Update an existing finished batch product
         [HttpPut("{batchId:int}/{productId:int}")]
         public async Task<ActionResult> Update(int batchId, int productId, [FromBody] BatchFinishedProductDTO dto)
         {
@@ -52,6 +59,8 @@ namespace Mystefy.Controllers
             return Ok();
         }
 
+        
+        // DELETE - Remove a finished batch product
         [HttpDelete("{batchId:int}/{productId:int}")]
         public async Task<ActionResult> Delete(int batchId, int productId)
         {

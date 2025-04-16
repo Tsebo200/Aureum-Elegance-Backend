@@ -65,7 +65,7 @@ namespace Mystefy.Controllers
             return Ok(new UserDTO(user!));
         }
 
-        // DELETE: api/Mystefy/users/5
+        // DELETE: api/Mystefy/users
         [HttpDelete("users/{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
