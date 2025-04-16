@@ -19,8 +19,8 @@ namespace Mystefy.Controllers
         {
             _warehouseService = warehouseService;
         }
-        
 
+        //Gets basic warehouse information
         // GET: api/Warehouse
         [HttpGet]
         public async Task<ActionResult<IEnumerable<WarehouseDTO>>> GetWarehouses()
@@ -34,6 +34,8 @@ namespace Mystefy.Controllers
 
             return Ok(warehouseDtos);
         }
+
+        //Checks stockrequests for each warehouse
         [HttpGet("WithStockRequests")]
         public async Task<ActionResult<IEnumerable<WarehouseStockRequestDTO>>> GetAllWarehousesAndStockRequests()
         {
@@ -58,6 +60,7 @@ namespace Mystefy.Controllers
         [HttpGet("WithWarehouseStock")]
         public async Task<ActionResult<IEnumerable<Warehouse>>> GetAllWarehousesAndWarehouseStock()
 {
+    //Gets and organises the warehouse stock in the api to display
     var warehouses = await _warehouseService.GetAllWarehousesAndWarehouseStock();
 
     var warehouseDtos = warehouses.Select(w => new WarehouseShowStock
@@ -92,6 +95,7 @@ namespace Mystefy.Controllers
 
 
         // GET: api/Warehouse/{id}
+        //displays Warehouse Information through ID
         [HttpGet("{WarehouseID}")]
         public async Task<ActionResult<Warehouse>> GetWarehouse(int WarehouseID)
         {
@@ -106,6 +110,7 @@ namespace Mystefy.Controllers
         }
 
         // POST: api/Warehouse
+        //Creating new warehouse with basic dto
         [HttpPost]
         public async Task<ActionResult<Warehouse>> PostWarehouse(WarehouseDTO warehouseDto)
         {
@@ -120,6 +125,7 @@ namespace Mystefy.Controllers
         }
 
         // PUT: api/Warehouse/{id}
+        //update warehouse information
         [HttpPut("{id}")]
         public async Task<IActionResult> PutWarehouse(int id, Warehouse warehouse)
         {
@@ -134,6 +140,7 @@ namespace Mystefy.Controllers
         }
 
         // DELETE: api/Warehouse/{id}
+        //Delete warehouse information
         [HttpDelete("{WarehouseID}")]
         public async Task<IActionResult> DeleteWarehouse(int WarehouseID)
         {

@@ -26,6 +26,7 @@ public class FragranceServiceTest
     public async Task AddFragranceAsync_ReturnsCreatedFragrance_WhenValidInput(){
 
         //Act
+        //Organising DTO and fragrance values
          var fragranceDto = new PostFragranceDTO
             {
                 Name = "Mystic Musk",
@@ -45,13 +46,16 @@ public class FragranceServiceTest
         };
         _mockFragranceService.Setup(x => x.AddFragrance(It.IsAny<Fragrance>())).ReturnsAsync(newFragrance);
         //Arrange
-
+        //Gets result
         var result = await _newFragranceController.AddFragrance(fragranceDto);
 
         //Assert
+        // Checks that the recieved result is of type CreatedAtActionResult
         var createdResult = Assert.IsType<CreatedAtActionResult>(result);
+        //Checkcs that the the returned value is of type fragrance
         var returnValue = Assert.IsType<Fragrance>(createdResult.Value);
 
+        // Had to do each value since looking at the whole object may cause a problem when testing
         Assert.Equal(newFragrance.Id, returnValue.Id);
         Assert.Equal(newFragrance.Name, returnValue.Name);
         Assert.Equal(newFragrance.Description, returnValue.Description);
