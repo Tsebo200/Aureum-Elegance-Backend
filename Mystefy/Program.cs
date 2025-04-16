@@ -18,10 +18,11 @@ options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
 
-builder.Services.AddDbContext<MystefyDbContext>(options =>
-{
-    options.UseInMemoryDatabase("MystefyPerfumes");
-});
+// Creates In local Database but gives issues with Swagger
+// builder.Services.AddDbContext<MystefyDbContext>(options =>
+// {
+//     options.UseInMemoryDatabase("MystefyPerfumes");
+// });
 
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
