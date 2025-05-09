@@ -11,12 +11,12 @@ using Xunit;
 
 namespace MystefyUnitTest.Tests
 {
-    public class PackagingControllerTest
+    public class PackagingServiceTest
     {
         private readonly Mock<IPackagingRepository> _mockPackagingRepo;
         private readonly PackagingController _packagingController;
 
-        public PackagingControllerTest()
+        public PackagingServiceTest()
         {
             _mockPackagingRepo = new Mock<IPackagingRepository>();
             _packagingController = new PackagingController(_mockPackagingRepo.Object);
