@@ -13,8 +13,8 @@ namespace Mystefy.Interfaces
         Task<Packaging?> DeletePackagingAsync(int packagingId);
 
         // Methods to manage the connection with FinishedProduct
-        Task AddFinishedProductToPackagingAsync(int packagingId, int finishedProductId);
-        Task RemoveFinishedProductFromPackagingAsync(int packagingId, int finishedProductId);
+        // Task AddFinishedProductToPackagingAsync(int packagingId, int finishedProductId);
+        // Task RemoveFinishedProductFromPackagingAsync(int packagingId, int finishedProductId);
     }
 }
 

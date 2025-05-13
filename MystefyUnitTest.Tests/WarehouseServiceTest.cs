@@ -261,7 +261,6 @@ public async Task GetWasteLossFinishedProductByWarehouseId_ReturnsOkResult_WhenF
                 {
                     ProductID = 1,
                     FragranceID = 2,
-                    PackagingID = 3,
                     Quantity = 100
                 },
                 User = new User

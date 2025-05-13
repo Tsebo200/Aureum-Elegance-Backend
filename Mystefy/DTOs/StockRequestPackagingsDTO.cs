@@ -28,7 +28,7 @@ public class StockRequestPackagingsPackagingDTO{
     public required string Name{ get; set; }
     public string? Type{ get; set; }
     public int Stock{ get; set; }
-    public PackagingFinishedProductDTO? FinishedProduct { get; set; }
+    // public PackagingFinishedProductDTO? FinishedProduct { get; set; }
 }
 
 public class StockRequestPackagingsWarehouseDTO

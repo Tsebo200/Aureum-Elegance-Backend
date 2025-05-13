@@ -39,10 +39,7 @@ public class StockRequestPackagingsController : ControllerBase
                 Name = r.Packaging.Name,
                 Type = r.Packaging.Type,
                 Stock = r.Packaging.Stock,
-                FinishedProduct = r.Packaging.FinishedProduct != null ? new PackagingFinishedProductDTO
-                {
-                    // Map fields for FinishedProduct here
-                } : null
+                
             } : null,
             Warehouse = r.Warehouse != null ? new StockRequestPackagingsWarehouseDTO
             {
@@ -81,10 +78,10 @@ public class StockRequestPackagingsController : ControllerBase
                 Name = request.Packaging.Name,
                 Type = request.Packaging.Type,
                 Stock = request.Packaging.Stock,
-                FinishedProduct = request.Packaging.FinishedProduct != null ? new PackagingFinishedProductDTO
-                {
-                    // Map fields for FinishedProduct here
-                } : null
+                // FinishedProduct = request.Packaging.FinishedProduct != null ? new PackagingFinishedProductDTO
+                // {
+                //     // Map fields for FinishedProduct here
+                // } : null
             } : null,
             Warehouse = request.Warehouse != null ? new StockRequestPackagingsWarehouseDTO
             {
@@ -123,10 +120,10 @@ public class StockRequestPackagingsController : ControllerBase
                 Name = created.Packaging.Name,
                 Type = created.Packaging.Type,
                 Stock = created.Packaging.Stock,
-                FinishedProduct = created.Packaging.FinishedProduct != null ? new PackagingFinishedProductDTO
-                {
-                    // Map fields for FinishedProduct here
-                } : null
+                // FinishedProduct = created.Packaging.FinishedProduct != null ? new PackagingFinishedProductDTO
+                // {
+                //     // Map fields for FinishedProduct here
+                // } : null
             } : null,
             Warehouse = created.Warehouse != null ? new StockRequestPackagingsWarehouseDTO
             {

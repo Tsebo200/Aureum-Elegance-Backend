@@ -6,7 +6,7 @@ namespace Mystefy.DTOs
 {
     public int ProductID { get; set; }
     public int FragranceID { get; set; }
-    public int PackagingID { get; set; }
+    // public int PackagingID { get; set; }
     public int Quantity { get; set; }
 
     public FinishedProductDTO() {}
@@ -15,7 +15,6 @@ namespace Mystefy.DTOs
     {
         ProductID = model.ProductID;
         FragranceID = model.FragranceID;
-        PackagingID = model.PackagingID;
         Quantity = model.Quantity;
     }
 }

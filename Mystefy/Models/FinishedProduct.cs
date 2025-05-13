@@ -14,9 +14,7 @@ namespace Mystefy.Models
         public int FragranceID { get; set; }
         public Fragrance Fragrance { get; set; } = null!;
 
-        [ForeignKey("Packaging")]
-        public int PackagingID { get; set; }
-        public Packaging Packaging { get; set; } = null!;
+        
 
         [Required]
         public int Quantity { get; set; }

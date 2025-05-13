@@ -143,10 +143,7 @@ namespace Mystefy.Data
                 .WithMany(f => f.FinishedProduct)
                 .HasForeignKey(fp => fp.FragranceID);
 
-            modelBuilder.Entity<FinishedProduct>()
-                .HasOne(fp => fp.Packaging)
-                .WithMany(p => p.FinishedProduct)
-                .HasForeignKey(fp => fp.PackagingID);
+            
 
             modelBuilder.Entity<Ingredients>()
                 .HasMany(i => i.StockRequests)
