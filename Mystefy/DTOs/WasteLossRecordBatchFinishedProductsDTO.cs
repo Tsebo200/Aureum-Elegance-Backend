@@ -26,7 +26,7 @@ public class WasteLossRecordBatchFinishedProductsFinishedProductDTO
 {
     public int ProductID { get; set; }
     public int FragranceID { get; set; }
-    // public int PackagingID { get; set; }
+    public string? ProductName { get; set; }
     public int Quantity { get; set; }
 }
 

@@ -37,7 +37,7 @@ namespace Mystefy.Controllers
                 {
                     ProductID = record.FinishedProduct.ProductID,
                     FragranceID = record.FinishedProduct.FragranceID,
-  
+                    ProductName = record.FinishedProduct.ProductName,
                     Quantity = record.FinishedProduct.Quantity
                 } : null,
                 Batch = record.Batch != null ? new WasteLossRecordBatchFinishedProductsBatchDTO
@@ -81,7 +81,7 @@ namespace Mystefy.Controllers
                 {
                     ProductID = record.FinishedProduct.ProductID,
                     FragranceID = record.FinishedProduct.FragranceID,
-                  
+                     ProductName = record.FinishedProduct.ProductName,
                     Quantity = record.FinishedProduct.Quantity
                 } : null,
                 Batch = record.Batch != null ? new WasteLossRecordBatchFinishedProductsBatchDTO
@@ -194,6 +194,7 @@ namespace Mystefy.Controllers
                 {
                     ProductID = record.FinishedProduct.ProductID,
                     FragranceID = record.FinishedProduct.FragranceID,
+                     ProductName = record.FinishedProduct.ProductName,
                     Quantity = record.FinishedProduct.Quantity
                 } : null
             }).ToList();

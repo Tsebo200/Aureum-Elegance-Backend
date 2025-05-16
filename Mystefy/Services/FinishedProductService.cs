@@ -34,7 +34,7 @@ namespace Mystefy.Services
                 return await Task.FromResult(false);
 
             existingProduct.FragranceID = product.FragranceID;
-            // existingProduct.PackagingID = product.PackagingID;
+            existingProduct.ProductName = product.ProductName;
             existingProduct.Quantity = product.Quantity;
 
             return await Task.FromResult(true);

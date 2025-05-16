@@ -170,8 +170,9 @@ namespace Mystefy.Migrations
                     b.Property<int>("FragranceID")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("PackagingId")
-                        .HasColumnType("integer");
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
@@ -179,8 +180,6 @@ namespace Mystefy.Migrations
                     b.HasKey("ProductID");
 
                     b.HasIndex("FragranceID");
-
-                    b.HasIndex("PackagingId");
 
                     b.ToTable("FinishedProduct");
                 });
@@ -782,10 +781,6 @@ namespace Mystefy.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Mystefy.Models.Packaging", null)
-                        .WithMany("FinishedProduct")
-                        .HasForeignKey("PackagingId");
-
                     b.Navigation("Fragrance");
                 });
 
@@ -1083,8 +1078,6 @@ namespace Mystefy.Migrations
 
             modelBuilder.Entity("Mystefy.Models.Packaging", b =>
                 {
-                    b.Navigation("FinishedProduct");
-
                     b.Navigation("StockRequestPackagings");
 
                     b.Navigation("WasteLossRecordPackaging");
