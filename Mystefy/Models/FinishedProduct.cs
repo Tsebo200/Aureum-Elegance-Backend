@@ -17,13 +17,14 @@ namespace Mystefy.Models
         public int FragranceID { get; set; }
         public Fragrance Fragrance { get; set; } = null!;
 
-        
+
 
         [Required]
         public int Quantity { get; set; }
 
         // Navigation Property 
-        public List<WasteLossRecordBatchFinishedProducts> WasteLossRecordBatchFinishedProducts {get; set;} = [];
+        public List<WasteLossRecordBatchFinishedProducts> WasteLossRecordBatchFinishedProducts { get; set; } = [];
+        public List<FinishedProductPackaging> FinishedProductPackaging {get; set;} = [];
     }
   
 }

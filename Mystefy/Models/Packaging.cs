@@ -19,4 +19,6 @@ public class Packaging
 
     public List<StockRequestPackagings> StockRequestPackagings { get; set; } = [];
     public List<WasteLossRecordPackaging> WasteLossRecordPackaging { get; set; } = [];
+    public List<FinishedProductPackaging> FinishedProductPackaging {get; set;} = [];
+
 }
