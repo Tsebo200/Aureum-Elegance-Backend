@@ -49,6 +49,7 @@ builder.Services.AddScoped<IWasteLossRecordIngredientsRepository, WasteLossRecor
 builder.Services.AddScoped<IWasteLossRecordPackagingRepository, WasteLossRecordPackagingRepositoryService>();
 builder.Services.AddScoped<IWasteLossRecordFragranceRepository, WasteLossRecordFragranceRepositoryService>();
 builder.Services.AddScoped<IWasteLossRecordBatchFinishedProductsRepository, WasteLossRecordBatchFinishedProductsRepositoryService>();
+builder.Services.AddScoped<IFinishedProductPackaging, FinishedProductPackagingService>();
 
 
 Env.Load();
