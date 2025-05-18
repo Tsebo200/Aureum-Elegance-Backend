@@ -64,7 +64,7 @@ namespace MystefyUnitTest.Tests
         public async Task GetFragranceIngredient_ReturnsNotFound_IfNotExists()
         {
             // Arrange
-            _mockFragranceIngredientsService.Setup(s => s.GetFragranceIgredientsById(1, 2)).ReturnsAsync((FragranceIngredient)null);
+            _mockFragranceIngredientsService.Setup(s => s.GetFragranceIgredientsById(1, 2)).ReturnsAsync((FragranceIngredient?)null);
 
             // Act
             var result = await _fragranceIngredientsController.GetFragranceIngredient(1, 2);
