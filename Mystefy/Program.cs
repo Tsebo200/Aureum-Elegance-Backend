@@ -8,6 +8,7 @@ using Mystefy.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 
+
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 //make sure that we avoid any object loops 
@@ -60,7 +61,22 @@ builder.Services.AddDbContext<MystefyDbContext>(options => options.UseNpgsql(con
 // var connectionString = builder.Configuration.GetConnectionString("DB_CONNECTION");
 // builder.Services.AddDbContext<MystefyDbContext>(options => options.UseNpgsql(connectionString));
 
+
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("http://localhost:5123")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
+
+
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -71,6 +87,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("AllowFrontend");
 
 var summaries = new[]
 {

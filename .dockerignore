@@ -2,3 +2,6 @@ bin/
 obj/
 *.md
 *.user
+*.sln
+*./bin/
+*./obj/
