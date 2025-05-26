@@ -16,6 +16,9 @@ public class Packaging
     public int Stock { get; set; }
 
     // Navigation property
-    public ICollection<FinishedProduct> FinishedProduct { get; set; } = new List<FinishedProduct>();
+
+    public List<StockRequestPackagings> StockRequestPackagings { get; set; } = [];
+    public List<WasteLossRecordPackaging> WasteLossRecordPackaging { get; set; } = [];
+    public List<FinishedProductPackaging> FinishedProductPackaging {get; set;} = [];
 
 }

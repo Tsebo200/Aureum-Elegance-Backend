@@ -21,9 +21,9 @@ namespace Mystefy.Services
             _context.Packaging.Add(packaging);
             await _context.SaveChangesAsync();
 
-            await _context.Entry(packaging)
-                .Collection(p => p.FinishedProduct)
-                .LoadAsync();
+            // await _context.Entry(packaging)
+            //     .Collection(p => p.FinishedProduct)
+            //     .LoadAsync();
 
             return packaging;
         }
@@ -31,28 +31,28 @@ namespace Mystefy.Services
         public async Task<List<Packaging>> GetAllPackagingAsync()
         {
             return await _context.Packaging
-                .Include(p => p.FinishedProduct)
+                // .Include(p => p.FinishedProduct)
                 .ToListAsync();
         }
 
         public async Task<Packaging?> GetPackagingWithDetailsAsync(int packagingId)
         {
             return await _context.Packaging
-                .Include(p => p.FinishedProduct)
+                // .Include(p => p.FinishedProduct)
                 .FirstOrDefaultAsync(p => p.Id == packagingId);
         }
 
         public async Task<Packaging?> GetPackagingByNameAsync(string packagingName)
         {
             return await _context.Packaging
-                .Include(p => p.FinishedProduct)
+                // .Include(p => p.FinishedProduct)
                 .FirstOrDefaultAsync(p => p.Name == packagingName);
         }
 
         public async Task<Packaging?> GetPackagingByTypeAsync(string packagingType)
         {
             return await _context.Packaging
-                .Include(p => p.FinishedProduct)
+                // .Include(p => p.FinishedProduct)
                 .FirstOrDefaultAsync(p => p.Type == packagingType);
         }
 
@@ -64,9 +64,7 @@ namespace Mystefy.Services
             {
                 await _context.SaveChangesAsync();
 
-                await _context.Entry(packaging)
-                    .Collection(p => p.FinishedProduct)
-                    .LoadAsync();
+                await _context.Entry(packaging).ReloadAsync();
 
                 return packaging;
             }
@@ -97,41 +95,7 @@ namespace Mystefy.Services
             return packaging;
         }
 
-        public async Task AddFinishedProductToPackagingAsync(int packagingId, int finishedProductId)
-        {
-            var packaging = await _context.Packaging
-                .Include(p => p.FinishedProduct)
-                .FirstOrDefaultAsync(p => p.Id == packagingId);
-
-            if (packaging == null)
-                throw new KeyNotFoundException("Packaging not found");
-
-            var finishedProduct = await _context.FinishedProduct.FindAsync(finishedProductId);
-            if (finishedProduct == null)
-                throw new KeyNotFoundException("Finished product not found");
-
-            finishedProduct.PackagingID = packagingId;
-            packaging.FinishedProduct.Add(finishedProduct);
-
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task RemoveFinishedProductFromPackagingAsync(int packagingId, int finishedProductId)
-        {
-            var packaging = await _context.Packaging
-                .Include(p => p.FinishedProduct)
-                .FirstOrDefaultAsync(p => p.Id == packagingId);
-
-            if (packaging == null)
-                throw new KeyNotFoundException("Packaging not found");
-
-            var finishedProduct = packaging.FinishedProduct.FirstOrDefault(fp => fp.ProductID == finishedProductId);
-            if (finishedProduct == null)
-                throw new KeyNotFoundException("Finished product not associated with this packaging");
-
-            packaging.FinishedProduct.Remove(finishedProduct);
-            await _context.SaveChangesAsync();
-        }
+       
 
         // Private helper method to check existence of packaging
          private async Task<bool> PackagingExists(int id)

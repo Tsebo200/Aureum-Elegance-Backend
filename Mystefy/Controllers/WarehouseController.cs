@@ -19,8 +19,8 @@ namespace Mystefy.Controllers
         {
             _warehouseService = warehouseService;
         }
-        
 
+        //Gets basic warehouse information
         // GET: api/Warehouse
         [HttpGet]
         public async Task<ActionResult<IEnumerable<WarehouseDTO>>> GetWarehouses()
@@ -34,30 +34,13 @@ namespace Mystefy.Controllers
 
             return Ok(warehouseDtos);
         }
-        [HttpGet("WithStockRequests")]
-        public async Task<ActionResult<IEnumerable<WarehouseStockRequestDTO>>> GetAllWarehousesAndStockRequests()
-        {
-            var warehouses = await _warehouseService.GetAllWarehousesAndStockRequests();
-            var warehouseDtos = warehouses.Select(w => new WarehouseStockRequestDTO
-            {
-                Name = w.Name,
-                location = w.Location,
-                StockRequests = w.StockRequests != null ? new WStockRequestsDTO
-                {
-                    Id = w.StockRequests.First().Id,
-                    AmountRequested = w.StockRequests.First().AmountRequested,
-                    Status = w.StockRequests.First().Status,
-                    RequestDate = w.StockRequests.First().RequestDate
-                }
-                : null
-            }).ToList();
 
-            return Ok(warehouseDtos);
-        }
+       
 
         [HttpGet("WithWarehouseStock")]
         public async Task<ActionResult<IEnumerable<Warehouse>>> GetAllWarehousesAndWarehouseStock()
 {
+    //Gets and organises the warehouse stock in the api to display
     var warehouses = await _warehouseService.GetAllWarehousesAndWarehouseStock();
 
     var warehouseDtos = warehouses.Select(w => new WarehouseShowStock
@@ -92,6 +75,7 @@ namespace Mystefy.Controllers
 
 
         // GET: api/Warehouse/{id}
+        //displays Warehouse Information through ID
         [HttpGet("{WarehouseID}")]
         public async Task<ActionResult<Warehouse>> GetWarehouse(int WarehouseID)
         {
@@ -106,6 +90,7 @@ namespace Mystefy.Controllers
         }
 
         // POST: api/Warehouse
+        //Creating new warehouse with basic dto
         [HttpPost]
         public async Task<ActionResult<Warehouse>> PostWarehouse(WarehouseDTO warehouseDto)
         {
@@ -120,6 +105,7 @@ namespace Mystefy.Controllers
         }
 
         // PUT: api/Warehouse/{id}
+        //update warehouse information
         [HttpPut("{id}")]
         public async Task<IActionResult> PutWarehouse(int id, Warehouse warehouse)
         {
@@ -134,6 +120,7 @@ namespace Mystefy.Controllers
         }
 
         // DELETE: api/Warehouse/{id}
+        //Delete warehouse information
         [HttpDelete("{WarehouseID}")]
         public async Task<IActionResult> DeleteWarehouse(int WarehouseID)
         {
@@ -147,6 +134,187 @@ namespace Mystefy.Controllers
             return NoContent();
         }
 
-        
+    [HttpGet("WasteLossIngredients/{warehouseId}")]
+public async Task<ActionResult<WarehouseWasteLossRecordsForIngredientsDTO>> GetWasteLossIngredientsByWarehouseId(int warehouseId)
+{
+    var warehouse = await _warehouseService.GetWasteLossIngredientsByWarehouseId(warehouseId);
+
+    if (warehouse == null)
+    {
+        return NotFound();
     }
+
+    var dto = new WarehouseWasteLossRecordsForIngredientsDTO
+    {
+        Name = warehouse.Name,
+        location = warehouse.Location,
+        WasteLossRecordIngredients = warehouse.WasteLossRecordIngredients
+            .Where(w => w != null)
+            .Select(w => new WarehouseWasteLossRecordIngredientsDTO
+            {
+                Id = w.Id,
+                QuantityLoss = w.QuantityLoss,
+                Reason = w.Reason,
+                DateOfLoss = w.DateOfLoss,
+                User = w.User != null ? new WarehouseUserDTO
+                {
+                    UserId = w.User.UserId,
+                    Name = w.User.Name,
+                    Role = w.User.Role.ToString()
+                } : null,
+                Ingredients = w.Ingredients != null ? new WarehouseWasteLossGetIngredientsDTO
+                {
+                    Id = w.Ingredients.Id,
+                    Name = w.Ingredients.Name,
+                    Type = w.Ingredients.Type,
+                    Cost = w.Ingredients.Cost,
+                    IsExpired = w.Ingredients.IsExpired
+                } : null
+            }).ToList()
+    };
+
+    return Ok(dto);
+}
+
+// GET: api/Warehouse/WasteLossPackaging/{warehouseId}
+[HttpGet("WasteLossPackaging/{warehouseId}")]
+public async Task<ActionResult<WarehouseWasteLossRecordsForPackagingDTO>> GetWasteLossPackagingByWarehouseId(int warehouseId)
+{
+    var warehouse = await _warehouseService.GetWasteLossPackagingByWarehouseId(warehouseId);
+
+    if (warehouse == null)
+    {
+        return NotFound();
+    }
+
+    var dto = new WarehouseWasteLossRecordsForPackagingDTO
+    {
+        Name = warehouse.Name,
+        location = warehouse.Location,
+        WasteLossRecordPackaging = warehouse.WasteLossRecordPackaging
+            .Where(w => w != null)
+            .Select(w => new WarehouseWasteLossRecordPackagingDTO
+            {
+                Id = w.Id,
+                QuantityLoss = w.QuantityLoss,
+                Reason = w.Reason,
+                DateOfLoss = w.DateOfLoss,
+                User = w.User != null ? new WarehouseUserDTO
+                {
+                    UserId = w.User.UserId,
+                    Name = w.User.Name,
+                    Role = w.User.Role.ToString()
+                } : null,
+                Packaging = w.Packaging != null ? new WarehouseWasteLossGetPackagingDTO
+                {
+                    Id = w.Packaging.Id,
+                    Name = w.Packaging.Name,
+                    Type = w.Packaging.Type,
+                    Stock = w.Packaging.Stock
+                } : null
+            }).ToList()
+    };
+
+    return Ok(dto);
+}
+
+// GET: api/Warehouse/WasteLossFragrance/{warehouseId}
+[HttpGet("WasteLossFragrance/{warehouseId}")]
+public async Task<ActionResult<WarehouseWasteLossRecordsForFragrancesDTO>> GetWasteLossFragranceByWarehouseId(int warehouseId)
+{
+    var warehouse = await _warehouseService.GetWasteLossFragranceByWarehouseId(warehouseId);
+
+    if (warehouse == null)
+    {
+        return NotFound();
+    }
+
+    var dto = new WarehouseWasteLossRecordsForFragrancesDTO
+    {
+        Name = warehouse.Name,
+        location = warehouse.Location,
+        WasteLossRecordFragrance = warehouse.WasteLossRecordFragrance
+            .Where(w => w != null)
+            .Select(w => new WarehouseWasteLossRecordFragranceDTO
+            {
+                Id = w.Id,
+                QuantityLoss = w.QuantityLoss,
+                Reason = w.Reason,
+                DateOfLoss = w.DateOfLoss,
+                User = w.User != null ? new WarehouseUserDTO
+                {
+                    UserId = w.User.UserId,
+                    Name = w.User.Name,
+                    Role = w.User.Role.ToString()
+                } : null,
+                Fragrances = w.Fragrance != null ? new WarehouseWasteLossGetFragranceDTO
+                {
+                    Id = w.Fragrance.Id,
+                    Name = w.Fragrance.Name,
+                    Description = w.Fragrance.Description,
+                    Cost = w.Fragrance.Cost,
+                    ExpiryDate = w.Fragrance.ExpiryDate,
+                    Volume = w.Fragrance.Volume
+                } : null
+            }).ToList()
+    };
+
+    return Ok(dto);
+}
+
+
+
+// GET: api/Warehouse/WasteLossFinishedProduct/{warehouseId}
+[HttpGet("WasteLossFinishedProduct/{warehouseId}")]
+public async Task<ActionResult<WarehouseWasteLossRecordsForBatchFinishedProductsDTO>> GetWasteLossFinishedProductByWarehouseId(int warehouseId)
+{
+    var warehouse = await _warehouseService.GetWasteLossBatchFinishedProductsByWarehouseId(warehouseId);
+
+    if (warehouse == null)
+    {
+        return NotFound();
+    }
+
+    var dto = new WarehouseWasteLossRecordsForBatchFinishedProductsDTO
+    {
+        Name = warehouse.Name,
+        location = warehouse.Location,
+        WasteLossRecordBatchFinishedProduct = warehouse.WasteLossRecordBatchFinishedProducts
+            .Where(w => w != null) // prevent null record dereference
+            .Select(w => new WarehouseWasteLossRecordBatchFinishedProductDTO
+            {
+                Id = w.Id,
+                QuantityLoss = w.QuantityLoss,
+                Reason = w.Reason,
+                DateOfLoss = w.DateOfLoss,
+                User = w.User != null ? new WarehouseUserDTO
+                {
+                    UserId = w.User.UserId,
+                    Name = w.User.Name,
+                    Role = w.User.Role.ToString()
+                } : null,
+                FinishedProduct = w.FinishedProduct != null ? new WarehouseWasteLossGetFinishedProductDTO
+                {
+                    ProductID = w.FinishedProduct.ProductID,
+                    FragranceID = w.FinishedProduct.FragranceID,
+                     ProductName = w.FinishedProduct.ProductName,
+                    Quantity = w.FinishedProduct.Quantity
+                } : null,
+                Batch = w.Batch != null ? new WarehouseWasteLossRecordGetBatchDTO
+                {
+                    BatchID = w.Batch.BatchID,
+                    ProductionDate = w.Batch.ProductionDate,
+                    BatchSize = w.Batch.BatchSize
+                } : null
+            }).ToList()
+    };
+
+    return Ok(dto);
+}
+
+
+
+
+    }
+    
 }

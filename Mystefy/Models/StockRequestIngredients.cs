@@ -6,7 +6,7 @@ namespace Mystefy.Models;
 
 public class StockRequestIngredients
 {
-    
+    public enum StockStatus{ Pending, Approved , Rejected }
     
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -14,16 +14,15 @@ public class StockRequestIngredients
     [Required]
     public int AmountRequested{ get; set; }
     [Required]
-    // public string Status { get; set; } = string.Empty;
     public StockStatus Status{ get; set; }
     public DateTime RequestDate { get; set; } = DateTime.UtcNow;
-
 
     // Foreign Keys 
     // FK Constraint formed with Ingredients Table
     [Required]
     [ForeignKey("Ingredients")]
     public int IngredientsId { get; set; }
+    //Navigation Property of Ingredients
     public Ingredients? Ingredients { get; set; }
 
 
@@ -31,7 +30,7 @@ public class StockRequestIngredients
     [ForeignKey("User")]
     // FK Constraint formed with User Table
     public int? UserId { get; set; }
-    //Navigation Property of Ingredients
+    //Navigation Property of User
     public User? User { get; set; }
 
 
@@ -39,6 +38,6 @@ public class StockRequestIngredients
     [Required]
     [ForeignKey("Warehouse")]
     public int WarehouseId { get; set; }
-    //Navigation Property of Ingredients
+    //Navigation Property of Warehouse
     public Warehouse? Warehouse { get; set; }
 }

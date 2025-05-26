@@ -1,7 +1,9 @@
+using System.Text.Json.Serialization;
 using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
 using Mystefy.Data;
 using Mystefy.Interfaces;
+using Mystefy.Models;
 using Mystefy.Services;
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,10 +16,19 @@ builder.Services.AddControllers()
 {
     options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
     options.JsonSerializerOptions.WriteIndented = true;
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
+
+// Creates In local Database but gives issues with Swagger
+// builder.Services.AddDbContext<MystefyDbContext>(options =>
+// {
+//     options.UseInMemoryDatabase("MystefyPerfumes");
+// });
+
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 builder.Services.AddEndpointsApiExplorer();
+// Importing the service files and interface
 builder.Services.AddScoped<IIngredientRepository, IngredientRepository>();
 builder.Services.AddScoped<IBatchIngredientsRepository, BatchIngredientsRepo>();
 builder.Services.AddScoped<IDeliveryIngredientsRepository, DeliveryIngredientsRepository>();
@@ -32,6 +43,18 @@ builder.Services.AddScoped<IWarehouseStockService, WarehouseStockService>();
 builder.Services.AddScoped<IFragranceIngredientService, FragranceIngredientService>();
 builder.Services.AddScoped<IBatchService, BatchService>();
 builder.Services.AddScoped<IPackagingRepository, PackagingRepositoryService>();
+builder.Services.AddScoped<IStockRequestRepository, StockRequestRepositoryService>();
+builder.Services.AddScoped<IStockRequestIngredientsRepository, StockRequestIngredientsRepositoryService>();
+builder.Services.AddScoped<IStockRequestPackagingsRepository, StockRequestPackagingsRepositoryService>();
+builder.Services.AddScoped<IDeliveryRepository, DeliveryRepository>();
+builder.Services.AddScoped<IDeliveryIngredientsRepository, DeliveryIngredientsRepository>();
+builder.Services.AddScoped<ISupplierService, SupplierService>();
+builder.Services.AddScoped<IWasteLossRecordIngredientsRepository, WasteLossRecordIngredientsRepositoryService>();
+builder.Services.AddScoped<IWasteLossRecordPackagingRepository, WasteLossRecordPackagingRepositoryService>();
+builder.Services.AddScoped<IWasteLossRecordFragranceRepository, WasteLossRecordFragranceRepositoryService>();
+builder.Services.AddScoped<IWasteLossRecordBatchFinishedProductsRepository, WasteLossRecordBatchFinishedProductsRepositoryService>();
+builder.Services.AddScoped<IFinishedProductPackaging, FinishedProductPackagingService>();
+
 
 Env.Load();
 

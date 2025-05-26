@@ -10,4 +10,6 @@ public interface IFragranceService
         Task<Fragrance> AddFragrance(Fragrance fragrance);
         Task<bool> UpdateFragrance(int id, Fragrance fragrance);
         Task<bool> DeleteFragrance(int id);
+        Task<Fragrance?> GetFragranceByName(string name);
+
 }

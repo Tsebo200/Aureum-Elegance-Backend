@@ -34,12 +34,18 @@ public class FragranceService : IFragranceService
 
     public async Task<IEnumerable<Fragrance>> GetAllFragrances()
     {
-        return await _context.Fragrances.ToListAsync();
+        return await _context.Fragrances
+        .Include(f => f.FragranceIngredients)  
+        .ThenInclude(fi => fi.Ingredients)
+        .ToListAsync();
     }
 
     public async Task<Fragrance?> GetFragranceById(int id)
     {
-        return await _context.Fragrances.FindAsync(id);
+        return await _context.Fragrances
+        .Include(f => f.FragranceIngredients)  
+        .ThenInclude(fi => fi.Ingredients)
+        .FirstOrDefaultAsync(f => f.Id == id);
     }
 
     public async Task<bool> UpdateFragrance(int id, Fragrance fragrance)
@@ -57,4 +63,13 @@ public class FragranceService : IFragranceService
                 return _context.Fragrances.Any(e => e.Id == id);
             }
     }
+
+    public async Task<Fragrance?> GetFragranceByName(string name)
+    {
+        return await _context.Fragrances
+        .Include(f => f.FragranceIngredients)
+        .ThenInclude(fi => fi.Ingredients)
+        .FirstOrDefaultAsync(f => f.Name.ToLower() == name.ToLower());
+        }
+
 }

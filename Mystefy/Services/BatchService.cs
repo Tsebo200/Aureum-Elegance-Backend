@@ -16,6 +16,7 @@ public class BatchService : IBatchService
         }
     public async Task<Batch> AddBatch(Batch batch)
     {
+        //Sets up the appropriate time format
         if (batch.ProductionDate.Kind == DateTimeKind.Unspecified)
     {
         batch.ProductionDate = DateTime.SpecifyKind(batch.ProductionDate, DateTimeKind.Utc);
@@ -23,6 +24,11 @@ public class BatchService : IBatchService
     else
     {
         batch.ProductionDate = batch.ProductionDate.ToUniversalTime();
+    }
+     // Assign default status
+    if (!Enum.IsDefined(typeof(BatchStatus), batch.Status))
+    {
+        batch.Status = BatchStatus.Processing;
     }
 
         _context.Batches.Add(batch);
@@ -46,6 +52,7 @@ public class BatchService : IBatchService
     public async Task<IEnumerable<Batch>> GetAllBatches()
     {
          return await _context.Batches
+         .Include(b =>b.BatchFinishedProducts)
         .ToListAsync();
     }
 
@@ -76,6 +83,7 @@ public class BatchService : IBatchService
 
     existingBatch.ProductionDate = updatedBatch.ProductionDate;
     existingBatch.BatchSize = updatedBatch.BatchSize;
+    existingBatch.Status = updatedBatch.Status;
 
     _context.Batches.Update(existingBatch);
     await _context.SaveChangesAsync();
