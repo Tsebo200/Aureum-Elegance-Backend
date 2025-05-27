@@ -12,15 +12,15 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Mystefy.Migrations
 {
     [DbContext(typeof(MystefyDbContext))]
-    [Migration("20250414202255_AddWasteLossRecordBatchFinishedProducts")]
-    partial class AddWasteLossRecordBatchFinishedProducts
+    [Migration("20250516140739_initalCreate")]
+    partial class initalCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.3")
+                .HasAnnotation("ProductVersion", "9.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -38,6 +38,9 @@ namespace Mystefy.Migrations
 
                     b.Property<DateTime>("ProductionDate")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.HasKey("BatchID");
 
@@ -170,8 +173,9 @@ namespace Mystefy.Migrations
                     b.Property<int>("FragranceID")
                         .HasColumnType("integer");
 
-                    b.Property<int>("PackagingID")
-                        .HasColumnType("integer");
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
@@ -179,8 +183,6 @@ namespace Mystefy.Migrations
                     b.HasKey("ProductID");
 
                     b.HasIndex("FragranceID");
-
-                    b.HasIndex("PackagingID");
 
                     b.ToTable("FinishedProduct");
                 });
@@ -782,15 +784,7 @@ namespace Mystefy.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Mystefy.Models.Packaging", "Packaging")
-                        .WithMany("FinishedProduct")
-                        .HasForeignKey("PackagingID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Fragrance");
-
-                    b.Navigation("Packaging");
                 });
 
             modelBuilder.Entity("Mystefy.Models.FragranceIngredient", b =>
@@ -1087,8 +1081,6 @@ namespace Mystefy.Migrations
 
             modelBuilder.Entity("Mystefy.Models.Packaging", b =>
                 {
-                    b.Navigation("FinishedProduct");
-
                     b.Navigation("StockRequestPackagings");
 
                     b.Navigation("WasteLossRecordPackaging");

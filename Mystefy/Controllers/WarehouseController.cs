@@ -297,7 +297,7 @@ public async Task<ActionResult<WarehouseWasteLossRecordsForBatchFinishedProducts
                 {
                     ProductID = w.FinishedProduct.ProductID,
                     FragranceID = w.FinishedProduct.FragranceID,
-                    PackagingID = w.FinishedProduct.PackagingID,
+                     ProductName = w.FinishedProduct.ProductName,
                     Quantity = w.FinishedProduct.Quantity
                 } : null,
                 Batch = w.Batch != null ? new WarehouseWasteLossRecordGetBatchDTO
