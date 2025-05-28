@@ -4,19 +4,28 @@ namespace Mystefy.DTOs;
 
 public class WarehouseDTO
 {
-    public string? Name {get; set;} = string.Empty;
-    public string? location {get; set;} = string.Empty;
+    public string? Name { get; set; } = string.Empty;
+    public string? location { get; set; } = string.Empty;
 
     public int? AssignedManagerUserId { get; set; }
     public WarehouseUserDTO? AssignedManager { get; set; }
 }
 
-public class WarehouseStockRequestDTO
+public class PostWarehouseDTO
 {
     public string? Name {get; set;} = string.Empty;
     public string? location {get; set;} = string.Empty;
 
-    public WStockRequestsDTO? StockRequests {get; set;}
+    public int? AssignedManagerUserId { get; set; }
+    
+}
+
+public class WarehouseStockRequestDTO
+{
+    public string? Name { get; set; } = string.Empty;
+    public string? location { get; set; } = string.Empty;
+
+    public WStockRequestsDTO? StockRequests { get; set; }
 
     public int? AssignedManagerUserId { get; set; }
     public WarehouseUserDTO? AssignedManager { get; set; }
