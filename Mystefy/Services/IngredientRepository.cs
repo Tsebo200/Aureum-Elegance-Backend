@@ -81,9 +81,9 @@ namespace Mystefy.Services
             return ingredient;
         }
 
-        Task<IEnumerable<Ingredients>> IIngredientRepository.GetAllIngredientsAsync()
+        public async Task<IEnumerable<Ingredients>> GetAllIngredientsAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Ingredients.ToListAsync();
         }
 
         public async Task<List<Ingredients>> GetAllIngredientsAsync(int batchID)

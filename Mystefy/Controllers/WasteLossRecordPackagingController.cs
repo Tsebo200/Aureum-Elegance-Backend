@@ -39,12 +39,12 @@ namespace Mystefy.Controllers
                     Name = r.Packaging.Name,
                     Type = r.Packaging.Type,
                     Stock = r.Packaging.Stock,
-                    FinishedProduct = r.Packaging.FinishedProduct != null ? new PackagingFinishedProductDTO
-                    {
-                        // Id = r.Packaging.FinishedProduct.Id,
-                        // Name = r.Packaging.FinishedProduct.Name,
-                        // Description = r.Packaging.FinishedProduct.Description
-                    } : null
+                    // FinishedProduct = r.Packaging.FinishedProduct != null ? new PackagingFinishedProductDTO
+                    // {
+                    //     // Id = r.Packaging.FinishedProduct.Id,
+                    //     // Name = r.Packaging.FinishedProduct.Name,
+                    //     // Description = r.Packaging.FinishedProduct.Description
+                    // } : null
                 } : null,
                 Warehouse = r.Warehouse != null ? new WasteLossRecordPackagingWarehouseDTO
                 {
@@ -83,12 +83,12 @@ namespace Mystefy.Controllers
                     Name = record.Packaging.Name,
                     Type = record.Packaging.Type,
                     Stock = record.Packaging.Stock,
-                    FinishedProduct = record.Packaging.FinishedProduct != null ? new PackagingFinishedProductDTO
-                    {
-                        // Id = record.Packaging.FinishedProduct.Id,
-                        // Name = record.Packaging.FinishedProduct.Name,
-                        // Description = record.Packaging.FinishedProduct.Description
-                    } : null
+                    // FinishedProduct = record.Packaging.FinishedProduct != null ? new PackagingFinishedProductDTO
+                    // {
+                    //     // Id = record.Packaging.FinishedProduct.Id,
+                    //     // Name = record.Packaging.FinishedProduct.Name,
+                    //     // Description = record.Packaging.FinishedProduct.Description
+                    // } : null
                 } : null,
                 Warehouse = record.Warehouse != null ? new WasteLossRecordPackagingWarehouseDTO
                 {
@@ -127,12 +127,12 @@ namespace Mystefy.Controllers
                     Name = created.Packaging.Name,
                     Type = created.Packaging.Type,
                     Stock = created.Packaging.Stock,
-                    FinishedProduct = created.Packaging.FinishedProduct != null ? new PackagingFinishedProductDTO
-                    {
-                        // Id = created.Packaging.FinishedProduct.Id,
-                        // Name = created.Packaging.FinishedProduct.Name,
-                        // Description = created.Packaging.FinishedProduct.Description
-                    } : null
+                    // FinishedProduct = created.Packaging.FinishedProduct != null ? new PackagingFinishedProductDTO
+                    // {
+                    //     // Id = created.Packaging.FinishedProduct.Id,
+                    //     // Name = created.Packaging.FinishedProduct.Name,
+                    //     // Description = created.Packaging.FinishedProduct.Description
+                    // } : null
                 } : null,
                 Warehouse = created.Warehouse != null ? new WasteLossRecordPackagingWarehouseDTO
                 {
@@ -193,12 +193,12 @@ namespace Mystefy.Controllers
                     Name = r.Packaging.Name,
                     Type = r.Packaging.Type,
                     Stock = r.Packaging.Stock,
-                    FinishedProduct = r.Packaging.FinishedProduct != null ? new PackagingFinishedProductDTO
-                    {
-                        // Id = r.Packaging.FinishedProduct.Id,
-                        // Name = r.Packaging.FinishedProduct.Name,
-                        // Description = r.Packaging.FinishedProduct.Description
-                    } : null
+                    // FinishedProduct = r.Packaging.FinishedProduct != null ? new PackagingFinishedProductDTO
+                    // {
+                    //     // Id = r.Packaging.FinishedProduct.Id,
+                    //     // Name = r.Packaging.FinishedProduct.Name,
+                    //     // Description = r.Packaging.FinishedProduct.Description
+                    // } : null
                 } : null,
                 Warehouse = r.Warehouse != null ? new WasteLossRecordPackagingWarehouseDTO
                 {
@@ -234,12 +234,12 @@ namespace Mystefy.Controllers
                     Name = r.Packaging.Name,
                     Type = r.Packaging.Type,
                     Stock = r.Packaging.Stock,
-                    FinishedProduct = r.Packaging.FinishedProduct != null ? new PackagingFinishedProductDTO
-                    {
-                        // Id = r.Packaging.FinishedProduct.Id,
-                        // Name = r.Packaging.FinishedProduct.Name,
-                        // Description = r.Packaging.FinishedProduct.Description
-                    } : null
+                    // FinishedProduct = r.Packaging.FinishedProduct != null ? new PackagingFinishedProductDTO
+                    // {
+                    //     // Id = r.Packaging.FinishedProduct.Id,
+                    //     // Name = r.Packaging.FinishedProduct.Name,
+                    //     // Description = r.Packaging.FinishedProduct.Description
+                    // } : null
                 } : null,
                 Warehouse = r.Warehouse != null ? new WasteLossRecordPackagingWarehouseDTO
                 {
@@ -275,12 +275,12 @@ namespace Mystefy.Controllers
                     Name = r.Packaging.Name,
                     Type = r.Packaging.Type,
                     Stock = r.Packaging.Stock,
-                    FinishedProduct = r.Packaging.FinishedProduct != null ? new PackagingFinishedProductDTO
-                    {
-                        // Id = r.Packaging.FinishedProduct.Id,
-                        // Name = r.Packaging.FinishedProduct.Name,
-                        // Description = r.Packaging.FinishedProduct.Description
-                    } : null
+                    // FinishedProduct = r.Packaging.FinishedProduct != null ? new PackagingFinishedProductDTO
+                    // {
+                    //     // Id = r.Packaging.FinishedProduct.Id,
+                    //     // Name = r.Packaging.FinishedProduct.Name,
+                    //     // Description = r.Packaging.FinishedProduct.Description
+                    // } : null
                 } : null,
                 Warehouse = r.Warehouse != null ? new WasteLossRecordPackagingWarehouseDTO
                 {

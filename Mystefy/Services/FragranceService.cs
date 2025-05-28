@@ -63,4 +63,13 @@ public class FragranceService : IFragranceService
                 return _context.Fragrances.Any(e => e.Id == id);
             }
     }
+
+    public async Task<Fragrance?> GetFragranceByName(string name)
+    {
+        return await _context.Fragrances
+        .Include(f => f.FragranceIngredients)
+        .ThenInclude(fi => fi.Ingredients)
+        .FirstOrDefaultAsync(f => f.Name.ToLower() == name.ToLower());
+        }
+
 }

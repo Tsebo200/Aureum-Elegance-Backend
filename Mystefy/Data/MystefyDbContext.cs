@@ -30,10 +30,11 @@ namespace Mystefy.Data
         public DbSet<WasteLossRecordPackaging> WasteLossRecordPackaging { get; set;}
         public DbSet <WasteLossRecordFragrance> WasteLossRecordFragrance { get; set;}
         public DbSet <WasteLossRecordBatchFinishedProducts> WasteLossRecordBatchFinishedProducts { get; set;}
+        public DbSet<FinishedProductPackaging> FinishedProductPackaging { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-        // WasteLossRecordBatchFinishedProducts
+            // WasteLossRecordBatchFinishedProducts
             modelBuilder.Entity<User>()
                 .HasMany(u => u.WasteLossRecordBatchFinishedProducts)
                 .WithOne(wlrbfp => wlrbfp.User)
@@ -59,7 +60,7 @@ namespace Mystefy.Data
                 .HasForeignKey(wlrbfp => wlrbfp.WarehouseId);
 
 
-        // WasteLossRecordFragrance
+            // WasteLossRecordFragrance
             modelBuilder.Entity<User>()
                 .HasMany(u => u.WasteLossRecordFragrance)
                 .WithOne(wlrf => wlrf.User)
@@ -75,7 +76,7 @@ namespace Mystefy.Data
                 .WithOne(wlrf => wlrf.Warehouse)
                 .HasForeignKey(wlrf => wlrf.WarehouseId);
 
-        // WasteLossRecordPackaging
+            // WasteLossRecordPackaging
             modelBuilder.Entity<User>()
                 .HasMany(u => u.WasteLossRecordPackaging)
                 .WithOne(wlrp => wlrp.User)
@@ -91,7 +92,7 @@ namespace Mystefy.Data
                 .WithOne(wlrp => wlrp.Packaging)
                 .HasForeignKey(wlrp => wlrp.PackagingId);
 
-        // WasteLossRecordIngredients
+            // WasteLossRecordIngredients
             modelBuilder.Entity<Ingredients>()
                 .HasMany(i => i.WasteLossRecordIngredients)
                 .WithOne(wlri => wlri.Ingredients)
@@ -143,10 +144,7 @@ namespace Mystefy.Data
                 .WithMany(f => f.FinishedProduct)
                 .HasForeignKey(fp => fp.FragranceID);
 
-            modelBuilder.Entity<FinishedProduct>()
-                .HasOne(fp => fp.Packaging)
-                .WithMany(p => p.FinishedProduct)
-                .HasForeignKey(fp => fp.PackagingID);
+
 
             modelBuilder.Entity<Ingredients>()
                 .HasMany(i => i.StockRequests)
@@ -191,8 +189,29 @@ namespace Mystefy.Data
                 .WithMany(i => i.FragranceIngredients)
                 .HasForeignKey(fi => fi.IngredientsID);
 
+
+            modelBuilder.Entity<FinishedProductPackaging>()
+            .HasKey(fpp => new { fpp.ProductID, fpp.PackagingID });
+
+            modelBuilder.Entity<FinishedProductPackaging>()
+            .HasOne(fpp => fpp.FinishedProduct)
+            .WithMany(fp => fp.FinishedProductPackaging)
+            .HasForeignKey(fpp => fpp.ProductID);
+
+            modelBuilder.Entity<FinishedProductPackaging>()
+            .HasOne(fpp => fpp.Packaging)
+            .WithMany(p => p.FinishedProductPackaging)
+            .HasForeignKey(fpp => fpp.PackagingID);
+
             modelBuilder.Entity<Supplier>()
                .HasKey(s => s.SupplierID);
+               
+            modelBuilder.Entity<Warehouse>()
+               .HasOne(w => w.AssignedManager)
+               .WithMany()
+               .HasForeignKey(w => w.AssignedManagerUserId)
+               .OnDelete(DeleteBehavior.SetNull);
+
         }
 
 

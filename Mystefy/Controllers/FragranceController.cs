@@ -54,12 +54,40 @@ namespace Mystefy.Controllers
 
 
         // GET: api/Fragrance/{id}
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Fragrance>> GetFragrance(int id)
+[HttpGet("{id}")]
+public async Task<ActionResult<FragranceDTO>> GetFragrance(int id)
+{
+    var fragrance = await _fragranceService.GetFragranceById(id);
+    if (fragrance == null) return NotFound();
+
+    var dto = new FragranceDTO
+    {
+        Id = fragrance.Id,
+        Name = fragrance.Name,
+        Description = fragrance.Description,
+        Cost = fragrance.Cost,
+        ExpiryDate = fragrance.ExpiryDate,
+        Volume = fragrance.Volume,
+        FragranceIngredients = fragrance.FragranceIngredients?.Select(fi => new FragranceIngredientInFragranceDTO
         {
-           var fragrance = await _fragranceService.GetFragranceById(id);
-           return fragrance == null? NotFound() : Ok(fragrance);
-        }
+            IngredientsID = fi.IngredientsID,
+            Amount = fi.Amount,
+            Ingredients = fi.Ingredients != null ? new List<IngredientsInFragranceIngredientsDTO>
+            {
+                new IngredientsInFragranceIngredientsDTO
+                {
+                    Name = fi.Ingredients.Name,
+                    Type = fi.Ingredients.Type,
+                    Cost = fi.Ingredients.Cost,
+                    ExpiryDate = fi.Ingredients.ExpiryDate
+                }
+            } : null
+        }).ToList()
+    };
+
+    return Ok(dto);
+}
+
 
        // POST: api/Fragrance
      [HttpPost]
@@ -86,17 +114,30 @@ namespace Mystefy.Controllers
 
 
         // PUT: api/Fragrance/{id}
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutFragrance(int id, Fragrance fragrance)
-        {
-              var updated = await _fragranceService.UpdateFragrance(id, fragrance);
-            
-            if(!updated){
-                return NotFound();
+        // PUT: api/Fragrance/{id}
+[HttpPut("{id}")]
+public async Task<IActionResult> PutFragrance(int id, [FromBody] PostFragranceDTO fragranceDto)
+{
+    var fragrance = new Fragrance
+    {
+        Id = id, // ensure ID is set
+        Name = fragranceDto.Name,
+        Description = fragranceDto.Description,
+        Cost = fragranceDto.Cost,
+        ExpiryDate = DateTime.SpecifyKind(fragranceDto.ExpiryDate, DateTimeKind.Utc),
+        Volume = fragranceDto.Volume
+    };
 
-            };
-            return NoContent();
-        }
+    var updated = await _fragranceService.UpdateFragrance(id, fragrance);
+
+    if (!updated)
+    {
+        return NotFound();
+    }
+
+    return NoContent();
+}
+
 
         // DELETE: api/Fragrance/{id}
         [HttpDelete("{id}")]
@@ -110,6 +151,42 @@ namespace Mystefy.Controllers
 
             return NoContent();
         }
+
+        // GET: api/Fragrance/byname/{name}
+[HttpGet("GetName/{name}")]
+public async Task<ActionResult<FragranceDTO>> GetFragranceByName(string name)
+{
+    var fragrance = await _fragranceService.GetFragranceByName(name);
+    if (fragrance == null) return NotFound();
+
+    var dto = new FragranceDTO
+    {
+        Id = fragrance.Id,
+        Name = fragrance.Name,
+        Description = fragrance.Description,
+        Cost = fragrance.Cost,
+        ExpiryDate = fragrance.ExpiryDate,
+        Volume = fragrance.Volume,
+        FragranceIngredients = fragrance.FragranceIngredients?.Select(fi => new FragranceIngredientInFragranceDTO
+        {
+            IngredientsID = fi.IngredientsID,
+            Amount = fi.Amount,
+            Ingredients = fi.Ingredients != null ? new List<IngredientsInFragranceIngredientsDTO>
+            {
+                new IngredientsInFragranceIngredientsDTO
+                {
+                    Name = fi.Ingredients.Name,
+                    Type = fi.Ingredients.Type,
+                    Cost = fi.Ingredients.Cost,
+                    ExpiryDate = fi.Ingredients.ExpiryDate
+                }
+            } : null
+        }).ToList()
+    };
+
+    return Ok(dto);
+}
+
 
         
     }

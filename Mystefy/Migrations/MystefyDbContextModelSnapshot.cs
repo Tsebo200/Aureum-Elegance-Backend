@@ -17,7 +17,7 @@ namespace Mystefy.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.3")
+                .HasAnnotation("ProductVersion", "9.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -170,8 +170,9 @@ namespace Mystefy.Migrations
                     b.Property<int>("FragranceID")
                         .HasColumnType("integer");
 
-                    b.Property<int>("PackagingID")
-                        .HasColumnType("integer");
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
@@ -180,9 +181,27 @@ namespace Mystefy.Migrations
 
                     b.HasIndex("FragranceID");
 
+                    b.ToTable("FinishedProduct");
+                });
+
+            modelBuilder.Entity("Mystefy.Models.FinishedProductPackaging", b =>
+                {
+                    b.Property<int>("ProductID")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(0);
+
+                    b.Property<int>("PackagingID")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(1);
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("ProductID", "PackagingID");
+
                     b.HasIndex("PackagingID");
 
-                    b.ToTable("FinishedProduct");
+                    b.ToTable("FinishedProductPackaging");
                 });
 
             modelBuilder.Entity("Mystefy.Models.Fragrance", b =>
@@ -469,6 +488,9 @@ namespace Mystefy.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("WarehouseID"));
 
+                    b.Property<int?>("AssignedManagerUserId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasColumnType("text");
@@ -478,6 +500,8 @@ namespace Mystefy.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("WarehouseID");
+
+                    b.HasIndex("AssignedManagerUserId");
 
                     b.ToTable("Warehouses");
                 });
@@ -782,13 +806,24 @@ namespace Mystefy.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Fragrance");
+                });
+
+            modelBuilder.Entity("Mystefy.Models.FinishedProductPackaging", b =>
+                {
                     b.HasOne("Mystefy.Models.Packaging", "Packaging")
-                        .WithMany("FinishedProduct")
+                        .WithMany("FinishedProductPackaging")
                         .HasForeignKey("PackagingID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Fragrance");
+                    b.HasOne("Mystefy.Models.FinishedProduct", "FinishedProduct")
+                        .WithMany("FinishedProductPackaging")
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FinishedProduct");
 
                     b.Navigation("Packaging");
                 });
@@ -895,6 +930,16 @@ namespace Mystefy.Migrations
                     b.Navigation("User");
 
                     b.Navigation("Warehouse");
+                });
+
+            modelBuilder.Entity("Mystefy.Models.Warehouse", b =>
+                {
+                    b.HasOne("Mystefy.Models.User", "AssignedManager")
+                        .WithMany()
+                        .HasForeignKey("AssignedManagerUserId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("AssignedManager");
                 });
 
             modelBuilder.Entity("Mystefy.Models.WarehouseIngredients", b =>
@@ -1054,6 +1099,8 @@ namespace Mystefy.Migrations
 
             modelBuilder.Entity("Mystefy.Models.FinishedProduct", b =>
                 {
+                    b.Navigation("FinishedProductPackaging");
+
                     b.Navigation("WasteLossRecordBatchFinishedProducts");
                 });
 
@@ -1087,7 +1134,7 @@ namespace Mystefy.Migrations
 
             modelBuilder.Entity("Mystefy.Models.Packaging", b =>
                 {
-                    b.Navigation("FinishedProduct");
+                    b.Navigation("FinishedProductPackaging");
 
                     b.Navigation("StockRequestPackagings");
 

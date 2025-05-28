@@ -37,25 +37,24 @@ public class WarehouseService : IWarehouse
     public async Task<IEnumerable<Warehouse>> GetAllWarehouses()
     {
         return await _context.Warehouses
+        .Include(w => w.AssignedManager)
         .ToListAsync();
     }
-    public async Task<IEnumerable<Warehouse>> GetAllWarehousesAndStockRequests()
-    {
-        return await _context.Warehouses
-        .Include(w => w.StockRequests)
-        .ToListAsync();
-    }
+
     public async Task<IEnumerable<Warehouse>> GetAllWarehousesAndWarehouseStock()
     {
         return await _context.Warehouses
+        .Include(w => w.AssignedManager)
         .Include(w => w.WarehouseStocks)
          .ThenInclude(ws => ws.Fragrance)
         .ToListAsync();
+        
     }
 
     public async Task<Warehouse?> GetWarehouseById(int warehouseId)
     {
         return await _context.Warehouses
+        .Include(w => w.AssignedManager)
         .Include(w => w.StockRequests)
         .Include(w => w.WarehouseStocks)
         .FirstOrDefaultAsync(w => w.WarehouseID == warehouseId);
@@ -92,4 +91,49 @@ public class WarehouseService : IWarehouse
         {
             return _context.Warehouses.Any(e => e.WarehouseID == warehouseId);
         }
+    
+   public async Task<Warehouse?> GetWasteLossIngredientsByWarehouseId(int warehouseId)
+{
+    return await _context.Warehouses
+        .Include(w => w.AssignedManager)
+        .Include(w => w.WasteLossRecordIngredients)
+            .ThenInclude(wlri => wlri.User)
+        .Include(w => w.WasteLossRecordIngredients)
+            .ThenInclude(wlri => wlri.Ingredients)
+        .FirstOrDefaultAsync(w => w.WarehouseID == warehouseId);
+}
+public async Task<Warehouse?> GetWasteLossPackagingByWarehouseId(int warehouseId)
+{
+    return await _context.Warehouses
+        .Include(w => w.AssignedManager)
+        .Include(w => w.WasteLossRecordPackaging)
+            .ThenInclude(wlrp => wlrp.User)
+        .Include(w => w.WasteLossRecordPackaging)
+            .ThenInclude(wlrp => wlrp.Packaging)
+        .FirstOrDefaultAsync(w => w.WarehouseID == warehouseId);
+}
+public async Task<Warehouse?> GetWasteLossFragranceByWarehouseId(int warehouseId)
+{
+    return await _context.Warehouses
+        .Include(w => w.AssignedManager)
+        .Include(w => w.WasteLossRecordFragrance)
+            .ThenInclude(wlrf => wlrf.User)
+        .Include(w => w.WasteLossRecordFragrance)
+            .ThenInclude(wlrf => wlrf.Fragrance)
+        .FirstOrDefaultAsync(w => w.WarehouseID == warehouseId);
+}
+public async Task<Warehouse?> GetWasteLossBatchFinishedProductsByWarehouseId(int warehouseId)
+{
+    return await _context.Warehouses
+        .Include(w => w.AssignedManager)
+        .Include(w => w.WasteLossRecordBatchFinishedProducts)
+            .ThenInclude(wlrbfp => wlrbfp.User)
+        .Include(w => w.WasteLossRecordBatchFinishedProducts)
+            .ThenInclude(wlrbfp => wlrbfp.Batch)
+        .Include(w => w.WasteLossRecordBatchFinishedProducts)
+            .ThenInclude(wlrbfp => wlrbfp.FinishedProduct)
+        .FirstOrDefaultAsync(w => w.WarehouseID == warehouseId);
+}
+
+
 }

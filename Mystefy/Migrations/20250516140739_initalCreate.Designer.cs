@@ -12,15 +12,15 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Mystefy.Migrations
 {
     [DbContext(typeof(MystefyDbContext))]
-    [Migration("20250414172649_AddWasteLossRecordPackaging")]
-    partial class AddWasteLossRecordPackaging
+    [Migration("20250516140739_initalCreate")]
+    partial class initalCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.3")
+                .HasAnnotation("ProductVersion", "9.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -38,6 +38,9 @@ namespace Mystefy.Migrations
 
                     b.Property<DateTime>("ProductionDate")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.HasKey("BatchID");
 
@@ -170,8 +173,9 @@ namespace Mystefy.Migrations
                     b.Property<int>("FragranceID")
                         .HasColumnType("integer");
 
-                    b.Property<int>("PackagingID")
-                        .HasColumnType("integer");
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
@@ -179,8 +183,6 @@ namespace Mystefy.Migrations
                     b.HasKey("ProductID");
 
                     b.HasIndex("FragranceID");
-
-                    b.HasIndex("PackagingID");
 
                     b.ToTable("FinishedProduct");
                 });
@@ -533,6 +535,87 @@ namespace Mystefy.Migrations
                     b.ToTable("WarehouseStocks");
                 });
 
+            modelBuilder.Entity("Mystefy.Models.WasteLossRecordBatchFinishedProducts", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BatchId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("DateOfLoss")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("QuantityLoss")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("WarehouseId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BatchId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("WarehouseId");
+
+                    b.ToTable("WasteLossRecordBatchFinishedProducts");
+                });
+
+            modelBuilder.Entity("Mystefy.Models.WasteLossRecordFragrance", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DateOfLoss")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("FragranceId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("QuantityLoss")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("WarehouseId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FragranceId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("WarehouseId");
+
+                    b.ToTable("WasteLossRecordFragrance");
+                });
+
             modelBuilder.Entity("Mystefy.Models.WasteLossRecordIngredients", b =>
                 {
                     b.Property<int>("Id")
@@ -701,15 +784,7 @@ namespace Mystefy.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Mystefy.Models.Packaging", "Packaging")
-                        .WithMany("FinishedProduct")
-                        .HasForeignKey("PackagingID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Fragrance");
-
-                    b.Navigation("Packaging");
                 });
 
             modelBuilder.Entity("Mystefy.Models.FragranceIngredient", b =>
@@ -842,6 +917,69 @@ namespace Mystefy.Migrations
                     b.Navigation("Warehouse");
                 });
 
+            modelBuilder.Entity("Mystefy.Models.WasteLossRecordBatchFinishedProducts", b =>
+                {
+                    b.HasOne("Mystefy.Models.Batch", "Batch")
+                        .WithMany("WasteLossRecordBatchFinishedProducts")
+                        .HasForeignKey("BatchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Mystefy.Models.FinishedProduct", "FinishedProduct")
+                        .WithMany("WasteLossRecordBatchFinishedProducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_WLRBatchFinishedProducts_FinishedProduct_ProductId");
+
+                    b.HasOne("Mystefy.Models.User", "User")
+                        .WithMany("WasteLossRecordBatchFinishedProducts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Mystefy.Models.Warehouse", "Warehouse")
+                        .WithMany("WasteLossRecordBatchFinishedProducts")
+                        .HasForeignKey("WarehouseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Batch");
+
+                    b.Navigation("FinishedProduct");
+
+                    b.Navigation("User");
+
+                    b.Navigation("Warehouse");
+                });
+
+            modelBuilder.Entity("Mystefy.Models.WasteLossRecordFragrance", b =>
+                {
+                    b.HasOne("Mystefy.Models.Fragrance", "Fragrance")
+                        .WithMany("WasteLossRecordFragrance")
+                        .HasForeignKey("FragranceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Mystefy.Models.User", "User")
+                        .WithMany("WasteLossRecordFragrance")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Mystefy.Models.Warehouse", "Warehouse")
+                        .WithMany("WasteLossRecordFragrance")
+                        .HasForeignKey("WarehouseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Fragrance");
+
+                    b.Navigation("User");
+
+                    b.Navigation("Warehouse");
+                });
+
             modelBuilder.Entity("Mystefy.Models.WasteLossRecordIngredients", b =>
                 {
                     b.HasOne("Mystefy.Models.Ingredients", "Ingredients")
@@ -899,11 +1037,18 @@ namespace Mystefy.Migrations
             modelBuilder.Entity("Mystefy.Models.Batch", b =>
                 {
                     b.Navigation("BatchFinishedProducts");
+
+                    b.Navigation("WasteLossRecordBatchFinishedProducts");
                 });
 
             modelBuilder.Entity("Mystefy.Models.Delivery", b =>
                 {
                     b.Navigation("DeliveryIngredients");
+                });
+
+            modelBuilder.Entity("Mystefy.Models.FinishedProduct", b =>
+                {
+                    b.Navigation("WasteLossRecordBatchFinishedProducts");
                 });
 
             modelBuilder.Entity("Mystefy.Models.Fragrance", b =>
@@ -913,6 +1058,8 @@ namespace Mystefy.Migrations
                     b.Navigation("FragranceIngredients");
 
                     b.Navigation("WarehouseStocks");
+
+                    b.Navigation("WasteLossRecordFragrance");
                 });
 
             modelBuilder.Entity("Mystefy.Models.Ingredients", b =>
@@ -934,8 +1081,6 @@ namespace Mystefy.Migrations
 
             modelBuilder.Entity("Mystefy.Models.Packaging", b =>
                 {
-                    b.Navigation("FinishedProduct");
-
                     b.Navigation("StockRequestPackagings");
 
                     b.Navigation("WasteLossRecordPackaging");
@@ -954,6 +1099,10 @@ namespace Mystefy.Migrations
 
                     b.Navigation("StockRequests");
 
+                    b.Navigation("WasteLossRecordBatchFinishedProducts");
+
+                    b.Navigation("WasteLossRecordFragrance");
+
                     b.Navigation("WasteLossRecordIngredients");
 
                     b.Navigation("WasteLossRecordPackaging");
@@ -968,6 +1117,10 @@ namespace Mystefy.Migrations
                     b.Navigation("StockRequests");
 
                     b.Navigation("WarehouseStocks");
+
+                    b.Navigation("WasteLossRecordBatchFinishedProducts");
+
+                    b.Navigation("WasteLossRecordFragrance");
 
                     b.Navigation("WasteLossRecordIngredients");
 

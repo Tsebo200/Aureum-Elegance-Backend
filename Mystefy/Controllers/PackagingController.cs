@@ -32,14 +32,7 @@ namespace Mystefy.Controllers
                 Name = p.Name,
                 Type = p.Type,
                 Stock = p.Stock,
-                FinishedProduct = p.FinishedProduct?.Select(fp => new PackagingFinishedProductDTO
-                {
-                    // 
-                    ProductID = fp.ProductID,
-                    FragranceID = fp.FragranceID,
-                    PackagingID = fp.PackagingID,
-                    Quantity = fp.Quantity
-                }).FirstOrDefault()
+                
             });
 
             return Ok(dtoList);
@@ -60,14 +53,7 @@ namespace Mystefy.Controllers
                 Id = packaging.Id,
                 Name = packaging.Name,
                 Type = packaging.Type,
-                Stock = packaging.Stock,
-                FinishedProduct = packaging.FinishedProduct?.Select(fp => new PackagingFinishedProductDTO
-                {
-                    ProductID = fp.ProductID,
-                    FragranceID = fp.FragranceID,
-                    PackagingID = fp.PackagingID,
-                    Quantity = fp.Quantity
-                }).FirstOrDefault()
+                Stock = packaging.Stock
             };
 
             return Ok(dto);
@@ -87,14 +73,7 @@ namespace Mystefy.Controllers
                 Id = created.Id,
                 Name = created.Name,
                 Type = created.Type,
-                Stock = created.Stock,
-                FinishedProduct = created.FinishedProduct?.Select(fp => new PackagingFinishedProductDTO
-                {
-                    ProductID = fp.ProductID,
-                    FragranceID = fp.FragranceID,
-                    PackagingID = fp.PackagingID,
-                    Quantity = fp.Quantity
-                }).FirstOrDefault()
+                Stock = created.Stock
             };
 
             return CreatedAtAction(nameof(GetPackaging), new { id = created.Id }, dto);
@@ -117,14 +96,7 @@ namespace Mystefy.Controllers
                 Id = updated.Id,
                 Name = updated.Name,
                 Type = updated.Type,
-                Stock = updated.Stock,
-                FinishedProduct = updated.FinishedProduct?.Select(fp => new PackagingFinishedProductDTO
-                {
-                    ProductID = fp.ProductID,
-                    FragranceID = fp.FragranceID,
-                    PackagingID = fp.PackagingID,
-                    Quantity = fp.Quantity
-                }).FirstOrDefault()
+                Stock = updated.Stock
             };
 
             return Ok(dto);
