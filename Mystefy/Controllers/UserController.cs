@@ -77,5 +77,30 @@ namespace Mystefy.Controllers
             return NoContent();
         }
 
+        // PUT: api/User/promote/{id}
+        [HttpPut("promote/{id}")]
+        public async Task<IActionResult> PromoteToManager(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null) return NotFound();
+
+            user.Role = UserRole.Manager;
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+        // PUT: api/User/remove/{id}
+        [HttpPut("remove/{id}")]
+        public async Task<IActionResult> DemoteToEmployee(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null) return NotFound();
+
+            user.Role = UserRole.Employee;
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+
     }
 }
