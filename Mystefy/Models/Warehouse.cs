@@ -14,8 +14,14 @@ public class Warehouse
     [Required]
     public string? Location { get; set; }
 
+    // Assigned Manager reference
+    public int? AssignedManagerUserId { get; set; }
+
+    [ForeignKey("AssignedManagerUserId")]
+    public User? AssignedManager { get; set; }
+
        //Navigation Property
-    public List<StockRequest>StockRequests {get; set;} = [];
+   public List<StockRequest> StockRequests { get; set; } = [];
 
     public List<WarehouseStock> WarehouseStocks {get; set;} = [];
    public List<StockRequestIngredients> StockRequestIngredients { get; set; } = [];

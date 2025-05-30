@@ -4,24 +4,41 @@ namespace Mystefy.DTOs;
 
 public class WarehouseDTO
 {
-    public string? Name {get; set;} = string.Empty;
-    public string? location {get; set;} = string.Empty;
+    public string? Name { get; set; } = string.Empty;
+    public string? location { get; set; } = string.Empty;
 
+    public int? AssignedManagerUserId { get; set; }
+    public WarehouseUserDTO? AssignedManager { get; set; }
 }
 
-public class WarehouseStockRequestDTO
+public class PostWarehouseDTO
 {
     public string? Name {get; set;} = string.Empty;
     public string? location {get; set;} = string.Empty;
 
-    public WStockRequestsDTO? StockRequests {get; set;}
-
+    public int? AssignedManagerUserId { get; set; }
+    
 }
+
+public class WarehouseStockRequestDTO
+{
+    public string? Name { get; set; } = string.Empty;
+    public string? location { get; set; } = string.Empty;
+
+    public WStockRequestsDTO? StockRequests { get; set; }
+
+    public int? AssignedManagerUserId { get; set; }
+    public WarehouseUserDTO? AssignedManager { get; set; }
+}
+
 public class WarehouseShowStock{
     public string? Name {get; set;} = string.Empty;
     public string? location {get; set;} = string.Empty;
 
     public List<wWarehouseStockDTO>? WarehouseStocks { get; set; }
+
+    public int? AssignedManagerUserId { get; set; }
+    public WarehouseUserDTO? AssignedManager { get; set; }
 }
 
 public class WStockRequestsDTO
@@ -50,41 +67,46 @@ public class WarehouseStockAddFragranceDTO
     public decimal Cost { get; set; }
     public DateTime ExpiryDate { get; set; }
     public decimal Volume { get; set; }
-
-    
-
 }
 
 public class WarehouseWasteLossRecordsForIngredientsDTO
 {
     public string? Name {get; set;} = string.Empty;
     public string? location {get; set;} = string.Empty;
-     public List<WarehouseWasteLossRecordIngredientsDTO> WasteLossRecordIngredients { get; set; } = [];
+    public List<WarehouseWasteLossRecordIngredientsDTO> WasteLossRecordIngredients { get; set; } = [];
 
-
+    public int? AssignedManagerUserId { get; set; }
+    public WarehouseUserDTO? AssignedManager { get; set; }
 }
 
 public class WarehouseWasteLossRecordsForFragrancesDTO
 {
     public string? Name {get; set;} = string.Empty;
     public string? location {get; set;} = string.Empty;
-     public List<WarehouseWasteLossRecordFragranceDTO> WasteLossRecordFragrance { get; set; } = [];
+    public List<WarehouseWasteLossRecordFragranceDTO> WasteLossRecordFragrance { get; set; } = [];
 
+    public int? AssignedManagerUserId { get; set; }
+    public WarehouseUserDTO? AssignedManager { get; set; }
 }
 
 public class WarehouseWasteLossRecordsForBatchFinishedProductsDTO
 {
     public string? Name {get; set;} = string.Empty;
     public string? location {get; set;} = string.Empty;
-     public List<WarehouseWasteLossRecordBatchFinishedProductDTO> WasteLossRecordBatchFinishedProduct { get; set; } = [];
+    public List<WarehouseWasteLossRecordBatchFinishedProductDTO> WasteLossRecordBatchFinishedProduct { get; set; } = [];
 
+    public int? AssignedManagerUserId { get; set; }
+    public WarehouseUserDTO? AssignedManager { get; set; }
 }
+
 public class WarehouseWasteLossRecordsForPackagingDTO
 {
     public string? Name {get; set;} = string.Empty;
     public string? location {get; set;} = string.Empty;
-     public List<WarehouseWasteLossRecordPackagingDTO> WasteLossRecordPackaging { get; set; } = [];
+    public List<WarehouseWasteLossRecordPackagingDTO> WasteLossRecordPackaging { get; set; } = [];
 
+    public int? AssignedManagerUserId { get; set; }
+    public WarehouseUserDTO? AssignedManager { get; set; }
 }
 
 public class WarehouseWasteLossRecordIngredientsDTO{
@@ -132,7 +154,7 @@ public class WarehouseWasteLossRecordBatchFinishedProductDTO{
 
     public WarehouseUserDTO? User { get; set; }
     public WarehouseWasteLossGetFinishedProductDTO? FinishedProduct { get; set; }
-     public WarehouseWasteLossRecordGetBatchDTO? Batch { get; set; }
+    public WarehouseWasteLossRecordGetBatchDTO? Batch { get; set; }
 }
 
 public class WarehouseUserDTO
@@ -148,7 +170,6 @@ public class WarehouseWasteLossGetIngredientsDTO
     public string Type { get; set; } = string.Empty;
     public string Cost { get; set; } = string.Empty;
     public bool IsExpired { get; set; }
-
 }
 
 public class WarehouseWasteLossGetFragranceDTO
@@ -182,5 +203,4 @@ public class WarehouseWasteLossRecordGetBatchDTO
     public int BatchID { get; set; }
     public DateTime ProductionDate { get; set; }
     public int BatchSize {get; set;}
-
 }

@@ -189,7 +189,7 @@ namespace Mystefy.Data
                 .WithMany(i => i.FragranceIngredients)
                 .HasForeignKey(fi => fi.IngredientsID);
 
-            
+
             modelBuilder.Entity<FinishedProductPackaging>()
             .HasKey(fpp => new { fpp.ProductID, fpp.PackagingID });
 
@@ -205,6 +205,13 @@ namespace Mystefy.Data
 
             modelBuilder.Entity<Supplier>()
                .HasKey(s => s.SupplierID);
+               
+            modelBuilder.Entity<Warehouse>()
+               .HasOne(w => w.AssignedManager)
+               .WithMany()
+               .HasForeignKey(w => w.AssignedManagerUserId)
+               .OnDelete(DeleteBehavior.SetNull);
+
         }
 
 

@@ -1,53 +1,71 @@
+using Microsoft.EntityFrameworkCore;
+using Mystefy.Data;
+using Mystefy.Interfaces;
+using Mystefy.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Mystefy.DTOs;
-using Mystefy.Interfaces;
 
 namespace Mystefy.Services
 {
     public class FinishedProductService : IFinishedProductService
     {
-        private readonly List<FinishedProductDTO> _products = new();
+        private readonly MystefyDbContext _context;
 
-        public async Task<IEnumerable<FinishedProductDTO>> GetAllProductsAsync()
+        public FinishedProductService(MystefyDbContext context)
         {
-            return await Task.FromResult(_products);
+            _context = context;
         }
 
-        public async Task<FinishedProductDTO?> GetProductByIdAsync(int productId)
+        public async Task<FinishedProduct?> CreateProductAsync(FinishedProduct finishedProduct)
         {
-            var product = _products.FirstOrDefault(p => p.ProductID == productId);
-            return await Task.FromResult(product);
-        }
-
-        public async Task<bool> CreateProductAsync(FinishedProductDTO product)
-        {
-            _products.Add(product);
-            return await Task.FromResult(true);
-        }
-
-        public async Task<bool> UpdateProductAsync(FinishedProductDTO product)
-        {
-            var existingProduct = _products.FirstOrDefault(p => p.ProductID == product.ProductID);
-            if (existingProduct == null)
-                return await Task.FromResult(false);
-
-            existingProduct.FragranceID = product.FragranceID;
-            existingProduct.ProductName = product.ProductName;
-            existingProduct.Quantity = product.Quantity;
-
-            return await Task.FromResult(true);
+            _context.FinishedProduct.Add(finishedProduct);
+            await _context.SaveChangesAsync();
+            return finishedProduct;
         }
 
         public async Task<bool> DeleteProductAsync(int productId)
         {
-            var product = _products.FirstOrDefault(p => p.ProductID == productId);
+            var product = await _context.FinishedProduct.FindAsync(productId);
             if (product == null)
-                return await Task.FromResult(false);
+                return false;
 
-            _products.Remove(product);
-            return await Task.FromResult(true);
+            _context.FinishedProduct.Remove(product);
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<IEnumerable<FinishedProduct>> GetAllProductsAsync()
+        {
+            return await _context.FinishedProduct
+                .Include(fp => fp.Fragrance)
+                .Include(fp => fp.FinishedProductPackaging) 
+                   .ThenInclude(fpp => fpp.Packaging)
+                .ToListAsync();
+        }
+
+        public async Task<FinishedProduct?> GetFinishedProductByName(string name)
+        {
+            return await _context.FinishedProduct
+                .FirstOrDefaultAsync(p => p.ProductName.ToLower() == name.ToLower());
+        }
+
+        public async Task<FinishedProduct?> GetProductByIdAsync(int productId)
+        {
+            return await _context.FinishedProduct
+                .Include(fp => fp.Fragrance)
+                .Include(fp => fp.FinishedProductPackaging)
+                   .ThenInclude(fpp => fpp.Packaging)
+                .FirstOrDefaultAsync(fp => fp.ProductID == productId);
+        }
+
+        public async Task<bool> UpdateProductAsync(FinishedProduct finishedProduct)
+        {
+            var existingProduct = await _context.FinishedProduct.FindAsync(finishedProduct.ProductID);
+            if (existingProduct == null)
+                return false;
+
+            _context.Entry(existingProduct).CurrentValues.SetValues(finishedProduct);
+            return await _context.SaveChangesAsync() > 0;
         }
     }
 }
