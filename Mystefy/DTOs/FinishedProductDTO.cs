@@ -10,8 +10,8 @@ namespace Mystefy.DTOs
         public string? ProductName { get; set; }
         public int Quantity { get; set; }
 
-        public List<GetFinishedProductPackagingDTO>? FinishedProductPackaging {get; set;}
-
+        public List<GetFinishedProductPackagingDTO>? FinishedProductPackaging { get; set; }
+        public GetFragranceInFinishedProductDTO? Fragrance { get; set; }
 
     }
     public class PostFinishedProductDTO
@@ -42,3 +42,18 @@ namespace Mystefy.DTOs
     }
 }
 
+public class GetFragranceInFinishedProductDTO
+{
+   public int Id {get;set;} 
+
+   public string Name {get;set;}  = string.Empty;
+
+   public string Description {get;set;}  = string.Empty;
+
+   public decimal Volume  {get;set;} 
+
+   public decimal Cost  {get;set;} 
+   public DateTime ExpiryDate { get; set; }
+    
+
+}

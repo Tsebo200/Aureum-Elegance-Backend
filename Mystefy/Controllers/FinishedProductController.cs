@@ -20,13 +20,21 @@ namespace Mystefy.Controllers
         public async Task<ActionResult<IEnumerable<FinishedProductDTO>>> GetProducts()
         {
             var products = await _finishedProductService.GetAllProductsAsync();
-
             var productDtos = products.Select(p => new FinishedProductDTO
             {
                 ProductID = p.ProductID,
                 FragranceID = p.FragranceID,
                 ProductName = p.ProductName,
                 Quantity = p.Quantity,
+                Fragrance = p.Fragrance != null ? new GetFragranceInFinishedProductDTO
+                {
+                    Id = p.Fragrance.Id,
+                    Name = p.Fragrance.Name,
+                    Description = p.Fragrance.Description,
+                    Volume = p.Fragrance.Volume,
+                    Cost = p.Fragrance.Cost,
+                    ExpiryDate = p.Fragrance.ExpiryDate
+                } : null,
                 FinishedProductPackaging = p.FinishedProductPackaging?.Select(pp => new GetFinishedProductPackagingDTO
                 {
                     ProductID = pp.ProductID,
@@ -41,9 +49,9 @@ namespace Mystefy.Controllers
                     } : null
                 }).ToList()
             }).ToList();
-
             return Ok(productDtos);
         }
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult<FinishedProductDTO>> GetProduct(int id)
@@ -57,6 +65,15 @@ namespace Mystefy.Controllers
                 FragranceID = product.FragranceID,
                 ProductName = product.ProductName,
                 Quantity = product.Quantity,
+                Fragrance = product.Fragrance != null ? new GetFragranceInFinishedProductDTO
+                {
+                    Id = product.Fragrance.Id,
+                    Name = product.Fragrance.Name,
+                    Description = product.Fragrance.Description,
+                    Volume = product.Fragrance.Volume,
+                    Cost = product.Fragrance.Cost,
+                    ExpiryDate = product.Fragrance.ExpiryDate
+                } : null,
                 FinishedProductPackaging = product.FinishedProductPackaging?.Select(pp => new GetFinishedProductPackagingDTO
                 {
                     ProductID = pp.ProductID,
@@ -87,6 +104,15 @@ namespace Mystefy.Controllers
                 FragranceID = product.FragranceID,
                 ProductName = product.ProductName,
                 Quantity = product.Quantity,
+                Fragrance = product.Fragrance != null ? new GetFragranceInFinishedProductDTO
+                {
+                    Id = product.Fragrance.Id,
+                    Name = product.Fragrance.Name,
+                    Description = product.Fragrance.Description,
+                    Volume = product.Fragrance.Volume,
+                    Cost = product.Fragrance.Cost,
+                    ExpiryDate = product.Fragrance.ExpiryDate
+                } : null,
                 FinishedProductPackaging = product.FinishedProductPackaging?.Select(pp => new GetFinishedProductPackagingDTO
                 {
                     ProductID = pp.ProductID,
