@@ -18,23 +18,23 @@ namespace Mystefy.Controllers
 
         // GET: api/FinishedProductPackaging
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<FinishedProductPackagingDTO.FinishedProductPackageDTO>>> GetAll()
+        public async Task<ActionResult<IEnumerable<FinishedProductPackageDTO>>> GetAll()
         {
             var result = await _finishedProductPackaging.GetAllFinishedProductPackaging();
 
-            var dtoList = result.Select(fpp => new FinishedProductPackagingDTO.FinishedProductPackageDTO
+            var dtoList = result.Select(fpp => new FinishedProductPackageDTO
             {
                 ProductID = fpp.ProductID,
                 PackagingId = fpp.PackagingID,
                 Amount = fpp.Amount,
-                FinishedProduct = fpp.FinishedProduct == null ? null : new FinishedProductPackagingDTO.IncludeFinishedProductInFinishedProductPackagingDTO
+                FinishedProduct = fpp.FinishedProduct == null ? null : new IncludeFinishedProductInFinishedProductPackagingDTO
                 {
                     ProductID = fpp.FinishedProduct.ProductID,
                     FragranceID = fpp.FinishedProduct.FragranceID,
                     ProductName = fpp.FinishedProduct.ProductName,
                     Quantity = fpp.FinishedProduct.Quantity
                 },
-                Packaging = fpp.Packaging == null ? null : new FinishedProductPackagingDTO.IncludePackagingInFinishedProductPackagingDTO
+                Packaging = fpp.Packaging == null ? null : new IncludePackagingInFinishedProductPackagingDTO
                 {
                     Id = fpp.Packaging.Id,
                     Name = fpp.Packaging.Name,
@@ -48,24 +48,24 @@ namespace Mystefy.Controllers
 
         // GET: api/FinishedProductPackaging/{productId}/{packagingId}
         [HttpGet("{productId}/{packagingId}")]
-        public async Task<ActionResult<FinishedProductPackagingDTO.FinishedProductPackageDTO>> GetById(int productId, int packagingId)
+        public async Task<ActionResult<FinishedProductPackageDTO>> GetById(int productId, int packagingId)
         {
             var fpp = await _finishedProductPackaging.GetFinishedProductPackagingById(productId, packagingId);
             if (fpp == null) return NotFound();
 
-            var dto = new FinishedProductPackagingDTO.FinishedProductPackageDTO
+            var dto = new FinishedProductPackageDTO
             {
                 ProductID = fpp.ProductID,
                 PackagingId = fpp.PackagingID,
                 Amount = fpp.Amount,
-                FinishedProduct = fpp.FinishedProduct == null ? null : new FinishedProductPackagingDTO.IncludeFinishedProductInFinishedProductPackagingDTO
+                FinishedProduct = fpp.FinishedProduct == null ? null : new IncludeFinishedProductInFinishedProductPackagingDTO
                 {
                     ProductID = fpp.FinishedProduct.ProductID,
                     FragranceID = fpp.FinishedProduct.FragranceID,
                     ProductName = fpp.FinishedProduct.ProductName,
                     Quantity = fpp.FinishedProduct.Quantity
                 },
-                Packaging = fpp.Packaging == null ? null : new FinishedProductPackagingDTO.IncludePackagingInFinishedProductPackagingDTO
+                Packaging = fpp.Packaging == null ? null : new IncludePackagingInFinishedProductPackagingDTO
                 {
                     Id = fpp.Packaging.Id,
                     Name = fpp.Packaging.Name,
@@ -79,7 +79,7 @@ namespace Mystefy.Controllers
 
         // POST: api/FinishedProductPackaging
         [HttpPost]
-        public async Task<ActionResult<FinishedProductPackaging>> Post([FromBody] FinishedProductPackagingDTO.PostFinishedProductPackagingDTO dto)
+        public async Task<ActionResult<FinishedProductPackaging>> Post([FromBody] PostFinishedProductPackagingDTO dto)
         {
             var model = new FinishedProductPackaging
             {
@@ -99,7 +99,7 @@ namespace Mystefy.Controllers
 
         // PUT: api/FinishedProductPackaging/{productId}/{packagingId}
         [HttpPut("{productId}/{packagingId}")]
-        public async Task<IActionResult> Put(int productId, int packagingId, [FromBody] FinishedProductPackagingDTO.PostFinishedProductPackagingDTO dto)
+        public async Task<IActionResult> Put(int productId, int packagingId, [FromBody] PostFinishedProductPackagingDTO dto)
         {
             if (productId != dto.ProductID || packagingId != dto.PackagingId)
             {
