@@ -2,8 +2,6 @@ using System;
 
 namespace Mystefy.DTOs;
 
-public class FinishedProductPackagingDTO
-{
 
 public class FinishedProductPackageDTO
 {
@@ -44,4 +42,4 @@ public class IncludePackagingInFinishedProductPackagingDTO{
     public int Stock{ get; set; }
 }
 
-}
+
