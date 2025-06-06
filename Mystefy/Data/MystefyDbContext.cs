@@ -176,6 +176,16 @@ namespace Mystefy.Data
             modelBuilder.Entity<BatchFinishedProduct>()
                .HasKey(bfp => new { bfp.BatchID, bfp.ProductID });
 
+            modelBuilder.Entity<Batch>()
+            .HasMany(b => b.BatchFinishedProducts)
+            .WithOne(bfp => bfp.Batch)
+            .HasForeignKey(bfp => bfp.BatchID);
+
+            modelBuilder.Entity<FinishedProduct>()
+            .HasMany(fp => fp.BatchFinishedProducts)
+            .WithOne(bfp => bfp.FinishedProduct)
+            .HasForeignKey(bfp => bfp.ProductID);
+
             modelBuilder.Entity<FragranceIngredient>()
             .HasKey(fi => new { fi.FragranceID, fi.IngredientsID });
 

@@ -24,7 +24,9 @@ namespace Mystefy.Models
 
         // Navigation Property 
         public List<WasteLossRecordBatchFinishedProducts> WasteLossRecordBatchFinishedProducts { get; set; } = [];
-        public List<FinishedProductPackaging> FinishedProductPackaging {get; set;} = [];
+        public List<FinishedProductPackaging> FinishedProductPackaging { get; set; } = [];
+        public List<BatchFinishedProduct> BatchFinishedProducts { get; set; } = [];
+
     }
   
 }

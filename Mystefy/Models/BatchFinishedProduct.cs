@@ -24,7 +24,7 @@ namespace Mystefy.Models
 
         // Navigation (optional)
         public Batch? Batch { get; set; }
-        public FinishedProduct? Product { get; set; }
+        public FinishedProduct? FinishedProduct { get; set; }
         public Warehouse? Warehouse { get; set; }
     }
 }

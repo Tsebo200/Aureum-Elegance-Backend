@@ -52,14 +52,15 @@ public class BatchService : IBatchService
     public async Task<IEnumerable<Batch>> GetAllBatches()
     {
          return await _context.Batches
-         .Include(b =>b.BatchFinishedProducts)
+        .Include(b => b.BatchFinishedProducts)
+            .ThenInclude(bfp => bfp.FinishedProduct) // Include FinishedProduct through BatchFinishedProducts
         .ToListAsync();
     }
 
     public Task<Batch?> GetBatchById(int id)
     {
         return _context.Batches
-        .Include(b =>b.BatchFinishedProducts)
+        .Include(b => b.BatchFinishedProducts)
         .FirstOrDefaultAsync(b => b.BatchID == id);
     }
 
