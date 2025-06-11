@@ -722,8 +722,8 @@ namespace Mystefy.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Mystefy.Models.FinishedProduct", "Product")
-                        .WithMany()
+                    b.HasOne("Mystefy.Models.FinishedProduct", "FinishedProduct")
+                        .WithMany("BatchFinishedProducts")
                         .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -736,7 +736,7 @@ namespace Mystefy.Migrations
 
                     b.Navigation("Batch");
 
-                    b.Navigation("Product");
+                    b.Navigation("FinishedProduct");
 
                     b.Navigation("Warehouse");
                 });
@@ -1099,6 +1099,8 @@ namespace Mystefy.Migrations
 
             modelBuilder.Entity("Mystefy.Models.FinishedProduct", b =>
                 {
+                    b.Navigation("BatchFinishedProducts");
+
                     b.Navigation("FinishedProductPackaging");
 
                     b.Navigation("WasteLossRecordBatchFinishedProducts");

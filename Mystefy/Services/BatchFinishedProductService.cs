@@ -18,67 +18,59 @@ namespace Mystefy.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<BatchFinishedProductDTO>> GetAllAsync()
+         public async Task<IEnumerable<BatchFinishedProductDTO>> GetAllAsync()
         {
-            return await _context.BatchFinishedProducts
-                .Select(p => new BatchFinishedProductDTO
-                {
-                    BatchID = p.BatchID,
-                    ProductID = p.ProductID,
-                    Quantity = p.Quantity,
-                    Unit = p.Unit,
-                    Status = p.Status,
-                    WarehouseID = p.WarehouseID
-                })
+            var entities = await _context.BatchFinishedProducts
+                .Include(bfp => bfp.Batch)
+                .Include(bfp => bfp.FinishedProduct)
                 .ToListAsync();
+
+            return entities.Select(entity => new BatchFinishedProductDTO(entity));
         }
 
         public async Task<BatchFinishedProductDTO?> GetByIdAsync(int batchId, int productId)
         {
-            var entity = await _context.BatchFinishedProducts.FindAsync(batchId, productId);
-            if (entity == null) return null;
+            var entity = await _context.BatchFinishedProducts
+                .Include(p => p.Batch)
+                .Include(p => p.FinishedProduct)
+                .FirstOrDefaultAsync(p => p.BatchID == batchId && p.ProductID == productId);
 
-            return new BatchFinishedProductDTO
-            {
-                BatchID = entity.BatchID,
-                ProductID = entity.ProductID,
-                Quantity = entity.Quantity,
-                Unit = entity.Unit,
-                Status = entity.Status,
-                WarehouseID = entity.WarehouseID
-            };
+            return entity == null ? null : new BatchFinishedProductDTO(entity);
         }
 
         public async Task<bool> CreateAsync(BatchFinishedProductDTO dto)
-        {
-            var entity = new BatchFinishedProduct
-            {
-                BatchID = dto.BatchID,
-                ProductID = dto.ProductID,
-                Quantity = dto.Quantity,
-                Unit = dto.Unit,
-                Status = dto.Status,
-                WarehouseID = dto.WarehouseID
-            };
+{
+    var entity = new BatchFinishedProduct
+    {
+        BatchID = dto.BatchID,
+        ProductID = dto.ProductID,
+        Quantity = dto.Quantity,
+        Unit = dto.Unit,
+        Status = dto.Status, 
+        WarehouseID = dto.WarehouseID
+    };
 
-            _context.BatchFinishedProducts.Add(entity);
-            await _context.SaveChangesAsync();
-            return true;
-        }
+    _context.BatchFinishedProducts.Add(entity);
+    await _context.SaveChangesAsync();
+    return true;
+}
 
-        public async Task<bool> UpdateAsync(BatchFinishedProductDTO dto)
-        {
-            var entity = await _context.BatchFinishedProducts.FindAsync(dto.BatchID, dto.ProductID);
-            if (entity == null) return false;
+public async Task<bool> UpdateAsync(BatchFinishedProductDTO dto)
+{
+    var entity = await _context.BatchFinishedProducts
+        .FirstOrDefaultAsync(e => e.BatchID == dto.BatchID && e.ProductID == dto.ProductID);
 
-            entity.Quantity = dto.Quantity;
-            entity.Unit = dto.Unit;
-            entity.Status = dto.Status;
-            entity.WarehouseID = dto.WarehouseID;
+    if (entity == null) return false;
 
-            await _context.SaveChangesAsync();
-            return true;
-        }
+    entity.Quantity = dto.Quantity;
+    entity.Unit = dto.Unit;
+    entity.Status = dto.Status; 
+    entity.WarehouseID = dto.WarehouseID;
+
+    await _context.SaveChangesAsync();
+    return true;
+}
+
 
         public async Task<bool> DeleteAsync(int batchId, int productId)
         {

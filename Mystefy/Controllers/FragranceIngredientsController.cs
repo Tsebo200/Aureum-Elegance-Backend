@@ -101,7 +101,7 @@ namespace Mystefy.Controllers
 
         
         [HttpPut("{fragranceId}/{ingredientId}")]
-        public async Task<IActionResult> PutFragranceIngredient(int fragranceId, int ingredientId, PostFragranceIngredientsDTO UpdateDto)
+        public async Task<IActionResult> PutFragranceIngredient(int fragranceId, int ingredientId,  [FromBody] PostFragranceIngredientsDTO UpdateDto)
         {
             // Optional: You can validate that the route values match the body
             if (fragranceId != UpdateDto.FragranceID || ingredientId != UpdateDto.IngredientsID)

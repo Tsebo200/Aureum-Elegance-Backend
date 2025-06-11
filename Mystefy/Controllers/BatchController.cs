@@ -23,21 +23,23 @@ namespace Mystefy.Controllers
         {
             var getBatch = await _batchService.GetAllBatches();
 
-             var BatchDtos = getBatch.Select( bwfp=> new BatchWithFinishedProductDTO
-            {
-                BatchID = bwfp.BatchID,
-                ProductionDate= bwfp.ProductionDate,
-                BatchSize = bwfp.BatchSize,
-                Status = bwfp.Status.ToString(),
-                BatchFinishedProducts = bwfp.BatchFinishedProducts?.Select(bf => new BatchFinishedProductInBatchDTO
-                {
-                    ProductID = bf.ProductID,
-                    Quantity= bf.Quantity,
-                    Unit = bf.Unit,
-                    Status = bf.Status,
-                    WarehouseID = bf.WarehouseID
-                }).ToList()
-            }).ToList();
+             var BatchDtos = getBatch.Select(bwfp => new BatchWithFinishedProductDTO
+             {
+                 BatchID = bwfp.BatchID,
+                 ProductionDate = bwfp.ProductionDate,
+                 BatchSize = bwfp.BatchSize,
+                 Status = bwfp.Status.ToString(),
+                 BatchFinishedProducts = bwfp.BatchFinishedProducts?.Select(bf => new BatchFinishedProductInBatchDTO
+                 {
+                     ProductID = bf.ProductID,
+                     Quantity = bf.Quantity,
+                     Unit = bf.Unit,
+                     Status = bf.Status,
+                     WarehouseID = bf.WarehouseID,
+                     ProductName = bf.FinishedProduct?.ProductName
+                 }).ToList()
+             }).ToList();
+
 
             return Ok(BatchDtos);
         }
@@ -54,17 +56,18 @@ namespace Mystefy.Controllers
             var batchDto = new BatchWithFinishedProductDTO
             {
                 BatchID = batch.BatchID,
-                ProductionDate = batch.ProductionDate,
-                BatchSize = batch.BatchSize,
-                Status = batch.Status.ToString(),
-                BatchFinishedProducts = batch.BatchFinishedProducts?.Select(fp => new BatchFinishedProductInBatchDTO
-                {
-                    ProductID = fp.ProductID,
-                    Quantity = fp.Quantity,
-                    Unit = fp.Unit,
-                    Status = fp.Status,
-                    WarehouseID = fp.WarehouseID
-                }).ToList()
+                 ProductionDate = batch.ProductionDate,
+                 BatchSize = batch.BatchSize,
+                 Status = batch.Status.ToString(),
+                 BatchFinishedProducts = batch.BatchFinishedProducts?.Select(bf => new BatchFinishedProductInBatchDTO
+                 {
+                     ProductID = bf.ProductID,
+                     Quantity = bf.Quantity,
+                     Unit = bf.Unit,
+                     Status = bf.Status,
+                     WarehouseID = bf.WarehouseID,
+                     ProductName = bf.FinishedProduct?.ProductName
+                 }).ToList()
             };
 
             return Ok(batchDto);
