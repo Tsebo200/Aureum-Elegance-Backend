@@ -58,11 +58,20 @@ namespace Mystefy.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> LoginUser([FromBody] LoginDTO loginDto)
         {
-            if (!await _authService.LoginUser(loginDto.Email, loginDto.Password))
-                return Unauthorized("Invalid credentials");
+            // if (!await _authService.LoginUser(loginDto.Email, loginDto.Password))
+            //     return Unauthorized("Invalid credentials");
 
-            var user = await _authService.EmailExists(loginDto.Email);
-            return Ok(new UserDTO(user!));
+            // var user = await _authService.EmailExists(loginDto.Email);
+            // return Ok(new UserDTO(user!));
+
+            if (!await _authService.LoginUser(loginDto.Email, loginDto.Password))
+        return Unauthorized("Invalid credentials");
+
+    var user = await _authService.EmailExists(loginDto.Email);
+    if (user is null) return Unauthorized();
+
+    // send the flag the frontend is waiting for
+    return Ok(new UserDTO(user));
         }
 
         // DELETE: api/Mystefy/users

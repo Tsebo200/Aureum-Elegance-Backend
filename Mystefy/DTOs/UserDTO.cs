@@ -9,8 +9,9 @@ namespace Mystefy.DTOs
         public string Email { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
         public string Role { get; set; } = "Employee"; // Default role
+        public bool   Is2faEnabled  { get; init; }   // NEW
 
-        public UserDTO() {}
+        public UserDTO() { }
 
         public UserDTO(Models.User user)
         {
@@ -19,6 +20,7 @@ namespace Mystefy.DTOs
             Email = user.Email;
             Password = user.Password;
             Role = user.Role.ToString();
+             Is2faEnabled = user.Is2faEnabled;
         }
     }
 }
